@@ -24,7 +24,7 @@ public class DeltaFrame extends javax.swing.JFrame {
     public DeltaFrame() {
 
         initComponents();
-        setNormalGrid(valueTable);        
+        setNormalGrid(valueTable);
         setTablesSize(10);
         fillValues();
 
@@ -369,12 +369,12 @@ public class DeltaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void FillBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FillBtnActionPerformed
-        
+
         //устанавливаем размер матрицы
         JSpinner size = (JSpinner) MatrixSizeSpinner;
         int matrixSize = Integer.valueOf(size.getValue().toString());
         setTablesSize(matrixSize);
-        
+
         //заполняем её
         fillValues();
 
@@ -382,17 +382,17 @@ public class DeltaFrame extends javax.swing.JFrame {
 
     private void fillValues() throws NumberFormatException {
         if (chkbxRandomValues.isSelected()) {
-            
+
             double[][] M1 = null;
-            M1  = FillTableRandomValues(false);
+            M1 = FillTableRandomValues(true);
             setTableValue(M1);
-            
-        } else if ( checkBoxConstants.isSelected() ) {
-            
+
+        } else if (checkBoxConstants.isSelected()) {
+
             double[][] M1 = null;
-            M1    =   FillTableRandomValues(true);
+            M1 = FillTableRandomValues(false);
             setTableValue(M1);
-            
+
         } else {
 
             // Входной массив
@@ -406,12 +406,11 @@ public class DeltaFrame extends javax.swing.JFrame {
                 {18, 0, 0, 0, 58, 13, 0}
             };
             setTableValue(M0);
-            
+
         }
 
 
     }//GEN-LAST:event_FillBtnActionPerformed
-    
 
     private void setTableValue(double[][] M0) throws NumberFormatException {
 
@@ -420,7 +419,7 @@ public class DeltaFrame extends javax.swing.JFrame {
 
         double sum = 0;
         double sumRow[] = new double[M0.length];
-        DefaultTableModel model = (DefaultTableModel) valueTable.getModel();        
+        DefaultTableModel model = (DefaultTableModel) valueTable.getModel();
 
         setTableSize(M0.length, M0.length, valueTable);
 
@@ -432,20 +431,20 @@ public class DeltaFrame extends javax.swing.JFrame {
                 sum = sum + M0[i][j];
                 sumRow[j] = sumRow[j] + M0[i][j];
             }
-            
+
             sum = 0;
-        }       
+        }
         model.fireTableDataChanged();
     }
 
     private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
-        // TODO add your handling code here:
+        FillTableRandomValues(false);
     }//GEN-LAST:event_ClearBtnActionPerformed
 
     private void setTablesSize(int matrixSize) throws NumberFormatException {
-        
+
         setTableSize(matrixSize, matrixSize, valueTable);
-        
+
     }
 
     private void setTableSize(int width, int height, JTable table) throws NumberFormatException {
@@ -459,19 +458,19 @@ public class DeltaFrame extends javax.swing.JFrame {
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
-        double[][] a = getValuesFromTable();        
-        Work1 obj   =   new Work1();
+        double[][] a = getValuesFromTable();
+        Work1 obj = new Work1();
         obj.setM0(a);
-        
-            
+
+
     }//GEN-LAST:event_btnSolveActionPerformed
 
     private void chkbxRandomValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkbxRandomValuesActionPerformed
-        // TODO add your handling code here:
+        fillTableWithConstantsCheckBox.setVisible(chkbxRandomValues.isSelected());
     }//GEN-LAST:event_chkbxRandomValuesActionPerformed
 
     private void fillTableWithConstantsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillTableWithConstantsCheckBoxActionPerformed
-        
+        chkbxRandomValues.setVisible(fillTableWithConstantsCheckBox.isSelected());
     }//GEN-LAST:event_fillTableWithConstantsCheckBoxActionPerformed
 
     private void checkBoxConstantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxConstantsActionPerformed
@@ -487,46 +486,79 @@ public class DeltaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_parametersMenuActionPerformed
 
     private void valueTableMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_valueTableMouseMoved
-        Point p   = evt.getPoint();
-        int   i   = valueTable.rowAtPoint(p)+1;
-        int   j   = valueTable.columnAtPoint(p)+1;
+        Point p = evt.getPoint();
+        int i = valueTable.rowAtPoint(p) + 1;
+        int j = valueTable.columnAtPoint(p) + 1;
         valueTable.setToolTipText(i + " : " + j);
     }//GEN-LAST:event_valueTableMouseMoved
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+
+    private double[][] getValuesFromTable() {
+
+        int tableSize = (int) MatrixSizeSpinner.getValue();
+        double[][] matrix = new double[tableSize][tableSize];
+
+        for (int i = 0; i < tableSize; i++) {
+            for (int j = 0; j < tableSize; j++) {
+                try {
+
+                    matrix[i][j] = (double) valueTable.getValueAt(i, j);
+
+                } catch (NullPointerException e) {
+                    System.out.println(e);
+                }
+
+            }
+        }
+        printMatrix(matrix);
+        return matrix;
+    }
+
+    private double[][] FillTableRandomValues(boolean random) {
+
+        int tableSize = (int) MatrixSizeSpinner.getValue();
+
+        double[][] matrix = new double[tableSize][tableSize];
+
+        if (random) {
+
+            String value = jSpinner1.getValue().toString();
+            for (int i = 0; i < tableSize; i++) {
+                for (int j = 0; j < tableSize; j++) {
+                    matrix[i][j] = Double.valueOf(value);
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DeltaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DeltaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DeltaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DeltaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new DeltaFrame().setVisible(true);
+        } else {
+
+            for (int i = 0; i < tableSize; i++) {
+                for (int j = 0; j < tableSize; j++) {
+                    try {
+                        Random r = new Random();
+                        matrix[i][j] = r.nextDouble();
+                    } catch (NullPointerException e) {
+                        System.out.println(e);
+                    }
+                }
             }
-        });
+
+        } // end of else
+
+        return matrix;
+
     }
+
+    private void printMatrix(double[][] matrix) {
+        int size = matrix.length;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                System.err.print(matrix[i][j]);
+            }
+            System.out.println("");
+        }
+    }
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ClearBtn;
@@ -552,72 +584,4 @@ public class DeltaFrame extends javax.swing.JFrame {
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
 
-    private double[][] getValuesFromTable() {
-
-        int tableSize = (int) MatrixSizeSpinner.getValue();
-        double[][] matrix = new double[tableSize][tableSize];
-
-        for (int i = 0; i < tableSize; i++) {
-            for (int j = 0; j < tableSize; j++) {
-                try {
-
-                    matrix[i][j] = (double) valueTable.getValueAt(i, j);
-
-                } catch (NullPointerException e) {
-                    System.out.println(e);
-                }
-
-            }
-        }
-        printMatrix(matrix);
-        return matrix;
-    }
-
-    private double[][] FillTableRandomValues(boolean constant) {
-
-        int tableSize = (int) MatrixSizeSpinner.getValue();
-
-        double[][] matrix = new double[tableSize][tableSize];
-
-        if (constant) {
-
-            for (int i = 0; i < tableSize; i++) {
-                for (int j = 0; j < tableSize; j++) {
-                    try {
-                        Random r = new Random();
-                        matrix[i][j] = r.nextDouble();
-                    } catch (NullPointerException e) {
-                        System.out.println(e);
-                    }
-
-                }
-            }
-        } else {
-            String value = jSpinner1.getValue().toString();
-            for (int i = 0; i < tableSize; i++) {
-                for (int j = 0; j < tableSize; j++) {
-
-                    matrix[i][j] = Double.valueOf(value);
-
-                }
-            }
-        }     
-            
-        return matrix;
-        
-    }
-
-    private void printMatrix(double[][] matrix) {
-        int size = matrix.length;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                System.err.print(matrix[i][j]);
-            }
-            System.out.println("");
-        }
-    }
-    
-    public void moveTableScrollBar(){
-        
-    }
 }
