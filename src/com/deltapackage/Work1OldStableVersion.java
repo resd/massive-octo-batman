@@ -36,6 +36,7 @@ public class Work1OldStableVersion {
     
     static Map< List<Integer> , Double> map = new HashMap<List<Integer>, Double>();
     public static List<Integer> coordinates = new ArrayList<Integer>();
+    Result resultScreen                     = new Result();
     
     /*забродин*/
     //ищет максимальный элемент в миноре матрицы
@@ -87,8 +88,11 @@ public class Work1OldStableVersion {
         sb.append(" value: ");
         sb.append(maxValue);
         
-        System.out.println( sb.toString() );
+        //System.out.println( sb.toString() );
+        resultScreen.setResultText(sb.toString());
+        resultScreen.setVisible(true);
     }
+    //**************************************************************************
 
     // ������ �������� �������
     private static int originalsize;

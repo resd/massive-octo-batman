@@ -66,7 +66,7 @@ public class DeltaFrame extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         parametersMenu = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
 
         valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -460,7 +460,7 @@ public class DeltaFrame extends javax.swing.JFrame {
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
         double[][] a = getValuesFromTable();
-        Work1 obj = new Work1();
+        Work1OldStableVersion obj = new Work1OldStableVersion();
         obj.setM0(a);
 
 

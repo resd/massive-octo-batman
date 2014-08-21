@@ -64,6 +64,7 @@ public class Result extends javax.swing.JFrame {
 
     public Result(String resultText) throws HeadlessException {
         this.resultText = resultText;
+        initComponents();
     }
 
     public String getResultText() {
