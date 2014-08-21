@@ -36,12 +36,28 @@ public class Work1OldStableVersion {
     
     static Map< List<Integer> , Double> map = new HashMap<List<Integer>, Double>();
     public static List<Integer> coordinates = new ArrayList<Integer>();
-
+    
+    /*забродин*/
     //ищет максимальный элемент в миноре матрицы
     //и помещает его в карту
     //example:
     //coordinates.clear();
     //arr.findDD(0,2);
+    public double getDD(int row, int column){
+        
+        List coordinates = new ArrayList();
+        coordinates.add(row);
+        coordinates.add(column);
+        
+        double result = 0;
+        
+        if(map.size() > 0){
+            result = map.get(coordinates);
+        }
+        
+        return result;
+    }
+    
     public void findDD(int row, int column) {
         
         double maxValue = M0[0][column];

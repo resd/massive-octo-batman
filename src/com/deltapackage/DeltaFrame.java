@@ -366,6 +366,7 @@ public class DeltaFrame extends javax.swing.JFrame {
         fillTableWithConstantsCheckBox.getAccessibleContext().setAccessibleName("FillConstants");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void FillBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FillBtnActionPerformed
