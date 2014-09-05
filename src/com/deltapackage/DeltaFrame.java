@@ -6,6 +6,7 @@
 package com.deltapackage;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Random;
 import javax.swing.JSpinner;
@@ -22,7 +23,7 @@ public class DeltaFrame extends javax.swing.JFrame {
      * Creates new form DeltaFrame
      */
     public DeltaFrame() {
-
+        
         initComponents();
         setNormalGrid(valueTable);
         setTablesSize(10);
@@ -59,6 +60,8 @@ public class DeltaFrame extends javax.swing.JFrame {
         jSpinner1 = new javax.swing.JSpinner();
         MatrixSizeSpinner = new javax.swing.JSpinner();
         FillBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        messagesTextPane = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -68,6 +71,7 @@ public class DeltaFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
         valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         valueTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -310,6 +314,9 @@ public class DeltaFrame extends javax.swing.JFrame {
                 .addComponent(ClearBtn))
         );
 
+        messagesTextPane.setEnabled(false);
+        jScrollPane1.setViewportView(messagesTextPane);
+
         jMenu1.setText("Файл");
         jMenu1.add(jSeparator1);
 
@@ -345,9 +352,12 @@ public class DeltaFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 799, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -356,11 +366,13 @@ public class DeltaFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(optionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(100, 100, 100))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(10, 10, 10))))
+                        .addGap(18, 18, 18)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         fillTableWithConstantsCheckBox.getAccessibleContext().setAccessibleName("FillConstants");
@@ -460,9 +472,7 @@ public class DeltaFrame extends javax.swing.JFrame {
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
         double[][] a = getValuesFromTable();
-        Work1OldStableVersion obj = new Work1OldStableVersion();
-        obj.setM0(a);
-
+        Work1OldStableVersion obj = new Work1OldStableVersion(a,this);
 
     }//GEN-LAST:event_btnSolveActionPerformed
 
@@ -575,11 +585,13 @@ public class DeltaFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable matrixColumn1;
+    private javax.swing.JTextPane messagesTextPane;
     private javax.swing.JPanel optionsPanel;
     private javax.swing.JMenuItem parametersMenu;
     private javax.swing.JTable valueTable;

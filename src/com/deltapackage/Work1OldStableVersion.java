@@ -24,43 +24,58 @@ import java.util.Map;
 public class Work1OldStableVersion {
 
     // ������� ������
-    double[][] M0 = {
-        {0, 0, 83, 9, 30, 6, 50},
-        {0, 0, 66, 37, 17, 12, 26},
-        {29, 1, 0, 19, 0, 12, 5},
-        {32, 83, 66, 0, 49, 0, 80},
-        {3, 21, 56, 7, 0, 0, 28},
-        {0, 85, 8, 42, 89, 0, 0},
-        {18, 0, 0, 0, 58, 13, 0}
-    };
-    
-    static Map< List<Integer> , Double> map = new HashMap<List<Integer>, Double>();
+    private static double[][] M0;
+    private static DeltaFrame parentFrame;
+
+    public Work1OldStableVersion(double[][] M0) {
+
+        if (M0.length == 0) {
+            double[][] M1 = {
+                {0, 0, 83, 9, 30, 6, 50},
+                {0, 0, 66, 37, 17, 12, 26},
+                {29, 1, 0, 19, 0, 12, 5},
+                {32, 83, 66, 0, 49, 0, 80},
+                {3, 21, 56, 7, 0, 0, 28},
+                {0, 85, 8, 42, 89, 0, 0},
+                {18, 0, 0, 0, 58, 13, 0}
+            };
+
+            M0 = M1;
+        }
+
+        this.M0 = M0;
+    }
+
+    static Map< List<Integer>, Double> map = new HashMap<List<Integer>, Double>();
     public static List<Integer> coordinates = new ArrayList<Integer>();
-    Result resultScreen                     = new Result();
-    
+
+    Work1OldStableVersion(double[][] a, DeltaFrame aThis) {
+        parentFrame = aThis;
+    }
+
     /*забродин*/
     //ищет максимальный элемент в миноре матрицы
     //и помещает его в карту
     //example:
     //coordinates.clear();
     //arr.findDD(0,2);
-    public double getDD(int row, int column){
-        
+    public double getDD(int row, int column) {
+
         List coordinates = new ArrayList();
         coordinates.add(row);
         coordinates.add(column);
-        
+
         double result = 0;
-        
-        if(map.size() > 0){
+
+        if (map.size() > 0) {
             result = map.get(coordinates);
         }
-        
+
         return result;
     }
-    
+
     public void findDD(int row, int column) {
-        
+
         double maxValue = M0[0][column];
         coordinates.add(row);
         coordinates.add(column);
@@ -81,16 +96,15 @@ public class Work1OldStableVersion {
         StringBuilder sb = new StringBuilder(10);
         sb.append("row: ");
         sb.append(row);
-        
+
         sb.append(" column: ");
         sb.append(column);
-        
+
         sb.append(" value: ");
         sb.append(maxValue);
-        
+
         //System.out.println( sb.toString() );
-        resultScreen.setResultText(sb.toString());
-        resultScreen.setVisible(true);
+        //*todo show message
     }
     //**************************************************************************
 
@@ -106,9 +120,13 @@ public class Work1OldStableVersion {
     private static int[] mjBuffer;
     private static int[] buffer;
 
+    public double[][] getM0() {
+        return M0;
+    }
+
     public static void main(String[] args) {
         double[][] M;
-        Work1OldStableVersion w = new Work1OldStableVersion();
+        Work1OldStableVersion w = new Work1OldStableVersion(M0, parentFrame);
         M = Arrays.copyOf(w.M0, w.M0.length);
 
         double[][] DD;
@@ -150,7 +168,7 @@ public class Work1OldStableVersion {
             str.append("(").append(p[i][0] + 1).append("-").append(p[i][1] + 1).append(") ");
         }
         p(str);
-        Work1OldStableVersion w2 = new Work1OldStableVersion();
+        Work1OldStableVersion w2 = new Work1OldStableVersion(M0, parentFrame);
         int Sum = 0;
         for (int k = 0; k < originalsize; k++) {
             Sum = (int) (Sum + w2.M0[p[k][0]][p[k][1]]);
@@ -676,6 +694,7 @@ public class Work1OldStableVersion {
             for (int j = 0; j < M.length; j++) {
                 if (i == j) {
                     System.out.print("0" + " ");
+
                 } else {
                     System.out.print(round(M[i][j]) + " ");
                     if (j == (M.length - 1)) {

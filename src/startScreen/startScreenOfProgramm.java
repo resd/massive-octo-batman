@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 /**
@@ -40,7 +41,9 @@ public class startScreenOfProgramm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
+        setLocationByPlatform(true);
         setUndecorated(true);
+        setResizable(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/startScreen.png"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -65,6 +68,7 @@ public class startScreenOfProgramm extends javax.swing.JFrame {
         jProgressBar1.getAccessibleContext().setAccessibleParent(jLabel1);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
