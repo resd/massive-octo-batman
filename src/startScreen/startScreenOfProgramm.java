@@ -5,7 +5,7 @@
  */
 package startScreen;
 
-import com.deltapackage.DeltaFrame;
+import com.deltapackage.ParentFrame;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -121,7 +121,7 @@ public class startScreenOfProgramm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 
-                new DeltaFrame().setVisible(true);
+                new ParentFrame().setVisible(true);
 
             }
         });

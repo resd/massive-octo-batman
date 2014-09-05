@@ -6,7 +6,6 @@
 package com.deltapackage;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Random;
 import javax.swing.JSpinner;
@@ -17,12 +16,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Евгений
  */
-public class DeltaFrame extends javax.swing.JFrame {
+public class ParentFrame extends javax.swing.JFrame {
 
+    public void setMessage(String msg){
+        messagesTextPane.setText(messagesTextPane.getText() + "\n\n" + msg);
+    }
+    
     /**
      * Creates new form DeltaFrame
      */
-    public DeltaFrame() {
+    public ParentFrame() {
         
         initComponents();
         setNormalGrid(valueTable);
@@ -66,11 +69,13 @@ public class DeltaFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenu = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         parametersMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setUndecorated(true);
         setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
         valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -242,6 +247,11 @@ public class DeltaFrame extends javax.swing.JFrame {
 
         chkbxRandomValues.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         chkbxRandomValues.setText("Заполнять случайными значениями");
+        chkbxRandomValues.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                chkbxRandomValuesMouseClicked(evt);
+            }
+        });
         chkbxRandomValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkbxRandomValuesActionPerformed(evt);
@@ -253,6 +263,11 @@ public class DeltaFrame extends javax.swing.JFrame {
 
         checkBoxConstants.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         checkBoxConstants.setText("Заполнять константами");
+        checkBoxConstants.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                checkBoxConstantsMouseClicked(evt);
+            }
+        });
         checkBoxConstants.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxConstantsActionPerformed(evt);
@@ -314,7 +329,7 @@ public class DeltaFrame extends javax.swing.JFrame {
                 .addComponent(ClearBtn))
         );
 
-        messagesTextPane.setEnabled(false);
+        messagesTextPane.setEditable(false);
         jScrollPane1.setViewportView(messagesTextPane);
 
         jMenu1.setText("Файл");
@@ -328,6 +343,14 @@ public class DeltaFrame extends javax.swing.JFrame {
             }
         });
         jMenu1.add(exitMenu);
+
+        jMenuItem1.setText("Сохранить");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
 
@@ -394,17 +417,16 @@ public class DeltaFrame extends javax.swing.JFrame {
     }
 
     private void fillValues() throws NumberFormatException {
+        
+        double[][] M1;
+        
         if (chkbxRandomValues.isSelected()) {
-
-            double[][] M1 = null;
+            
             M1 = FillTableRandomValues(true);
-            setTableValue(M1);
-
+            
         } else if (checkBoxConstants.isSelected()) {
-
-            double[][] M1 = null;
+            
             M1 = FillTableRandomValues(false);
-            setTableValue(M1);
 
         } else {
 
@@ -418,10 +440,12 @@ public class DeltaFrame extends javax.swing.JFrame {
                 {0, 85, 8, 42, 89, 0, 0},
                 {18, 0, 0, 0, 58, 13, 0}
             };
-            setTableValue(M0);
 
+            M1 = M0;
+            
         }
 
+        setTableValue(M1);
 
     }//GEN-LAST:event_FillBtnActionPerformed
 
@@ -471,17 +495,18 @@ public class DeltaFrame extends javax.swing.JFrame {
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
+        setMessage("It work's!");
         double[][] a = getValuesFromTable();
         Work1OldStableVersion obj = new Work1OldStableVersion(a,this);
 
     }//GEN-LAST:event_btnSolveActionPerformed
 
     private void chkbxRandomValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkbxRandomValuesActionPerformed
-        fillTableWithConstantsCheckBox.setVisible(chkbxRandomValues.isSelected());
+        fillTableWithConstantsCheckBox.setSelected(!chkbxRandomValues.isSelected());
     }//GEN-LAST:event_chkbxRandomValuesActionPerformed
 
     private void fillTableWithConstantsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillTableWithConstantsCheckBoxActionPerformed
-        chkbxRandomValues.setVisible(fillTableWithConstantsCheckBox.isSelected());
+        chkbxRandomValues.setSelected(!fillTableWithConstantsCheckBox.isSelected());
     }//GEN-LAST:event_fillTableWithConstantsCheckBoxActionPerformed
 
     private void checkBoxConstantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxConstantsActionPerformed
@@ -502,6 +527,18 @@ public class DeltaFrame extends javax.swing.JFrame {
         int j = valueTable.columnAtPoint(p) + 1;
         valueTable.setToolTipText(i + " : " + j);
     }//GEN-LAST:event_valueTableMouseMoved
+
+    private void chkbxRandomValuesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chkbxRandomValuesMouseClicked
+        fillTableWithConstantsCheckBox.setSelected(!chkbxRandomValues.isSelected());
+    }//GEN-LAST:event_chkbxRandomValuesMouseClicked
+
+    private void checkBoxConstantsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBoxConstantsMouseClicked
+        chkbxRandomValues.setSelected(!fillTableWithConstantsCheckBox.isSelected());
+    }//GEN-LAST:event_checkBoxConstantsMouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        exportToExcel();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 
     private double[][] getValuesFromTable() {
@@ -531,7 +568,7 @@ public class DeltaFrame extends javax.swing.JFrame {
 
         double[][] matrix = new double[tableSize][tableSize];
 
-        if (random) {
+        if (random == false) {
 
             String value = jSpinner1.getValue().toString();
             for (int i = 0; i < tableSize; i++) {
@@ -568,7 +605,6 @@ public class DeltaFrame extends javax.swing.JFrame {
             System.out.println("");
         }
     }
-
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -585,6 +621,7 @@ public class DeltaFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
@@ -596,5 +633,9 @@ public class DeltaFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem parametersMenu;
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
+
+    private void exportToExcel() {
+        
+    }
 
 }

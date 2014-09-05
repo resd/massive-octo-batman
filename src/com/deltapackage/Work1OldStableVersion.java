@@ -25,7 +25,7 @@ public class Work1OldStableVersion {
 
     // ������� ������
     private static double[][] M0;
-    private static DeltaFrame parentFrame;
+    private static ParentFrame parentFrame;
 
     public Work1OldStableVersion(double[][] M0) {
 
@@ -49,7 +49,7 @@ public class Work1OldStableVersion {
     static Map< List<Integer>, Double> map = new HashMap<List<Integer>, Double>();
     public static List<Integer> coordinates = new ArrayList<Integer>();
 
-    Work1OldStableVersion(double[][] a, DeltaFrame aThis) {
+    Work1OldStableVersion(double[][] a, ParentFrame aThis) {
         parentFrame = aThis;
     }
 
@@ -104,6 +104,7 @@ public class Work1OldStableVersion {
         sb.append(maxValue);
 
         //System.out.println( sb.toString() );
+        parentFrame.setMessage(sb.toString());
         //*todo show message
     }
     //**************************************************************************
@@ -684,6 +685,7 @@ public class Work1OldStableVersion {
 
     private static void p(Object s) {
         System.out.println(s + "");
+        parentFrame.setMessage(s.toString());
     }
 
     private static void out(double[][] M) {
@@ -694,9 +696,11 @@ public class Work1OldStableVersion {
             for (int j = 0; j < M.length; j++) {
                 if (i == j) {
                     System.out.print("0" + " ");
+                    parentFrame.setMessage("0" + " ");
 
                 } else {
                     System.out.print(round(M[i][j]) + " ");
+                    parentFrame.setMessage(round(M[i][j]) + " ");
                     if (j == (M.length - 1)) {
                         System.out.println("");
                     }
@@ -720,6 +724,7 @@ public class Work1OldStableVersion {
             }
         }
         System.out.println("");
+        parentFrame.setMessage(XXX.toString());
     }
 
     private static double round(double a) {
