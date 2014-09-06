@@ -563,16 +563,16 @@ public class ParentFrame extends javax.swing.JFrame {
         for (int i = 0; i < tableSize; i++) {
             for (int j = 0; j < tableSize; j++) {
                 try {
-
                     matrix[i][j] = (double) valueTable.getValueAt(i, j);
-
                 } catch (NullPointerException e) {
                     System.out.println(e);
                 }
 
             }
         }
+        
         printMatrix(matrix);
+        
         return matrix;
     }
 
@@ -611,12 +611,12 @@ public class ParentFrame extends javax.swing.JFrame {
     }
 
     private void printMatrix(double[][] matrix) {
+        
         int size = matrix.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                System.err.print(matrix[i][j]);
+                System.out.print(matrix[i][j]);
             }
-            System.out.println("");
         }
     }
 
@@ -649,28 +649,28 @@ public class ParentFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void exportToExcel() throws FileNotFoundException, IOException {
+
         String filename = "C:/newExcel.xls";
         HSSFWorkbook book = new HSSFWorkbook();
         HSSFSheet sheet = book.createSheet();
-        
+
         double[][] value = getValuesFromTable();
-        
-        for (int i = 0; i < value.length;i++){
-            
-            HSSFRow rowHead = sheet.createRow((short)i);
-            
+
+        for (int i = 0; i < value.length; i++) {
+
+            HSSFRow rowHead = sheet.createRow((short) i);
+
             for (int j = 0; j < value.length; j++) {
                 rowHead.createCell(j).setCellValue(value[i][j]);
             }
-            
-            HSSFRow row =   sheet.createRow((short)value.length + 2);
+
+            HSSFRow row = sheet.createRow((short) value.length + 2);
             HSSFCell cell = row.createCell(0);
             cell.setCellValue(messagesTextPane.getText());
-            
-            
+
         }
-        
-        FileOutputStream stream =   new FileOutputStream(filename);
+
+        FileOutputStream stream = new FileOutputStream(filename);
         book.write(stream);
         stream.close();
     }
