@@ -7,10 +7,21 @@ package com.deltapackage;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 /**
  *
@@ -18,15 +29,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ParentFrame extends javax.swing.JFrame {
 
-    public void setMessage(String msg){
+    public void setMessage(String msg) {
         messagesTextPane.setText(messagesTextPane.getText() + "\n\n" + msg);
     }
-    
+
     /**
      * Creates new form DeltaFrame
      */
     public ParentFrame() {
-        
+
         initComponents();
         setNormalGrid(valueTable);
         setTablesSize(10);
@@ -417,15 +428,15 @@ public class ParentFrame extends javax.swing.JFrame {
     }
 
     private void fillValues() throws NumberFormatException {
-        
+
         double[][] M1;
-        
+
         if (chkbxRandomValues.isSelected()) {
-            
+
             M1 = FillTableRandomValues(true);
-            
+
         } else if (checkBoxConstants.isSelected()) {
-            
+
             M1 = FillTableRandomValues(false);
 
         } else {
@@ -442,7 +453,7 @@ public class ParentFrame extends javax.swing.JFrame {
             };
 
             M1 = M0;
-            
+
         }
 
         setTableValue(M1);
@@ -497,7 +508,7 @@ public class ParentFrame extends javax.swing.JFrame {
 
         setMessage("It work's!");
         double[][] a = getValuesFromTable();
-        Work1OldStableVersion obj = new Work1OldStableVersion(a,this);
+        Work1OldStableVersion obj = new Work1OldStableVersion(a, this);
 
     }//GEN-LAST:event_btnSolveActionPerformed
 
@@ -537,9 +548,12 @@ public class ParentFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_checkBoxConstantsMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        exportToExcel();
+        try {
+            exportToExcel();
+        } catch (IOException ex) {
+            Logger.getLogger(ParentFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
 
     private double[][] getValuesFromTable() {
 
@@ -605,7 +619,7 @@ public class ParentFrame extends javax.swing.JFrame {
             System.out.println("");
         }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ClearBtn;
@@ -634,8 +648,31 @@ public class ParentFrame extends javax.swing.JFrame {
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
 
-    private void exportToExcel() {
+    private void exportToExcel() throws FileNotFoundException, IOException {
+        String filename = "C:/newExcel.xls";
+        HSSFWorkbook book = new HSSFWorkbook();
+        HSSFSheet sheet = book.createSheet();
         
+        double[][] value = getValuesFromTable();
+        
+        for (int i = 0; i < value.length;i++){
+            
+            HSSFRow rowHead = sheet.createRow((short)i);
+            
+            for (int j = 0; j < value.length; j++) {
+                rowHead.createCell(j).setCellValue(value[i][j]);
+            }
+            
+            HSSFRow row =   sheet.createRow((short)value.length + 2);
+            HSSFCell cell = row.createCell(0);
+            cell.setCellValue(messagesTextPane.getText());
+            
+            
+        }
+        
+        FileOutputStream stream =   new FileOutputStream(filename);
+        book.write(stream);
+        stream.close();
     }
 
 }
