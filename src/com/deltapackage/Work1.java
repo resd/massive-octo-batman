@@ -4,8 +4,6 @@
 
 package com.deltapackage;
 
-import javax.swing.JFrame;
-
 public class Work1 {
 
     // Коэф. для расчетов
