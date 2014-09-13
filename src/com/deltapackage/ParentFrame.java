@@ -1,9 +1,9 @@
-/*
+package com.deltapackage;/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.deltapackage;
+
 
 import common.Work1Main;
 
@@ -19,7 +19,7 @@ import java.util.Random;
 public class ParentFrame extends JFrame {
 
     public void setMessage(String msg) {
-        messagesTextPane.setText(messagesTextPane.getText() + "\n\n" + msg);
+        messagesTextPane.setText(messagesTextPane.getText()+ msg);
     }
 
     /**
@@ -501,9 +501,8 @@ public class ParentFrame extends JFrame {
         String msg = ("\nPath: " + w.getPath() + "\nSum: " + w.getSum(a) +
                 " Time: " + w.getTime());
 
-        w.mainNewMethod();
-        setMessage(msg + "\n---New test method---\nPath: " + w.getPath() + "\nSum: " + w.getSum(a) +
-                " Time: " + w.getTime());
+        //w.mainNewMethod();
+        setMessage(msg);
 
         //Work1OldStableVersion obj = new Work1OldStableVersion(a, this);
 
@@ -583,7 +582,7 @@ public class ParentFrame extends JFrame {
 
         double[][] matrix = new double[tableSize][tableSize];
 
-        if (random == false) {
+        if (!random) {
 
             String value = jSpinner1.getValue().toString();
             for (int i = 0; i < tableSize; i++) {
@@ -598,7 +597,7 @@ public class ParentFrame extends JFrame {
                 for (int j = 0; j < tableSize; j++) {
                     try {
                         Random r = new Random();
-                        matrix[i][j] = r.nextDouble();
+                        matrix[i][j] = r.nextInt(99);
                     } catch (NullPointerException e) {
                         System.out.println(e);
                     }
@@ -666,6 +665,7 @@ public class ParentFrame extends JFrame {
             }
 
             HSSFRow row = sheet.createRow((short) value.length + 2);
+            HSSFCell cell = row.createCell(0);
             HSSFCell cell = row.createCell(0);
             cell.setCellValue(messagesTextPane.getText());
 
