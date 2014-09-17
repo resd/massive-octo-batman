@@ -10,7 +10,12 @@ import common.Work1Main;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+
 
 /**
  *
@@ -19,19 +24,17 @@ import java.util.Random;
 public class ParentFrame extends JFrame {
 
     public void setMessage(String msg) {
-        messagesTextPane.setText(messagesTextPane.getText()+ msg);
+        messagesTextPane.setText(messagesTextPane.getText() + msg);
     }
 
     /**
      * Creates new form DeltaFrame
      */
     public ParentFrame() {
-
         initComponents();
         setNormalGrid(valueTable);
         setTablesSize(10);
         fillValues();
-
     }
 
     private void setNormalGrid(JTable table) {
@@ -48,38 +51,41 @@ public class ParentFrame extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new JScrollPane();
-        valueTable = new JTable();
-        jScrollPane4 = new JScrollPane();
-        matrixColumn1 = new JTable();
-        fillTableWithConstantsCheckBox = new JCheckBox();
-        constantSpinner = new JSpinner();
-        optionsPanel = new JPanel();
-        ClearBtn = new JButton();
-        btnSolve = new JButton();
-        chkbxRandomValues = new JCheckBox();
-        jLabel1 = new JLabel();
-        checkBoxConstants = new JCheckBox();
-        jSpinner1 = new JSpinner();
-        MatrixSizeSpinner = new JSpinner();
-        FillBtn = new JButton();
-        jScrollPane1 = new JScrollPane();
-        messagesTextPane = new JTextPane();
-        jMenuBar1 = new JMenuBar();
-        jMenu1 = new JMenu();
-        jSeparator1 = new JPopupMenu.Separator();
-        exitMenu = new JMenuItem();
-        jMenuItem1 = new JMenuItem();
-        jMenu2 = new JMenu();
-        parametersMenu = new JMenuItem();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        valueTable = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        matrixColumn1 = new javax.swing.JTable();
+        fillTableWithConstantsCheckBox = new javax.swing.JCheckBox();
+        constantSpinner = new javax.swing.JSpinner();
+        optionsPanel = new javax.swing.JPanel();
+        ClearBtn = new javax.swing.JButton();
+        btnSolve = new javax.swing.JButton();
+        chkbxRandomValues = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        checkBoxConstants = new javax.swing.JCheckBox();
+        jSpinner1 = new javax.swing.JSpinner();
+        MatrixSizeSpinner = new javax.swing.JSpinner();
+        FillBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        messagesTextPane = new javax.swing.JTextPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        exitMenu = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        parametersMenu = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //setAlwaysOnTop(true);
-        //setUndecorated(true);
-        setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setUndecorated(true);
+        setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
-        valueTable.setFont(new Font("Tahoma", 0, 12)); // NOI18N
-        valueTable.setModel(new DefaultTableModel(
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        valueTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -87,10 +93,13 @@ public class ParentFrame extends JFrame {
 
             }
         ));
+        valueTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         valueTable.setFillsViewportHeight(true);
-        valueTable.setPreferredSize(new Dimension(7500, 8000));
+        valueTable.setMaximumSize(new java.awt.Dimension(10000, 100000));
         valueTable.setRowHeight(20);
-        valueTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        valueTable.setRowSelectionAllowed(false);
+        valueTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        valueTable.setTableHeader(null);
         valueTable.setUpdateSelectionOnSort(false);
         valueTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -101,8 +110,8 @@ public class ParentFrame extends JFrame {
         valueTable.getAccessibleContext().setAccessibleName("");
         valueTable.getAccessibleContext().setAccessibleDescription("");
 
-        matrixColumn1.setFont(new Font("Tahoma", 0, 12)); // NOI18N
-        matrixColumn1.setModel(new DefaultTableModel(
+        matrixColumn1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        matrixColumn1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -210,7 +219,7 @@ public class ParentFrame extends JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                Integer.class
+                java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -229,7 +238,7 @@ public class ParentFrame extends JFrame {
             }
         });
 
-        constantSpinner.setFont(new Font("Tahoma", 0, 12)); // NOI18N
+        constantSpinner.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         ClearBtn.setText("Очистить");
         ClearBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -245,40 +254,30 @@ public class ParentFrame extends JFrame {
             }
         });
 
-        chkbxRandomValues.setFont(new Font("Dialog", 0, 12)); // NOI18N
+        chkbxRandomValues.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         chkbxRandomValues.setText("Заполнять случайными значениями");
         chkbxRandomValues.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                chkbxRandomValuesMouseClicked(evt);
-            }
-        });
-        chkbxRandomValues.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkbxRandomValuesActionPerformed(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                chkbxRandomValuesMousePressed(evt);
             }
         });
 
-        jLabel1.setFont(new Font("Dialog", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setText("Размерность матрицы");
 
-        checkBoxConstants.setFont(new Font("Tahoma", 0, 12)); // NOI18N
+        checkBoxConstants.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         checkBoxConstants.setText("Заполнять константами");
         checkBoxConstants.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 checkBoxConstantsMouseClicked(evt);
             }
         });
-        checkBoxConstants.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkBoxConstantsActionPerformed(evt);
-            }
-        });
 
-        jSpinner1.setFont(new Font("Tahoma", 0, 12)); // NOI18N
+        jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jSpinner1.setEnabled(false);
 
-        MatrixSizeSpinner.setFont(new Font("Tahoma", 0, 14)); // NOI18N
-        MatrixSizeSpinner.setModel(new SpinnerNumberModel(1, 1, 100, 1));
+        MatrixSizeSpinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
         MatrixSizeSpinner.setToolTipText("");
 
         FillBtn.setText("Заполнить");
@@ -288,44 +287,44 @@ public class ParentFrame extends JFrame {
             }
         });
 
-        GroupLayout optionsPanelLayout = new GroupLayout(optionsPanel);
+        javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
         optionsPanel.setLayout(optionsPanelLayout);
         optionsPanelLayout.setHorizontalGroup(
-            optionsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(optionsPanelLayout.createSequentialGroup()
-                .addGroup(optionsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chkbxRandomValues, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chkbxRandomValues, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(optionsPanelLayout.createSequentialGroup()
                         .addComponent(checkBoxConstants)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(optionsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(MatrixSizeSpinner, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ClearBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSolve, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(FillBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ClearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSolve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(FillBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         optionsPanelLayout.setVerticalGroup(
-            optionsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+            optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(optionsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(MatrixSizeSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addComponent(chkbxRandomValues)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(optionsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkBoxConstants)
-                    .addComponent(jSpinner1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(FillBtn)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSolve)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ClearBtn))
         );
 
@@ -335,7 +334,7 @@ public class ParentFrame extends JFrame {
         jMenu1.setText("Файл");
         jMenu1.add(jSeparator1);
 
-        exitMenu.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        exitMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         exitMenu.setText("Выход");
         exitMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -356,7 +355,7 @@ public class ParentFrame extends JFrame {
 
         jMenu2.setText("Параметры");
 
-        parametersMenu.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_TAB, java.awt.event.InputEvent.CTRL_MASK));
+        parametersMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_TAB, java.awt.event.InputEvent.CTRL_MASK));
         parametersMenu.setText("Настройки");
         parametersMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -369,32 +368,32 @@ public class ParentFrame extends JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 799, Short.MAX_VALUE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(optionsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 799, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(optionsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(optionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(100, 100, 100))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(18, 18, 18)))
-                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -474,10 +473,6 @@ public class ParentFrame extends JFrame {
         model.fireTableDataChanged();
     }
 
-    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
-        FillTableRandomValues(false);
-    }//GEN-LAST:event_ClearBtnActionPerformed
-
     private void setTablesSize(int matrixSize) throws NumberFormatException {
 
         setTableSize(matrixSize, matrixSize, valueTable);
@@ -487,10 +482,25 @@ public class ParentFrame extends JFrame {
     private void setTableSize(int width, int height, JTable table) throws NumberFormatException {
 
         table.setSize(width, height);
+        
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setColumnCount(width);
         model.setRowCount(height);
+        setWhiteColorForDiagonal(width, height, model);
         model.fireTableStructureChanged();
+        resizeColumns();
+        
+        
+    }
+    
+    private void setWhiteColorForDiagonal(int width, int height, DefaultTableModel model){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (i == j){
+                    valueTable.setValueAt("-",i,j);
+                }
+            }
+        }
     }
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
@@ -498,8 +508,8 @@ public class ParentFrame extends JFrame {
         double[][] a = getValuesFromTable();
         Work1Main w = new Work1Main(a);
         w.main();
-        String msg = ("\nPath: " + w.getPath() + "\nSum: " + w.getSum(a) +
-                " Time: " + w.getTime());
+        String msg = ("\nPath: " + w.getPath() + "\nSum: " + w.getSum(a)
+                + " Time: " + w.getTime());
 
         //w.mainNewMethod();
         setMessage(msg);
@@ -508,17 +518,9 @@ public class ParentFrame extends JFrame {
 
     }//GEN-LAST:event_btnSolveActionPerformed
 
-    private void chkbxRandomValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkbxRandomValuesActionPerformed
-        fillTableWithConstantsCheckBox.setSelected(!chkbxRandomValues.isSelected());
-    }//GEN-LAST:event_chkbxRandomValuesActionPerformed
-
     private void fillTableWithConstantsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillTableWithConstantsCheckBoxActionPerformed
-        chkbxRandomValues.setSelected(!fillTableWithConstantsCheckBox.isSelected());
+        chkbxRandomValues.setSelected(false);
     }//GEN-LAST:event_fillTableWithConstantsCheckBoxActionPerformed
-
-    private void checkBoxConstantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxConstantsActionPerformed
-        jSpinner1.setEnabled(checkBoxConstants.isEnabled());
-    }//GEN-LAST:event_checkBoxConstantsActionPerformed
 
     private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
         dispose();
@@ -535,22 +537,39 @@ public class ParentFrame extends JFrame {
         valueTable.setToolTipText(i + " : " + j);
     }//GEN-LAST:event_valueTableMouseMoved
 
-    private void chkbxRandomValuesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chkbxRandomValuesMouseClicked
-        fillTableWithConstantsCheckBox.setSelected(!chkbxRandomValues.isSelected());
-    }//GEN-LAST:event_chkbxRandomValuesMouseClicked
+    private void chkbxRandomValuesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chkbxRandomValuesMousePressed
+        checkBoxConstants.setSelected(false);
+    }//GEN-LAST:event_chkbxRandomValuesMousePressed
 
     private void checkBoxConstantsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBoxConstantsMouseClicked
-        chkbxRandomValues.setSelected(!fillTableWithConstantsCheckBox.isSelected());
+        chkbxRandomValues.setSelected(false);
+        jSpinner1.setEnabled(true);
     }//GEN-LAST:event_checkBoxConstantsMouseClicked
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed/*
-      /*  try {
-            //exportToExcel();
-        } catch (IOException ex) {
-            Logger.getLogger(ParentFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
+        FillTableRandomValues(false);
+    }//GEN-LAST:event_ClearBtnActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
+        /*  try {
+         //exportToExcel();
+         } catch (IOException ex) {
+         Logger.getLogger(ParentFrame.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
+    }
+    
+    private void resizeColumns(){
+        
+        int columnCount         = valueTable.getColumnCount();
+        
+        for ( int i = 0; i < columnCount; i++ ) {
+            
+            valueTable.getColumn(valueTable.getColumnName(i)).setPreferredWidth(80);
+            
+        }
+        
+    }
+    
     private double[][] getValuesFromTable() {
 
         int tableSize = (int) MatrixSizeSpinner.getValue();
@@ -560,19 +579,20 @@ public class ParentFrame extends JFrame {
             for (int j = 0; j < tableSize; j++) {
                 try {
                     Object o = valueTable.getValueAt(i, j);
-                    if (o instanceof Double)
+                    if (o instanceof Double) {
                         matrix[i][j] = (double) valueTable.getValueAt(i, j);
-                    else
+                    } else {
                         matrix[i][j] = Double.parseDouble((String) valueTable.getValueAt(i, j));
+                    }
                 } catch (NullPointerException e) {
                     System.out.println(e);
                 }
 
             }
         }
-        
+
         printMatrix(matrix);
-        
+
         return matrix;
     }
 
@@ -585,22 +605,19 @@ public class ParentFrame extends JFrame {
         if (!random) {
 
             String value = jSpinner1.getValue().toString();
-            for (int i = 0; i < tableSize; i++) {
-                for (int j = 0; j < tableSize; j++) {
-                    matrix[i][j] = Double.valueOf(value);
-                }
+            for (double[] ds : matrix) {
+                Arrays.fill(ds, Double.valueOf(value));
             }
+            
 
         } else {
 
             for (int i = 0; i < tableSize; i++) {
                 for (int j = 0; j < tableSize; j++) {
-                    try {
-                        Random r = new Random();
-                        matrix[i][j] = r.nextInt(99);
-                    } catch (NullPointerException e) {
-                        System.out.println(e);
-                    }
+
+                    Random r = new Random();
+                    matrix[i][j] = r.nextInt(99);
+
                 }
             }
 
@@ -611,7 +628,7 @@ public class ParentFrame extends JFrame {
     }
 
     private void printMatrix(double[][] matrix) {
-        
+
         int size = matrix.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -622,58 +639,57 @@ public class ParentFrame extends JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton ClearBtn;
-    private JButton FillBtn;
-    private JSpinner MatrixSizeSpinner;
-    private JButton btnSolve;
-    private JCheckBox checkBoxConstants;
-    private JCheckBox chkbxRandomValues;
-    private JSpinner constantSpinner;
-    private JMenuItem exitMenu;
-    private JCheckBox fillTableWithConstantsCheckBox;
-    private JLabel jLabel1;
-    private JMenu jMenu1;
-    private JMenu jMenu2;
-    private JMenuBar jMenuBar1;
-    private JMenuItem jMenuItem1;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JScrollPane jScrollPane4;
-    private JPopupMenu.Separator jSeparator1;
-    private JSpinner jSpinner1;
-    private JTable matrixColumn1;
-    private JTextPane messagesTextPane;
-    private JPanel optionsPanel;
-    private JMenuItem parametersMenu;
-    private JTable valueTable;
+    private javax.swing.JButton ClearBtn;
+    private javax.swing.JButton FillBtn;
+    private javax.swing.JSpinner MatrixSizeSpinner;
+    private javax.swing.JButton btnSolve;
+    private javax.swing.JCheckBox checkBoxConstants;
+    private javax.swing.JCheckBox chkbxRandomValues;
+    private javax.swing.JSpinner constantSpinner;
+    private javax.swing.JMenuItem exitMenu;
+    private javax.swing.JCheckBox fillTableWithConstantsCheckBox;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JTable matrixColumn1;
+    private javax.swing.JTextPane messagesTextPane;
+    private javax.swing.JPanel optionsPanel;
+    private javax.swing.JMenuItem parametersMenu;
+    private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
 
     /*private void exportToExcel() throws FileNotFoundException, IOException {
 
-        String filename = "C:/newExcel.xls";
-        HSSFWorkbook book = new HSSFWorkbook();
-        HSSFSheet sheet = book.createSheet();
+     String filename = "C:/newExcel.xls";
+     HSSFWorkbook book = new HSSFWorkbook();
+     HSSFSheet sheet = book.createSheet();
 
-        double[][] value = getValuesFromTable();
+     double[][] value = getValuesFromTable();
 
-        for (int i = 0; i < value.length; i++) {
+     for (int i = 0; i < value.length; i++) {
 
-            HSSFRow rowHead = sheet.createRow((short) i);
+     HSSFRow rowHead = sheet.createRow((short) i);
 
-            for (int j = 0; j < value.length; j++) {
-                rowHead.createCell(j).setCellValue(value[i][j]);
-            }
+     for (int j = 0; j < value.length; j++) {
+     rowHead.createCell(j).setCellValue(value[i][j]);
+     }
 
-            HSSFRow row = sheet.createRow((short) value.length + 2);
-            HSSFCell cell = row.createCell(0);
-            HSSFCell cell = row.createCell(0);
-            cell.setCellValue(messagesTextPane.getText());
+     HSSFRow row = sheet.createRow((short) value.length + 2);
+     HSSFCell cell = row.createCell(0);
+     HSSFCell cell = row.createCell(0);
+     cell.setCellValue(messagesTextPane.getText());
 
-        }
+     }
 
-        FileOutputStream stream = new FileOutputStream(filename);
-        book.write(stream);
-        stream.close();
-    }*/
-
+     FileOutputStream stream = new FileOutputStream(filename);
+     book.write(stream);
+     stream.close();
+     }*/
 }
