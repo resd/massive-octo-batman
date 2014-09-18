@@ -458,8 +458,11 @@ public class ParentFrame extends JFrame {
 
         for (int i = 0; i < M0.length; i++) {
             for (int j = 0; j < M0[0].length; j++) {
-                //главная таблица
-                model.setValueAt(M0[i][j], i, j);
+                if (i == j) {
+                    model.setValueAt("-", i, j);
+                } else
+                    //главная таблица
+                    model.setValueAt(M0[i][j], i, j);
                 //для матрицы столбца
                 sum = sum + M0[i][j];
                 sumRow[j] = sumRow[j] + M0[i][j];
@@ -580,6 +583,8 @@ public class ParentFrame extends JFrame {
                     Object o = valueTable.getValueAt(i, j);
                     if (o instanceof Double) {
                         matrix[i][j] = (double) valueTable.getValueAt(i, j);
+                    } else if (valueTable.getValueAt(i, j).equals("-")) {
+                        matrix[i][j] = 0;
                     } else {
                         matrix[i][j] = Double.parseDouble((String) valueTable.getValueAt(i, j));
                     }
