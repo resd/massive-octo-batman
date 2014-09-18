@@ -26,12 +26,22 @@ import java.util.Arrays;
 public class Work1OldStableVersion {
     // ������� ������
     double[][] M0 = {
-            {0, 0, 83, 9, 30, 6, 50},
+            {0, 222, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
             {29, 1, 0, 19, 0, 12, 5},
-            {32, 83, 66, 0, 49, 0, 80},
+            {32, 83, 66, 0, 49, 13, 80},
             {3, 21, 56, 7, 0, 0, 28},
-            {0, 85, 8, 42, 89, 0, 0},
+            {0, 85, 8, 42, 89, 0, 120},//120
+            {18, 0, 0, 0, 58, 13, 0}
+    };
+
+    double[][] M01 = {
+            {0, 222, 83, 9, 30, 6, 50},
+            {0, 0, 66, 37, 17, 12, 26},
+            {29, 1, 0, 19, 0, 12, 5},
+            {32, 83, 66, 0, 49, 13, 80},
+            {3, 21, 56, 7, 0, 0, 28},
+            {0, 85, 8, 42, 89, 0, 120},//120
             {18, 0, 0, 0, 58, 13, 0}
     };
 
@@ -40,44 +50,14 @@ public class Work1OldStableVersion {
     }
 
     // ������ �������� �������
-     static int originalsize;
+    static int originalsize;
     // �������������� ����
-     static int[][] p;
+    static int[][] p;
     // ����� ��� ����������� �������� ����
-     static int[] mi;
-     static int[] mj;
+    static int[] mi;
+    static int[] mj;
 
-    public void main(double[][] a) {
-        double[][] M;
-        Work1OldStableVersion w = new Work1OldStableVersion();
-        M = Arrays.copyOf(a, a.length);
-
-        double[][] DD;
-        int d[];
-        originalsize = a.length;
-        p = new int[originalsize][2];
-        mi = new int[originalsize];
-        mj = new int[originalsize];
-
-        fillP();
-        w.create();
-        int n = M.length - 2;//2
-        for (int i = 0; i < n; i++) {
-            normalize(M);
-            DD = solve(M);
-            /*p("M");
-            out(w.M);
-            p("DD");
-            out(DD);*/
-
-            d = getD(DD, i);
-            w.getPath(d, i, M);
-            //p(Arrays.deepToString(p));
-            //p(d[0] +", " +  d[1]);
-            M = doM0(M, d[0], d[1]);
-        }
-        computeLastElement();
-    }
+    static int[] beforeP = new int[2];
 
     public static void main(String[] args) {
         double[][] M;
@@ -117,7 +97,7 @@ public class Work1OldStableVersion {
         Work1OldStableVersion w2 = new Work1OldStableVersion();
         int Sum = 0;
         for (int k = 0; k < originalsize; k++) {
-            Sum = (int)(Sum + w2.M0[p[k][0]][p[k][1]]);
+            Sum = (int) (Sum + w2.M0[p[k][0]][p[k][1]]);
         }
         p(Sum);
     }
@@ -136,13 +116,16 @@ public class Work1OldStableVersion {
         }
     }
 
-    public static int[] getD(double[][] DD, int i){
+    public static int[] getD(double[][] DD, int i) {
         int[] d;
         /*p("DD");
         out(DD);*/
-        d = max(DD);
-        //p("(" + (d[0] +1)  + " " + (d[1] +1) + ")");
-        if (i != 0){
+        //(7-2) (3-7) (6-3) (4-6) (1-4) (2-5) (5-1)
+        if (i == 0) {
+            d = max(DD);
+        } else {
+            d = maxNo0(DD, beforeP[0], beforeP[1]);//maxNo0(DD);
+            p("(" + (d[0] + 1) + " " + (d[1] + 1) + ")");
             if (!checkMax(d[0], d[1])) {
                 /*p("M0");
                 out(w.M);
@@ -156,6 +139,7 @@ public class Work1OldStableVersion {
                 p("AFTER CHECK: " + d[0] + ", " + d[1]);
             }
         }
+
         //p(checkMax(d[0], d[1]));
         return d;
     }
@@ -190,13 +174,43 @@ public class Work1OldStableVersion {
         return new int[]{di, dj};
     }
 
+    private static int[] maxNo0(double[][] DD, int ni, int nj) {
+
+        int di = 0, dj = 0;
+
+        double maxValue1 = Double.MIN_VALUE;
+        double maxValue2 = Double.MIN_VALUE;
+
+        try {
+            for (int i = 0; i < DD.length; i++) {
+                if (DD[i][nj] != 0 && DD[i][nj] > maxValue1) {
+                    maxValue1 = DD[i][nj];
+                    di = i;
+                }
+            }
+        } catch (Exception e) {
+            int q = 3;
+            q = q + 3;
+        }
+
+
+        for (int j = 0; j < DD.length; j++) {
+            if (DD[ni][j] != 0 && DD[ni][j] > maxValue2) {
+                maxValue2 = DD[ni][j];
+                dj = j;
+            }
+        }
+
+        return (maxValue1 > maxValue2) ? new int[]{di, nj} : new int[]{ni, dj};
+    }
+
     private static int[] max(double[][] DD, int ni, int nj) {
         // ������� ������������ ������� DD
         double max = Double.MIN_VALUE;
         /*
          */
         int di = 0, dj = 0;
-        boolean cont = false;
+
         for (int i = 0; i < DD.length; i++) {
             for (int j = 0; j < DD.length; j++) {
                 if (DD[i][j] != 0 && DD[i][j] > max && !(i == ni && j == nj)) {
@@ -216,10 +230,22 @@ public class Work1OldStableVersion {
     void getPath(int[] d, int i, double[][] m) {
         int x = d[0];
         int y = d[1];
-        p[i][0] = mi[x];
-        p[i][1] = mj[y];
 
-        mi[x] = mi[y];
+//(6-7) (4-6) (5-4) (7-3) (3-2) (2-1) (1-5)
+        p[i][0] = mi[x];//7(6)
+        p[i][1] = mj[y];//2(1)
+        if (x < y) {
+            beforeP[1] = x;//mi[x]?
+        } else
+            beforeP[1] = x - 1;//mi[x]?
+
+        mi[x] = mi[y];//2
+
+        if (x < y)
+            beforeP[0] = x;//mj[y]
+            else
+        beforeP[0] = x - 1;//mj[y]
+
         mi = remove(mi, y);
         mj = remove(mj, y);
         //p(Arrays.deepToString(p));
