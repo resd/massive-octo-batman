@@ -10,9 +10,22 @@ import common.Work1Main;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Random;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -74,9 +87,7 @@ public class ParentFrame extends JFrame {
         parametersMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        //setAlwaysOnTop(true);
-        //setUndecorated(true);
-        setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
+        setAlwaysOnTop(true);
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -340,7 +351,13 @@ public class ParentFrame extends JFrame {
         });
         jMenu1.add(exitMenu);
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Сохранить");
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem1MouseClicked(evt);
+            }
+        });
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -479,22 +496,21 @@ public class ParentFrame extends JFrame {
     private void setTableSize(int width, int height, JTable table) throws NumberFormatException {
 
         table.setSize(width, height);
-        
+
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setColumnCount(width);
         model.setRowCount(height);
         setWhiteColorForDiagonal(width, height, model);
         model.fireTableStructureChanged();
         resizeColumns();
-        
-        
+
     }
-    
-    private void setWhiteColorForDiagonal(int width, int height, DefaultTableModel model){
+
+    private void setWhiteColorForDiagonal(int width, int height, DefaultTableModel model) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (i == j){
-                    valueTable.setValueAt("-",i,j);
+                if (i == j) {
+                    valueTable.setValueAt("-", i, j);
                 }
             }
         }
@@ -549,26 +565,26 @@ public class ParentFrame extends JFrame {
         FillTableRandomValues(false);
     }//GEN-LAST:event_ClearBtnActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
-        /*  try {
-         //exportToExcel();
-         } catch (IOException ex) {
-         Logger.getLogger(ParentFrame.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
-    }
-    
-    private void resizeColumns(){
-        
-        int columnCount         = valueTable.getColumnCount();
-        
-        for ( int i = 0; i < columnCount; i++ ) {
-            
+    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
+        saveInformationFromFormToTextFile();
+    }//GEN-LAST:event_jMenuItem1MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        saveInformationFromFormToTextFile();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void resizeColumns() {
+
+        int columnCount = valueTable.getColumnCount();
+
+        for (int i = 0; i < columnCount; i++) {
+
             valueTable.getColumn(valueTable.getColumnName(i)).setPreferredWidth(80);
-            
+
         }
-        
+
     }
-    
+
     private double[][] getValuesFromTable() {
 
         int tableSize = (int) MatrixSizeSpinner.getValue();
@@ -607,7 +623,6 @@ public class ParentFrame extends JFrame {
             for (double[] ds : matrix) {
                 Arrays.fill(ds, Double.valueOf(value));
             }
-            
 
         } else {
 
@@ -664,31 +679,78 @@ public class ParentFrame extends JFrame {
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
 
-    /*private void exportToExcel() throws FileNotFoundException, IOException {
+    private void saveInformationFromFormToTextFile() {
 
-     String filename = "C:/newExcel.xls";
-     HSSFWorkbook book = new HSSFWorkbook();
-     HSSFSheet sheet = book.createSheet();
+        JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter fil = new FileNameExtensionFilter("Текстовые файлы (.txt)", "txt");
+        fc.setFileFilter(fil);
 
-     double[][] value = getValuesFromTable();
+        int res = fc.showSaveDialog(this);
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fc.setDialogType(JFileChooser.FILES_AND_DIRECTORIES);
+        File path = fc.getSelectedFile();
 
-     for (int i = 0; i < value.length; i++) {
+        try {
 
-     HSSFRow rowHead = sheet.createRow((short) i);
+            path.createNewFile();
 
-     for (int j = 0; j < value.length; j++) {
-     rowHead.createCell(j).setCellValue(value[i][j]);
-     }
+        } catch (IOException ex) {
 
-     HSSFRow row = sheet.createRow((short) value.length + 2);
-     HSSFCell cell = row.createCell(0);
-     HSSFCell cell = row.createCell(0);
-     cell.setCellValue(messagesTextPane.getText());
+            System.out.println(ex);
 
-     }
+        }
 
-     FileOutputStream stream = new FileOutputStream(filename);
-     book.write(stream);
-     stream.close();
-     }*/
+        System.out.println("you choose : " + path.getName());
+
+        
+        
+        Charset charset = Charset.forName("UTF-8");
+        StringBuilder builder = new StringBuilder();
+        int MatrixSize = Integer.valueOf(MatrixSizeSpinner.getValue().toString());
+
+        java.util.Date date = new java.util.Date(System.currentTimeMillis());
+        String delimeter    = "---------------------";
+        
+        builder.append(System.lineSeparator());
+        builder.append(delimeter);
+        builder.append(System.lineSeparator());
+        builder.append(date.toString());
+        builder.append(System.lineSeparator());
+        builder.append(delimeter);
+
+        for (int i = 0; i < MatrixSize; i++) {
+
+            String s = "";
+
+            for (int j = 0; j < MatrixSize; j++) {
+                s = s + " " + valueTable.getValueAt(i, j);
+            }
+
+            builder.append(System.lineSeparator());
+            builder.append(s);
+
+        }
+
+        builder.append(System.lineSeparator());
+        builder.append(delimeter);
+        builder.append(System.lineSeparator());
+        
+        builder.append(messagesTextPane.getText());
+
+        try (FileWriter fw = new FileWriter(fc.getSelectedFile()+".txt")){
+
+            if (JFileChooser.APPROVE_OPTION == res){
+                
+                fw.write(builder.toString());
+                JOptionPane.showMessageDialog(this, "OK!");
+            }
+            
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(this, "Ошибка! Нет такого файла!");
+            
+        }
+
+    }
+
 }
