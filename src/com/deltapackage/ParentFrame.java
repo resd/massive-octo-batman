@@ -12,9 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Random;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 
 
 /**
@@ -77,8 +74,8 @@ public class ParentFrame extends JFrame {
         parametersMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
-        setUndecorated(true);
+        //setAlwaysOnTop(true);
+        //setUndecorated(true);
         setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -503,10 +500,12 @@ public class ParentFrame extends JFrame {
         }
     }
 
+    Work1Main w = new Work1Main();
+
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
         double[][] a = getValuesFromTable();
-        Work1Main w = new Work1Main(a);
+        w.setM0(a);
         w.main();
         String msg = ("\nPath: " + w.getPath() + "\nSum: " + w.getSum(a)
                 + " Time: " + w.getTime());

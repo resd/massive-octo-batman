@@ -7,15 +7,11 @@ import java.util.Arrays;
  */
 public class Work1Main {
 
+    public Work1Main() {
+    }
+
     public Work1Main(double[][] a) {
-
-        double[][] clone = a.clone();
-
-        for (int i = 0; i < a.length; i++) {
-            clone[i] = a[i].clone();
-        }
-        this.a = clone;
-        originalsize = a.length;
+        setM0(a);
     }
 
     private int originalsize;
@@ -84,4 +80,13 @@ public class Work1Main {
         return System.currentTimeMillis() - sysTime;
     }
 
+    public void setM0(double[][] a) {
+        double[][] clone = a.clone();
+
+        for (int i = 0; i < a.length; i++) {
+            clone[i] = a[i].clone();
+        }
+        this.a = clone;
+        originalsize = a.length;
+    }
 }
