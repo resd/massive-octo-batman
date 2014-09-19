@@ -178,6 +178,12 @@ public class Work1OldStableVersion {
 
         int di = 0, dj = 0;
 
+        if (ni == -1)
+            ni = 0;
+        if (nj == -1) {
+            nj = 0;
+        }
+
         double maxValue1 = Double.MIN_VALUE;
         double maxValue2 = Double.MIN_VALUE;
 
@@ -189,6 +195,7 @@ public class Work1OldStableVersion {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             int q = 3;
             q = q + 3;
         }
@@ -210,6 +217,9 @@ public class Work1OldStableVersion {
         /*
          */
         int di = 0, dj = 0;
+/*
+Пройтись дэбагерром и посмотреть значения beforeP и понять почему выбивает эксепшен.
+ */
 
         for (int i = 0; i < DD.length; i++) {
             for (int j = 0; j < DD.length; j++) {
@@ -236,15 +246,20 @@ public class Work1OldStableVersion {
         p[i][1] = mj[y];//2(1)
         if (x < y) {
             beforeP[1] = x;//mi[x]?
-        } else
+        }
+        //else if (x == 0)
+        //    beforeP[1] = x;//mi[x]?
+        else
             beforeP[1] = x - 1;//mi[x]?
 
         mi[x] = mi[y];//2
 
         if (x < y)
             beforeP[0] = x;//mj[y]
-            else
-        beforeP[0] = x - 1;//mj[y]
+        //else if (x != 0)
+        //    beforeP[1] = x;//mi[x]?
+        else
+            beforeP[0] = x - 1;//mj[y]
 
         mi = remove(mi, y);
         mj = remove(mj, y);
