@@ -274,7 +274,7 @@ public class ParentFrame extends JFrame {
         jSpinner1.setEnabled(false);
 
         MatrixSizeSpinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10000, 1));
         MatrixSizeSpinner.setToolTipText("");
 
         FillBtn.setText("Заполнить");
