@@ -5,6 +5,7 @@ package com.deltapackage;/*
  */
 
 
+import com.sun.java.accessibility.util.EventID;
 import common.Work1Main;
 
 import javax.swing.*;
@@ -14,11 +15,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
+import java.nio.file.Path;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -26,6 +29,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import static javax.xml.bind.DatatypeConverter.parseString;
 
 /**
  *
@@ -68,7 +72,6 @@ public class ParentFrame extends JFrame {
         fillTableWithConstantsCheckBox = new javax.swing.JCheckBox();
         constantSpinner = new javax.swing.JSpinner();
         optionsPanel = new javax.swing.JPanel();
-        ClearBtn = new javax.swing.JButton();
         btnSolve = new javax.swing.JButton();
         chkbxRandomValues = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
@@ -83,6 +86,7 @@ public class ParentFrame extends JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenu = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         parametersMenu = new javax.swing.JMenuItem();
 
@@ -248,13 +252,6 @@ public class ParentFrame extends JFrame {
 
         constantSpinner.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        ClearBtn.setText("Очистить");
-        ClearBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearBtnActionPerformed(evt);
-            }
-        });
-
         btnSolve.setText("Вычислить");
         btnSolve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -285,7 +282,7 @@ public class ParentFrame extends JFrame {
         jSpinner1.setEnabled(false);
 
         MatrixSizeSpinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10000, 1));
+        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
         MatrixSizeSpinner.setToolTipText("");
 
         FillBtn.setText("Заполнить");
@@ -310,7 +307,6 @@ public class ParentFrame extends JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ClearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSolve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(FillBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -332,8 +328,7 @@ public class ParentFrame extends JFrame {
                 .addComponent(FillBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSolve)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ClearBtn))
+                .addGap(0, 0, 0))
         );
 
         messagesTextPane.setEditable(false);
@@ -364,6 +359,15 @@ public class ParentFrame extends JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Загрузить");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -477,9 +481,10 @@ public class ParentFrame extends JFrame {
             for (int j = 0; j < M0[0].length; j++) {
                 if (i == j) {
                     model.setValueAt("-", i, j);
-                } else
-                    //главная таблица
+                } else //главная таблица
+                {
                     model.setValueAt(M0[i][j], i, j);
+                }
                 //для матрицы столбца
                 sum = sum + M0[i][j];
                 sumRow[j] = sumRow[j] + M0[i][j];
@@ -564,10 +569,6 @@ public class ParentFrame extends JFrame {
         jSpinner1.setEnabled(true);
     }//GEN-LAST:event_checkBoxConstantsMouseClicked
 
-    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
-        FillTableRandomValues(false);
-    }//GEN-LAST:event_ClearBtnActionPerformed
-
     private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
         saveInformationFromFormToTextFile();
     }//GEN-LAST:event_jMenuItem1MouseClicked
@@ -575,6 +576,10 @@ public class ParentFrame extends JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         saveInformationFromFormToTextFile();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        loadDataFromFile();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void resizeColumns() {
 
@@ -626,7 +631,9 @@ public class ParentFrame extends JFrame {
 
             String value = jSpinner1.getValue().toString();
             for (double[] ds : matrix) {
+
                 Arrays.fill(ds, Double.valueOf(value));
+
             }
 
         } else {
@@ -658,7 +665,6 @@ public class ParentFrame extends JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton ClearBtn;
     private javax.swing.JButton FillBtn;
     private javax.swing.JSpinner MatrixSizeSpinner;
     private javax.swing.JButton btnSolve;
@@ -672,6 +678,7 @@ public class ParentFrame extends JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
@@ -683,6 +690,7 @@ public class ParentFrame extends JFrame {
     private javax.swing.JMenuItem parametersMenu;
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
+String delimeter = "---------------------";
 
     private void saveInformationFromFormToTextFile() {
 
@@ -695,27 +703,12 @@ public class ParentFrame extends JFrame {
         fc.setDialogType(JFileChooser.FILES_AND_DIRECTORIES);
         File path = fc.getSelectedFile();
 
-        try {
-
-            path.createNewFile();
-
-        } catch (IOException ex) {
-
-            System.out.println(ex);
-
-        }
-
-        System.out.println("you choose : " + path.getName());
-
-        
-        
         Charset charset = Charset.forName("UTF-8");
         StringBuilder builder = new StringBuilder();
         int MatrixSize = Integer.valueOf(MatrixSizeSpinner.getValue().toString());
 
         java.util.Date date = new java.util.Date(System.currentTimeMillis());
-        String delimeter    = "---------------------";
-        
+
         builder.append(System.lineSeparator());
         builder.append(delimeter);
         builder.append(System.lineSeparator());
@@ -739,23 +732,110 @@ public class ParentFrame extends JFrame {
         builder.append(System.lineSeparator());
         builder.append(delimeter);
         builder.append(System.lineSeparator());
-        
+
         builder.append(messagesTextPane.getText());
 
-        try (FileWriter fw = new FileWriter(fc.getSelectedFile()+".txt")){
+        try (FileWriter fw = new FileWriter(fc.getSelectedFile() + ".txt")) {
 
-            if (JFileChooser.APPROVE_OPTION == res){
-                
+            if (JFileChooser.APPROVE_OPTION == res) {
+
                 fw.write(builder.toString());
                 JOptionPane.showMessageDialog(this, "OK!");
             }
-            
+
         } catch (Exception ex) {
 
             JOptionPane.showMessageDialog(this, "Ошибка! Нет такого файла!");
-            
+
         }
 
     }
 
+    private void loadDataFromFile() {
+
+        JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter fil = new FileNameExtensionFilter("Текстовые файлы (.txt)", "txt");
+        fc.setFileFilter(fil);
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
+
+        int res = fc.showOpenDialog(this);
+        List newLines = new List();
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+
+            try {
+                
+                java.util.List<String> fileContent = Files.readAllLines(fc.getSelectedFile().toPath(), Charset.forName("UTF-8"));
+
+                int delimeterCounter = 0;
+
+                for (String fileContent1 : fileContent) {
+
+                    System.out.println(fileContent1);
+
+                    if (fileContent1.equals(delimeter)) {
+                        delimeterCounter++;
+                        continue;
+                    }
+
+                    if (delimeterCounter == 2) {
+                        newLines.add(fileContent1);
+                    }
+
+                    if (delimeterCounter > 2) {
+                        break;
+                    }
+                }
+
+                parseStringFromFile(newLines);
+
+            } catch (Exception ex) {
+                System.out.println(fc.getSelectedFile());
+                JOptionPane.showMessageDialog(this, "ERROR!!!");
+                System.out.println(ex);
+            }
+
+        }
+
+    }
+
+    private void parseStringFromFile(List fileContent1) {
+
+        String[] lines = fileContent1.getItems();
+
+        int i = 0;
+        int j = 0;
+        double[][] newValues = new double[lines.length][lines.length];
+
+        for (String line : lines) {
+
+            String values[] = line.split(" ");
+            for (String value : values) {
+
+                
+
+                if (value.equals(" ") || value.equals("")){
+                    continue;
+                }
+                
+                double newValue = 0;
+                
+                if (value.equals("-")) {
+                    newValue = 0;
+                } else {
+                    newValue = Double.parseDouble(value);
+                }
+
+                newValues[i][j] = newValue;
+                j++;
+            }
+            j   =   0;
+            i++;
+        }
+
+        //передать newValues в таблицу.......
+        setTableValue(newValues);
+
+    }
 }
