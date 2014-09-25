@@ -26,6 +26,12 @@ public class Work1OldStableVersion {
             {18, 0, 0, 0, 58, 13, 0}
     };
 
+    double[][] M1;
+    double[][] M2;
+    double[][] D1;
+    double[][] D2;
+    double[][] DD;
+
     static int originalsize;
     static int[][] p;
     static int[] mi;
@@ -98,7 +104,7 @@ public class Work1OldStableVersion {
             }
         }
         for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M.length; j++) {
+            for (int j = 0; j < M.length; j++) {//todo sokratit' na n raz
                 if (i != j) {
                     M[j][i] -= minArrI[j];
                 }
@@ -112,7 +118,7 @@ public class Work1OldStableVersion {
             }
         }
         for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M.length; j++) {
+            for (int j = 0; j < M.length; j++) {//todo sokratit' na n raz
                 if (i != j) {
                     M[i][j] -= minArrJ[j];
                 }
@@ -231,11 +237,11 @@ public class Work1OldStableVersion {
 
         int di = 0, dj = 0;
 
-        if (ni == -1)
+        /*if (ni == -1)
             ni = 0;
         if (nj == -1) {
             nj = 0;
-        }
+        }*/
 
         double maxValue1 = Double.MIN_VALUE;
         double maxValue2 = Double.MIN_VALUE;
@@ -300,7 +306,7 @@ public class Work1OldStableVersion {
 //(6-7) (4-6) (5-4) (7-3) (3-2) (2-1) (1-5)
         p[i][0] = mi[x];//7(6)
         p[i][1] = mj[y];//2(1)
-        if (x < y) {
+        if (x <= y) {
             beforeP[1] = x;//mi[x]?
         }
         //else if (x == 0)
@@ -310,7 +316,7 @@ public class Work1OldStableVersion {
 
         mi[x] = mi[y];//2
 
-        if (x < y)
+        if (x <= y)
             beforeP[0] = x;//mj[y]
             //else if (x != 0)
             //    beforeP[1] = x;//mi[x]?
@@ -332,9 +338,9 @@ public class Work1OldStableVersion {
     public static double[][] doM0(double[][] M0, int di, int dj) {
         // Change rows
         M0 = changeJI(M0, di, dj);
-        double[][] M1;
 
-        // Create new matrix
+        // Create new matrix without row and column
+        double[][] M1;
         M1 = setElementsM0toM(M0, dj, dj);//di
 
         for (int i = 0; i < M1.length; i++) {
@@ -381,7 +387,7 @@ public class Work1OldStableVersion {
 
     private static double[][] setElementsM0toM(double[][] M0, int dj, int dj2) {
         double[][] M1 = new double[M0.length - 1][M0.length - 1];
-
+        out(M0);
         int ki = 0;
         int kj;
         for (int i = 0; i < M0.length; i++) {
@@ -400,7 +406,18 @@ public class Work1OldStableVersion {
         }
         return M1;
     }
-
+/*
+int length = M0.length - 1;
+        double[][] M1 = new double[length][length];
+        for (int i = 0; i < dj; i++) {
+            System.arraycopy(M0[i], 0, M1[i], 0, dj);
+            System.arraycopy(M0[i], dj + 1, M1[i], dj, length - dj);
+        }
+        for (int i = dj + 1; i < length; i++) {
+            System.arraycopy(M0[i], 0, M1[i - 1], 0, dj);
+            System.arraycopy(M0[i], dj + 1, M1[i - 1], dj, length - dj);
+        }
+ */
     private static double[][] doVuch(double[][] M1, int coi, boolean minusi, boolean minusj) {
         double min = Double.MAX_VALUE;
 
@@ -450,8 +467,89 @@ public class Work1OldStableVersion {
         return p;
     }
 
+    public double[][] getM1() {
+        return M1;
+    }
+
+    public double[][] getM2() {
+        return M2;
+    }
+
+    public double[][] getD1() {
+        return D1;
+    }
+
+    public double[][] getD2() {
+        return D2;
+    }
+
+    public double[][] getDD() {
+        return DD;
+    }
+
     private static void p(Object s) {
         System.out.println(s + "");
+    }
+
+    private static void out(double[][] M) {
+        if (M == null) {
+            return;
+        }
+        for (int i = 0; i < M.length; i++) {
+            for (int j = 0; j < M.length; j++) {
+                if (i == j) {
+                    System.out.print("0" + " ");
+                } else {
+                    System.out.print(round(M[i][j]) + " ");
+                    if (j == (M.length - 1)) {
+                        System.out.println("");
+                    }
+                }
+            }
+        }
+        System.out.println("");
+    }
+
+    private static void out(int[][] XXX) {
+        if (XXX == null) {
+            return;
+        }
+        for (int i = 0; i < XXX.length; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (j == 0)
+                    System.out.print("(" + (XXX[i][j] + 1) + " ");
+                else {
+                    System.out.println("" + (XXX[i][j] + 1) + ")");
+                }
+            }
+        }
+        System.out.println("");
+    }
+
+    private static double round(double a) {
+        if (a == 0)
+            return 0;
+        double b;
+        String s = String.valueOf(a);
+        char[] ch;
+        int t = 0;
+        ch = s.toCharArray();
+        for (int i = 0; i < s.length(); i++) {
+            if (ch[i] == '.') {
+                t = i;
+                break;
+            }
+        }
+        int t1 = 0;
+        String s1 = s.substring(0, t);
+        t++;
+        t1 = (s.length() - t) < 5 ? s.length() : (t + 5);
+        String s2 = s.substring(t, t1);
+        //System.out.println(s1 + "s1");
+        //System.out.println(s2 + "s2");
+        s = s1 + '.' + s2;
+        b = Double.valueOf(s);
+        return b;
     }
 
 }
