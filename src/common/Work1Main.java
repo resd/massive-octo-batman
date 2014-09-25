@@ -48,7 +48,7 @@ public class Work1Main {
             out(DD);*/
 
             d = w.getD(DD, i);
-            w.getPath(d, i, M);
+            w.getPath(d, i);
             //p(Arrays.deepToString(p));
             //p(a[0] +", " +  a[1]);
             M = w.doM0(M, d[0], d[1]);
@@ -89,4 +89,26 @@ public class Work1Main {
         this.a = clone;
         originalsize = a.length;
     }
+
+    /*
+    int length = M0.length - 1;
+        double[][] M1 = new double[length][length];
+        System.arraycopy(mi, 0, tmp, 0, y);
+        System.arraycopy(mi, y + 1, tmp, y, mi.length - y - 1);
+
+        if (dj > dj2) {
+            for (int i = 0; i < length; i++) {
+                if (i == dj || i == dj2) continue;
+                System.arraycopy(M0[i], 0, M1[i], 0, dj2);
+
+            }
+            for (int i = dj2 + 1; i < dj; i++) {
+                System.arraycopy(M0[i], 0, M1[i], 0, dj2);
+            }
+        } else {
+
+        }
+
+        return M1;
+     */
 }
