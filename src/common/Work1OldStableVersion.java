@@ -30,11 +30,13 @@ public class Work1OldStableVersion {
             {18, 0, 0, 0, 58, 13, 0}
     };
 
-    double[][] M1;
-    double[][] M2;
-    double[][] D1;
-    double[][] D2;
-    double[][] DD;
+    static double[][][] M0ch;
+    static double[][][] M1;
+    static double[][][] M2;
+    static double[][][] D1;
+    static double[][][] D2;
+    static double[][][] DD;
+    static int count;
 
     static int originalsize;
     static int[][] p;
@@ -68,6 +70,9 @@ public class Work1OldStableVersion {
         computeLastElement();
         StringBuffer str = new StringBuffer("");
         for (int i = 0; i < originalsize; i++) {
+            if (p[i][0] == p[i][1]) {
+                p("\nWEQRQWERASDFXCVXBHKLFDSKGSDKFGKDSGDSGDSG\n");
+            }
             str.append("(").append(p[i][0] + 1).append("-").append(p[i][1] + 1).append(") ");
         }
         p(str);
@@ -92,6 +97,14 @@ public class Work1OldStableVersion {
             mi[i] = i;
             mj[i] = i;
         }
+
+        M0ch = new double[originalsize - 2][][];
+        M1 = new double[originalsize - 2][][];
+        M2 = new double[originalsize - 2][][];
+        D1 = new double[originalsize - 2][][];
+        D2 = new double[originalsize - 2][][];
+        DD = new double[originalsize - 2][][];
+        count = 0;
     }
 
     public static double[][] normalize(double[][] M) {
@@ -109,7 +122,7 @@ public class Work1OldStableVersion {
             }
         }
         for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M.length; j++) {//todo sokratit' na n raz
+            for (int j = 0; j < M.length; j++) {//todo sokratit' v n raz
                 if (i != j) {
                     M[j][i] -= minArrI[j];
                 }
@@ -123,7 +136,7 @@ public class Work1OldStableVersion {
             }
         }
         for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M.length; j++) {//todo sokratit' na n raz
+            for (int j = 0; j < M.length; j++) {//todo sokratit' v n raz
                 if (i != j) {
                     M[i][j] -= minArrJ[j];
                 }
@@ -133,17 +146,35 @@ public class Work1OldStableVersion {
     }
 
     public static double[][] solve(double[][] M0) {
-        double[][] M1;
-        double[][] M2;
-        double[][] D1;
-        double[][] D2;
-        double[][] DD;
-        M1 = doMfromM0(M0);
-        M2 = doMfromM0(M1);
-        D1 = doDfromM(M0, M1);
-        D2 = doDfromM(M1, M2);
-        DD = doDDfromD(M0, D1, D2);
-        return DD;
+        double[][] M1s;
+        double[][] M2s;
+        double[][] D1s;
+        double[][] D2s;
+        double[][] DDs;
+        M1s = doMfromM0(M0);
+        M2s = doMfromM0(M1s);
+        D1s = doDfromM(M0, M1s);
+        D2s = doDfromM(M1s, M2s);
+        DDs = doDDfromD(M0, D1s, D2s);
+
+        M0ch[count] = cloneMatrix(M0);
+        M1[count] = cloneMatrix(M1s);
+        M1[count] = cloneMatrix(M1s);
+        M2[count] = cloneMatrix(M2s);
+        D1[count] = cloneMatrix(D1s);
+        D2[count] = cloneMatrix(D2s);
+        DD[count] = cloneMatrix(DDs);
+        count++;
+        return DDs;
+    }
+
+    private static double[][] cloneMatrix(double[][] a) {
+        double[][] clone = a.clone();
+
+        for (int i = 0; i < a.length; i++) {
+            clone[i] = a[i].clone();
+        }
+        return clone;
     }
 
     private static double[][] doMfromM0(double[][] M0) {
@@ -472,23 +503,31 @@ int length = M0.length - 1;
         return p;
     }
 
-    public double[][] getM1() {
+    public double[][][] getM0ch() {
+        return M0ch;
+    }
+
+    /**
+     *
+     * @return 3d matrix that contents all M1 matrix.
+     */
+    public double[][][] getM1() {
         return M1;
     }
 
-    public double[][] getM2() {
+    public double[][][] getM2() {
         return M2;
     }
 
-    public double[][] getD1() {
+    public double[][][] getD1() {
         return D1;
     }
 
-    public double[][] getD2() {
+    public double[][][] getD2() {
         return D2;
     }
 
-    public double[][] getDD() {
+    public double[][][] getDD() {
         return DD;
     }
 

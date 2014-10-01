@@ -72,6 +72,57 @@ public class Work1Main {
         frame.setMessage(s);
     }
 
+    public double[][][] getM0ch() {
+        return w.getM0ch();
+    }
+
+    /**
+     *
+     * @return 3d matrix that contents all M1 matrix.
+     */
+    public double[][][] getM1() {
+        return w.getM1();
+    }
+
+    public double[][][] getM2() {
+        return w.getM2();
+    }
+
+    public double[][][] getD1() {
+        return w.getD1();
+    }
+
+    public double[][][] getD2() {
+        return w.getD2();
+    }
+
+    public double[][][] getDD() {
+        return w.getDD();
+    }
+
+    public double[][] getM0ch(int count) {
+        return w.getM0ch()[count];
+    }
+
+    public double[][] getM1(int count) {
+        return w.getM1()[count];
+    }
+
+    public double[][] getM2(int count) {
+        return w.getM2()[count];
+    }
+
+    public double[][] getD1(int count) {
+        return w.getD1()[count];
+    }
+
+    public double[][] getD2(int count) {
+        return w.getD2()[count];
+    }
+
+    public double[][] getDD(int count) {
+        return w.getDD()[count];
+    }
 
     public String getPath() {
         StringBuffer str = new StringBuffer("");
@@ -82,8 +133,6 @@ public class Work1Main {
     }
 
     public double getSum(double[][] a) {
-        //Work1OldStableVersion w2 = new Work1OldStableVersion();
-        //w2.setM0(a);
         double Sum = 0;
         for (int k = 0; k < originalsize; k++) {
             Sum += a[p[k][0]][p[k][1]];

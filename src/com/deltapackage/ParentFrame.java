@@ -8,6 +8,7 @@ package com.deltapackage;/*
 import common.Work1Main;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.File;
@@ -16,7 +17,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Random;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -269,7 +269,7 @@ public class ParentFrame extends JFrame {
         jSpinner1.setEnabled(false);
 
         MatrixSizeSpinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100000, 1));
         MatrixSizeSpinner.setToolTipText("");
 
         FillBtn.setText("Заполнить");
@@ -514,7 +514,6 @@ public class ParentFrame extends JFrame {
     Work1Main w = new Work1Main();
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
-
         double[][] a = getValuesFromTable();
         w.setFrame(this);
         w.setM0(a);
@@ -532,7 +531,11 @@ public class ParentFrame extends JFrame {
         //w.mainNewMethod();
         setMessage(blder.toString());
 
-        //Work1OldStableVersion obj = new Work1OldStableVersion(a, this);
+        // Example of using getters that get 3d matrix contents M1 matrix
+        //w.getM1();
+        // or with parameter that point to which matrix you want to get.
+        //w.getM1(5);
+
 
     }//GEN-LAST:event_btnSolveActionPerformed
 
