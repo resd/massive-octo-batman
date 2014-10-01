@@ -193,10 +193,10 @@ public class Work1Main {
         return builder.toString();
     }
 
-    private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1) {
+    private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][][] d1) {
         
-        for (double[] d11 : d1) {
-            for (double e : d11) {
+        for (double[][] d11 : d1) {
+            for (double[] e : d11) {
                     builder.append(e);
                 }
             builder.append(System.lineSeparator());

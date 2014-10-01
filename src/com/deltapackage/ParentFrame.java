@@ -74,6 +74,8 @@ public class ParentFrame extends JFrame {
         jRadioButton6 = new javax.swing.JRadioButton();
         jRadioButton7 = new javax.swing.JRadioButton();
         jSpinner2 = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         messagesTextPane = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -91,6 +93,7 @@ public class ParentFrame extends JFrame {
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+        valueTable.setBackground(new java.awt.Color(238, 238, 238));
         valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         valueTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -101,13 +104,21 @@ public class ParentFrame extends JFrame {
             }
         ));
         valueTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        valueTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        valueTable.setDoubleBuffered(true);
         valueTable.setFillsViewportHeight(true);
         valueTable.setMaximumSize(new java.awt.Dimension(10000, 100000));
         valueTable.setRowHeight(20);
         valueTable.setRowSelectionAllowed(false);
+        valueTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
         valueTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         valueTable.setTableHeader(null);
         valueTable.setUpdateSelectionOnSort(false);
+        valueTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                valueTableMouseClicked(evt);
+            }
+        });
         valueTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 valueTableMouseMoved(evt);
@@ -310,6 +321,10 @@ public class ParentFrame extends JFrame {
         elementsGroup.add(jRadioButton7);
         jRadioButton7.setText("M2");
 
+        jButton1.setText("Очистить");
+
+        jButton2.setText("Показать");
+
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
         optionsPanel.setLayout(optionsPanelLayout);
         optionsPanelLayout.setHorizontalGroup(
@@ -326,20 +341,25 @@ public class ParentFrame extends JFrame {
                     .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(btnSolve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(FillBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
-                    .addComponent(jRadioButton2)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                    .addComponent(jRadioButton6))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
-                    .addComponent(jRadioButton5)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton7))
-                .addGroup(optionsPanelLayout.createSequentialGroup()
-                    .addComponent(jRadioButton1)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton3))
-                .addComponent(jSpinner2))
+            .addGroup(optionsPanelLayout.createSequentialGroup()
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+                        .addComponent(jRadioButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addComponent(jRadioButton6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+                        .addComponent(jRadioButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jRadioButton7))
+                    .addGroup(optionsPanelLayout.createSequentialGroup()
+                        .addComponent(jRadioButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jRadioButton3))
+                    .addComponent(jSpinner2))
+                .addGap(18, 18, 18)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)))
         );
 
         optionsPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
@@ -372,10 +392,13 @@ public class ParentFrame extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton5)
-                    .addComponent(jRadioButton7))
+                    .addComponent(jRadioButton7)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13))
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(11, 11, 11))
         );
 
         optionsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
@@ -644,6 +667,12 @@ public class ParentFrame extends JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton6ActionPerformed
 
+    private void valueTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_valueTableMouseClicked
+        if (evt.getClickCount() == 1){
+            valueTable.editCellAt(evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_valueTableMouseClicked
+
     private void resizeColumns() {
 
         int columnCount = valueTable.getColumnCount();
@@ -737,6 +766,8 @@ public class ParentFrame extends JFrame {
     private javax.swing.ButtonGroup elementsGroup;
     private javax.swing.JMenuItem exitMenu;
     private javax.swing.JCheckBox fillTableWithConstantsCheckBox;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
