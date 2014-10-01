@@ -1,5 +1,6 @@
 package common;
 
+import com.deltapackage.ParentFrame;
 import java.util.Arrays;
 
 /**
@@ -7,6 +8,16 @@ import java.util.Arrays;
  */
 public class Work1Main {
 
+    private ParentFrame frame;
+
+    public ParentFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(ParentFrame frame) {
+        this.frame = frame;
+    }
+    
     public Work1Main() {
     }
 
@@ -55,6 +66,10 @@ public class Work1Main {
         }
         w.computeLastElement();
         p = w.getP();
+        
+        String s = prepareMessage(w);
+        
+        frame.setMessage(s);
     }
 
 
@@ -111,4 +126,33 @@ public class Work1Main {
 
         return M1;
      */
+
+    private String prepareMessage(Work1OldStableVersion w) {
+        StringBuilder builder   =   new StringBuilder();
+        
+        try{
+            builder = appendMatrixToBuilder(builder, w.getD1());
+            builder = appendMatrixToBuilder(builder, w.getD2());
+            builder = appendMatrixToBuilder(builder, w.getDD());
+            builder = appendMatrixToBuilder(builder, w.getM1());
+            builder = appendMatrixToBuilder(builder, w.getM2());
+        } catch (Exception e){
+            System.err.println();
+        }
+        
+        
+        return builder.toString();
+    }
+
+    private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1) {
+        
+        for (double[] d11 : d1) {
+            for (double e : d11) {
+                    builder.append(e);
+                }
+            builder.append(System.lineSeparator());
+        }
+        
+        return builder;
+    }
 }

@@ -516,13 +516,21 @@ public class ParentFrame extends JFrame {
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
         double[][] a = getValuesFromTable();
+        w.setFrame(this);
         w.setM0(a);
         w.main();
-        String msg = ("\nPath: " + w.getPath() + "\nSum: " + w.getSum(a)
-                + " Time: " + w.getTime());
+        StringBuilder blder = new StringBuilder();
+        blder.append("\nPath: ");
+        blder.append(w.getPath());
+        blder.append(w.getPath());
+        blder.append("\nSum");
+        blder.append(w.getSum(a));
+        blder.append(" Time: ");
+        blder.append(w.getTime());
+        
 
         //w.mainNewMethod();
-        setMessage(msg);
+        setMessage(blder.toString());
 
         //Work1OldStableVersion obj = new Work1OldStableVersion(a, this);
 

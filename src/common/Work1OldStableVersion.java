@@ -1,11 +1,15 @@
 package common;
 
+import com.deltapackage.ParentFrame;
 import java.util.Arrays;
 
 
 //TODO Может ли быть так, что в матрице DD не находится max элемент и из-за этого и выводит exception
 
 public class Work1OldStableVersion {
+
+    private ParentFrame frame;
+    
     double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
@@ -73,6 +77,7 @@ public class Work1OldStableVersion {
             Sum = (int) (Sum + w2.M0[p[k][0]][p[k][1]]);
         }
         p(Sum);
+        
     }
 
     public static void fillP() {
