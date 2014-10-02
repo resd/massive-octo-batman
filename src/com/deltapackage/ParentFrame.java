@@ -6,6 +6,7 @@ package com.deltapackage;/*
 
 
 import common.Work1Main;
+import common.Work1OldStableVersion;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -73,7 +74,7 @@ public class ParentFrame extends JFrame {
         jRadioButton5 = new javax.swing.JRadioButton();
         jRadioButton6 = new javax.swing.JRadioButton();
         jRadioButton7 = new javax.swing.JRadioButton();
-        jSpinner2 = new javax.swing.JSpinner();
+        depthSpinner = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -322,8 +323,18 @@ public class ParentFrame extends JFrame {
         jRadioButton7.setText("M2");
 
         jButton1.setText("Очистить");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Показать");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
         optionsPanel.setLayout(optionsPanelLayout);
@@ -355,7 +366,7 @@ public class ParentFrame extends JFrame {
                         .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jRadioButton3))
-                    .addComponent(jSpinner2))
+                    .addComponent(depthSpinner))
                 .addGap(18, 18, 18)
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
@@ -389,14 +400,14 @@ public class ParentFrame extends JFrame {
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton2)
                     .addComponent(jRadioButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
                     .addComponent(jRadioButton7)
-                    .addComponent(jButton2))
+                    .addComponent(jRadioButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(depthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(11, 11, 11))
         );
@@ -595,7 +606,7 @@ public class ParentFrame extends JFrame {
         }
     }
 
-    Work1Main w = new Work1Main();
+    
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
         double[][] a = getValuesFromTable();
@@ -672,6 +683,16 @@ public class ParentFrame extends JFrame {
             valueTable.editCellAt(evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_valueTableMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        w.getD1();
+        messagesTextPane.setText("lol im working ");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        messagesTextPane.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void resizeColumns() {
 
@@ -754,46 +775,7 @@ public class ParentFrame extends JFrame {
             }
         }
     }
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton FillBtn;
-    private javax.swing.JSpinner MatrixSizeSpinner;
-    private javax.swing.JButton btnSolve;
-    private javax.swing.JCheckBox checkBoxConstants;
-    private javax.swing.JCheckBox chkbxRandomValues;
-    private javax.swing.JSpinner constantSpinner;
-    private javax.swing.ButtonGroup elementsGroup;
-    private javax.swing.JMenuItem exitMenu;
-    private javax.swing.JCheckBox fillTableWithConstantsCheckBox;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JTable matrixColumn1;
-    private javax.swing.JTextPane messagesTextPane;
-    private javax.swing.JPanel optionsPanel;
-    private javax.swing.JMenuItem parametersMenu;
-    private javax.swing.JTable valueTable;
-    // End of variables declaration//GEN-END:variables
-String delimeter = "---------------------";
-
+    
     private void saveInformationFromFormToTextFile() {
 
         JFileChooser fc = new JFileChooser();
@@ -940,4 +922,76 @@ String delimeter = "---------------------";
         setTableValue(newValues);
 
     }
+    
+    private void prepareMessage() {
+        
+        StringBuilder builder   =   new StringBuilder();
+        int count               =   (int) depthSpinner.getValue();
+        
+        try{
+            builder = appendMatrixToBuilder(builder, w.getD1(count));
+            builder = appendMatrixToBuilder(builder, w.getD2(count));
+            builder = appendMatrixToBuilder(builder, w.getDD(count));
+            builder = appendMatrixToBuilder(builder, w.getM1(count));
+            builder = appendMatrixToBuilder(builder, w.getM2(count));
+        } catch (Exception e){
+            System.err.println();
+        }
+        
+        setMessage(builder.toString());
+    }
+
+    private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1) {
+        
+        for (double[] d11 : d1) {
+            for (double e : d11) {
+                    builder.append(e);
+                }
+            builder.append(System.lineSeparator());
+        }
+        
+        return builder;
+    }
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton FillBtn;
+    private javax.swing.JSpinner MatrixSizeSpinner;
+    private javax.swing.JButton btnSolve;
+    private javax.swing.JCheckBox checkBoxConstants;
+    private javax.swing.JCheckBox chkbxRandomValues;
+    private javax.swing.JSpinner constantSpinner;
+    private javax.swing.JSpinner depthSpinner;
+    private javax.swing.ButtonGroup elementsGroup;
+    private javax.swing.JMenuItem exitMenu;
+    private javax.swing.JCheckBox fillTableWithConstantsCheckBox;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JRadioButton jRadioButton6;
+    private javax.swing.JRadioButton jRadioButton7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JTable matrixColumn1;
+    private javax.swing.JTextPane messagesTextPane;
+    private javax.swing.JPanel optionsPanel;
+    private javax.swing.JMenuItem parametersMenu;
+    private javax.swing.JTable valueTable;
+    // End of variables declaration//GEN-END:variables
+String delimeter = "---------------------";
+Work1Main w      = new Work1Main();
+
+    
 }
