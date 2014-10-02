@@ -56,8 +56,6 @@ public class ParentFrame extends JFrame {
         elementsGroup = new javax.swing.ButtonGroup();
         jScrollPane4 = new javax.swing.JScrollPane();
         matrixColumn1 = new javax.swing.JTable();
-        fillTableWithConstantsCheckBox = new javax.swing.JCheckBox();
-        constantSpinner = new javax.swing.JSpinner();
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         messagesTextPane = new javax.swing.JTextPane();
@@ -213,15 +211,6 @@ public class ParentFrame extends JFrame {
         matrixColumn1.setRowHeight(20);
         matrixColumn1.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(matrixColumn1);
-
-        fillTableWithConstantsCheckBox.setLabel("Заполнять константами");
-        fillTableWithConstantsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fillTableWithConstantsCheckBoxActionPerformed(evt);
-            }
-        });
-
-        constantSpinner.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setDoubleBuffered(true);
@@ -430,7 +419,7 @@ public class ParentFrame extends JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 848, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -513,8 +502,6 @@ public class ParentFrame extends JFrame {
                 .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        fillTableWithConstantsCheckBox.getAccessibleContext().setAccessibleName("FillConstants");
 
         pack();
         setLocationRelativeTo(null);
@@ -650,10 +637,6 @@ public class ParentFrame extends JFrame {
 
 
     }//GEN-LAST:event_btnSolveActionPerformed
-
-    private void fillTableWithConstantsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillTableWithConstantsCheckBoxActionPerformed
-        chkbxRandomValues.setSelected(false);
-    }//GEN-LAST:event_fillTableWithConstantsCheckBoxActionPerformed
 
     private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
         dispose();
@@ -952,7 +935,7 @@ public class ParentFrame extends JFrame {
             builder = appendMatrixToBuilder(builder, w.getM1(count) , "M1");
             builder = appendMatrixToBuilder(builder, w.getM2(count) , "M2");
         } catch (Exception e){
-            System.err.println();
+            setMessage("Сначала необходимо нажать кнопку вычислить!");
         }
         
         setMessage(builder.toString());
@@ -982,11 +965,9 @@ public class ParentFrame extends JFrame {
     private javax.swing.JButton btnSolve;
     private javax.swing.JCheckBox checkBoxConstants;
     private javax.swing.JCheckBox chkbxRandomValues;
-    private javax.swing.JSpinner constantSpinner;
     private javax.swing.JSpinner depthSpinner;
     private javax.swing.ButtonGroup elementsGroup;
     private javax.swing.JMenuItem exitMenu;
-    private javax.swing.JCheckBox fillTableWithConstantsCheckBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
