@@ -54,12 +54,16 @@ public class ParentFrame extends JFrame {
     private void initComponents() {
 
         elementsGroup = new javax.swing.ButtonGroup();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        valueTable = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
         matrixColumn1 = new javax.swing.JTable();
         fillTableWithConstantsCheckBox = new javax.swing.JCheckBox();
         constantSpinner = new javax.swing.JSpinner();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        messagesTextPane = new javax.swing.JTextPane();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        valueTable = new javax.swing.JTable();
         optionsPanel = new javax.swing.JPanel();
         btnSolve = new javax.swing.JButton();
         chkbxRandomValues = new javax.swing.JCheckBox();
@@ -77,8 +81,6 @@ public class ParentFrame extends JFrame {
         depthSpinner = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        messagesTextPane = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -90,44 +92,6 @@ public class ParentFrame extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        valueTable.setBackground(new java.awt.Color(238, 238, 238));
-        valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        valueTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        valueTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        valueTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        valueTable.setDoubleBuffered(true);
-        valueTable.setFillsViewportHeight(true);
-        valueTable.setMaximumSize(new java.awt.Dimension(10000, 100000));
-        valueTable.setRowHeight(20);
-        valueTable.setRowSelectionAllowed(false);
-        valueTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
-        valueTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        valueTable.setTableHeader(null);
-        valueTable.setUpdateSelectionOnSort(false);
-        valueTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                valueTableMouseClicked(evt);
-            }
-        });
-        valueTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                valueTableMouseMoved(evt);
-            }
-        });
-        jScrollPane2.setViewportView(valueTable);
-        valueTable.getAccessibleContext().setAccessibleName("");
-        valueTable.getAccessibleContext().setAccessibleDescription("");
 
         matrixColumn1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         matrixColumn1.setModel(new javax.swing.table.DefaultTableModel(
@@ -258,6 +222,52 @@ public class ParentFrame extends JFrame {
         });
 
         constantSpinner.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setDoubleBuffered(true);
+
+        messagesTextPane.setEditable(false);
+        jScrollPane1.setViewportView(messagesTextPane);
+
+        jSplitPane1.setBottomComponent(jScrollPane1);
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        valueTable.setBackground(new java.awt.Color(238, 238, 238));
+        valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        valueTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        valueTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        valueTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        valueTable.setDoubleBuffered(true);
+        valueTable.setFillsViewportHeight(true);
+        valueTable.setMaximumSize(new java.awt.Dimension(10000, 100000));
+        valueTable.setRowHeight(20);
+        valueTable.setRowSelectionAllowed(false);
+        valueTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        valueTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        valueTable.setTableHeader(null);
+        valueTable.setUpdateSelectionOnSort(false);
+        valueTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                valueTableMouseClicked(evt);
+            }
+        });
+        valueTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                valueTableMouseMoved(evt);
+            }
+        });
+        jScrollPane2.setViewportView(valueTable);
+        valueTable.getAccessibleContext().setAccessibleName("");
+        valueTable.getAccessibleContext().setAccessibleDescription("");
 
         btnSolve.setText("Вычислить");
         btnSolve.addActionListener(new java.awt.event.ActionListener() {
@@ -414,8 +424,30 @@ public class ParentFrame extends JFrame {
 
         optionsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
 
-        messagesTextPane.setEditable(false);
-        jScrollPane1.setViewportView(messagesTextPane);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 848, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(optionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(20, 20, 20))
+        );
+
+        jSplitPane1.setLeftComponent(jPanel1);
 
         jMenu1.setText("Файл");
         jMenu1.add(jSeparator1);
@@ -473,27 +505,12 @@ public class ParentFrame extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1122, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -978,6 +995,7 @@ public class ParentFrame extends JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
@@ -989,6 +1007,7 @@ public class ParentFrame extends JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTable matrixColumn1;
     private javax.swing.JTextPane messagesTextPane;
     private javax.swing.JPanel optionsPanel;
