@@ -686,8 +686,8 @@ public class ParentFrame extends JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
-        w.getD1();
-        messagesTextPane.setText("lol im working ");
+        prepareMessage();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -929,11 +929,11 @@ public class ParentFrame extends JFrame {
         int count               =   (int) depthSpinner.getValue();
         
         try{
-            builder = appendMatrixToBuilder(builder, w.getD1(count));
-            builder = appendMatrixToBuilder(builder, w.getD2(count));
-            builder = appendMatrixToBuilder(builder, w.getDD(count));
-            builder = appendMatrixToBuilder(builder, w.getM1(count));
-            builder = appendMatrixToBuilder(builder, w.getM2(count));
+            builder = appendMatrixToBuilder(builder, w.getD1(count) , "D1");
+            builder = appendMatrixToBuilder(builder, w.getD2(count) , "D2");
+            builder = appendMatrixToBuilder(builder, w.getDD(count) , "DD");
+            builder = appendMatrixToBuilder(builder, w.getM1(count) , "M1");
+            builder = appendMatrixToBuilder(builder, w.getM2(count) , "M2");
         } catch (Exception e){
             System.err.println();
         }
@@ -941,7 +941,12 @@ public class ParentFrame extends JFrame {
         setMessage(builder.toString());
     }
 
-    private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1) {
+    private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1, String name) {
+        
+        builder.append(delimeter);
+        builder.append(name);
+        builder.append(delimeter);
+        builder.append(System.lineSeparator());
         
         for (double[] d11 : d1) {
             for (double e : d11) {
