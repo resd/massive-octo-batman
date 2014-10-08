@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class Work1OldStableVersion {
 
     private ParentFrame frame;
-    
+
     double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
@@ -82,7 +82,7 @@ public class Work1OldStableVersion {
             Sum = (int) (Sum + w2.M0[p[k][0]][p[k][1]]);
         }
         p(Sum);
-        
+
     }
 
     public static void fillP() {
@@ -143,6 +143,24 @@ public class Work1OldStableVersion {
             }
         }
         return M;
+    }
+
+    public static boolean noZeroCheck(double[][] M) {
+        for (int i = 0; i < M.length; i++) {
+            for (int j = 0; j < M.length; j++) {
+                if (i != j && M[j][i] > 0) {// || M[i][j] > 0 //todo Сделать 1 цикл.
+                    return true;
+                }
+            }
+        }
+        for (int i = 0; i < M.length; i++) {
+            for (int j = 0; j < M.length; j++) {
+                if (i != j && M[i][j] > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static double[][] solve(double[][] M0) {
@@ -240,13 +258,16 @@ public class Work1OldStableVersion {
         if (i == 0) {
             d = max(DD);
         } else {
+            if (i == 7) {
+                i = 7;
+            }
             d = maxNo0(DD, beforeP[0], beforeP[1]);//maxNo0(DD);
-            p("(" + (d[0] + 1) + " " + (d[1] + 1) + ")");
+            /*p("(" + (d[0] + 1) + " " + (d[1] + 1) + ")");
             if (!checkMax(d[0], d[1])) {//todo По идее, нужно удалить. И проверить работает ли после.
                 p("BEFORE CHECK: " + d[0] + ", " + d[1]);
                 d = max(DD, d[0], d[1]);
                 p("AFTER CHECK: " + d[0] + ", " + d[1]);
-            }
+            }*/
         }
 
         //p(checkMax(d[0], d[1]));
@@ -301,7 +322,26 @@ public class Work1OldStableVersion {
             }
         }
 
+        if (maxValue1 == maxValue2) {
+            if (maxValue1 == Double.MIN_VALUE) {
+                newMethod(ni);
+            } else {
+                return new int[]{di, nj};
+            }
+
+        }
+
         return (maxValue1 > maxValue2) ? new int[]{di, nj} : new int[]{ni, dj};
+    }
+
+    private static int[] newMethod(int ni) {
+        int r;
+        if (ni <= 1) {
+            r = 2;
+        } else {
+            r = 1;
+        }
+        return new int[]{ni, r};
     }
 
     private static boolean checkMax(int i, int j) {
@@ -442,18 +482,19 @@ public class Work1OldStableVersion {
         }
         return M1;
     }
-/*
-int length = M0.length - 1;
-        double[][] M1 = new double[length][length];
-        for (int i = 0; i < dj; i++) {
-            System.arraycopy(M0[i], 0, M1[i], 0, dj);
-            System.arraycopy(M0[i], dj + 1, M1[i], dj, length - dj);
-        }
-        for (int i = dj + 1; i < length; i++) {
-            System.arraycopy(M0[i], 0, M1[i - 1], 0, dj);
-            System.arraycopy(M0[i], dj + 1, M1[i - 1], dj, length - dj);
-        }
- */
+
+    /*
+    int length = M0.length - 1;
+            double[][] M1 = new double[length][length];
+            for (int i = 0; i < dj; i++) {
+                System.arraycopy(M0[i], 0, M1[i], 0, dj);
+                System.arraycopy(M0[i], dj + 1, M1[i], dj, length - dj);
+            }
+            for (int i = dj + 1; i < length; i++) {
+                System.arraycopy(M0[i], 0, M1[i - 1], 0, dj);
+                System.arraycopy(M0[i], dj + 1, M1[i - 1], dj, length - dj);
+            }
+     */
     private static double[][] doVuch(double[][] M1, int coi, boolean minusi, boolean minusj) {
         double min = Double.MAX_VALUE;
 
@@ -508,7 +549,6 @@ int length = M0.length - 1;
     }
 
     /**
-     *
      * @return 3d matrix that contents all M1 matrix.
      */
     public double[][][] getM1() {
@@ -570,7 +610,7 @@ int length = M0.length - 1;
         System.out.println("");
     }
 
-    private static double round(double a) {
+    public static double round(double a) {
         if (a == 0)
             return 0;
         double b;

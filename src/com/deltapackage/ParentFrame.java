@@ -618,7 +618,6 @@ public class ParentFrame extends JFrame {
         StringBuilder blder = new StringBuilder();
         blder.append("\nPath: ");
         blder.append(w.getPath());
-        blder.append(w.getPath());
         blder.append("\nSum");
         blder.append(w.getSum(a));
         blder.append(" Time: ");
@@ -925,13 +924,14 @@ public class ParentFrame extends JFrame {
         
         StringBuilder builder   =   new StringBuilder();
         int count               =   (int) depthSpinner.getValue();
-        
+        builder.append("\n");
         try{
+            builder = appendMatrixToBuilder(builder, w.getM0ch(count) , "M0");
+            builder = appendMatrixToBuilder(builder, w.getM1(count) , "M1");
+            builder = appendMatrixToBuilder(builder, w.getM2(count) , "M2");
             builder = appendMatrixToBuilder(builder, w.getD1(count) , "D1");
             builder = appendMatrixToBuilder(builder, w.getD2(count) , "D2");
             builder = appendMatrixToBuilder(builder, w.getDD(count) , "DD");
-            builder = appendMatrixToBuilder(builder, w.getM1(count) , "M1");
-            builder = appendMatrixToBuilder(builder, w.getM2(count) , "M2");
         } catch (Exception e){
             setMessage("Сначала необходимо нажать кнопку вычислить!");
         }
@@ -940,17 +940,26 @@ public class ParentFrame extends JFrame {
     }
 
     private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1, String name) {
-        
+
+        builder.append(System.lineSeparator());
         builder.append(delimeter);
         builder.append(name);
         builder.append(delimeter);
         builder.append(System.lineSeparator());
-        
-        for (double[] d11 : d1) {
-            for (double e : d11) {
-                    builder.append(e);
+
+
+        for (int i = 0; i < d1.length; i++) {
+            double[] d11 = d1[i];
+            for (int i1 = 0; i1 < d11.length; i1++) {
+                double e = d11[i1];
+                if (i == i1) {
+                    builder.append("-");
+                } else {
+                    builder.append(Work1OldStableVersion.round(e));
                 }
-            builder.append(System.lineSeparator());
+                builder.append("\t");
+            }
+            builder.append("\n");
         }
         
         return builder;
