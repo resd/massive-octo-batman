@@ -1,5 +1,6 @@
 package common;
 
+import com.deltapackage.ParentFrame;
 import java.util.Arrays;
 
 /**
@@ -7,6 +8,16 @@ import java.util.Arrays;
  */
 public class Work1Main {
 
+    private ParentFrame frame;
+
+    public ParentFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(ParentFrame frame) {
+        this.frame = frame;
+    }
+    
     public Work1Main() {
     }
 
@@ -160,4 +171,6 @@ public class Work1Main {
 
         return M1;
      */
+
+    
 }

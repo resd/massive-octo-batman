@@ -6,6 +6,7 @@ package com.deltapackage;/*
 
 
 import common.Work1Main;
+import common.Work1OldStableVersion;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,12 +53,15 @@ public class ParentFrame extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        valueTable = new javax.swing.JTable();
+        elementsGroup = new javax.swing.ButtonGroup();
         jScrollPane4 = new javax.swing.JScrollPane();
         matrixColumn1 = new javax.swing.JTable();
-        fillTableWithConstantsCheckBox = new javax.swing.JCheckBox();
-        constantSpinner = new javax.swing.JSpinner();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        messagesTextPane = new javax.swing.JTextPane();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        valueTable = new javax.swing.JTable();
         optionsPanel = new javax.swing.JPanel();
         btnSolve = new javax.swing.JButton();
         chkbxRandomValues = new javax.swing.JCheckBox();
@@ -66,8 +70,15 @@ public class ParentFrame extends JFrame {
         jSpinner1 = new javax.swing.JSpinner();
         MatrixSizeSpinner = new javax.swing.JSpinner();
         FillBtn = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        messagesTextPane = new javax.swing.JTextPane();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton5 = new javax.swing.JRadioButton();
+        jRadioButton6 = new javax.swing.JRadioButton();
+        jRadioButton7 = new javax.swing.JRadioButton();
+        depthSpinner = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -79,35 +90,6 @@ public class ParentFrame extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
-
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        valueTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        valueTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        valueTable.setFillsViewportHeight(true);
-        valueTable.setMaximumSize(new java.awt.Dimension(10000, 100000));
-        valueTable.setRowHeight(20);
-        valueTable.setRowSelectionAllowed(false);
-        valueTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        valueTable.setTableHeader(null);
-        valueTable.setUpdateSelectionOnSort(false);
-        valueTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                valueTableMouseMoved(evt);
-            }
-        });
-        jScrollPane2.setViewportView(valueTable);
-        valueTable.getAccessibleContext().setAccessibleName("");
-        valueTable.getAccessibleContext().setAccessibleDescription("");
 
         matrixColumn1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         matrixColumn1.setModel(new javax.swing.table.DefaultTableModel(
@@ -230,14 +212,51 @@ public class ParentFrame extends JFrame {
         matrixColumn1.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(matrixColumn1);
 
-        fillTableWithConstantsCheckBox.setLabel("Заполнять константами");
-        fillTableWithConstantsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fillTableWithConstantsCheckBoxActionPerformed(evt);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setDoubleBuffered(true);
+
+        messagesTextPane.setEditable(false);
+        jScrollPane1.setViewportView(messagesTextPane);
+
+        jSplitPane1.setBottomComponent(jScrollPane1);
+
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        valueTable.setBackground(new java.awt.Color(238, 238, 238));
+        valueTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        valueTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        valueTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        valueTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        valueTable.setDoubleBuffered(true);
+        valueTable.setFillsViewportHeight(true);
+        valueTable.setMaximumSize(new java.awt.Dimension(10000, 100000));
+        valueTable.setRowHeight(20);
+        valueTable.setRowSelectionAllowed(false);
+        valueTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        valueTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        valueTable.setTableHeader(null);
+        valueTable.setUpdateSelectionOnSort(false);
+        valueTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                valueTableMouseClicked(evt);
             }
         });
-
-        constantSpinner.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        valueTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                valueTableMouseMoved(evt);
+            }
+        });
+        jScrollPane2.setViewportView(valueTable);
+        valueTable.getAccessibleContext().setAccessibleName("");
+        valueTable.getAccessibleContext().setAccessibleDescription("");
 
         btnSolve.setText("Вычислить");
         btnSolve.addActionListener(new java.awt.event.ActionListener() {
@@ -269,7 +288,7 @@ public class ParentFrame extends JFrame {
         jSpinner1.setEnabled(false);
 
         MatrixSizeSpinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100000, 1));
+        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
         MatrixSizeSpinner.setToolTipText("");
 
         FillBtn.setText("Заполнить");
@@ -279,25 +298,82 @@ public class ParentFrame extends JFrame {
             }
         });
 
+        elementsGroup.add(jRadioButton1);
+        jRadioButton1.setText("DD");
+
+        elementsGroup.add(jRadioButton2);
+        jRadioButton2.setText("D1");
+
+        elementsGroup.add(jRadioButton3);
+        jRadioButton3.setText("M0");
+
+        elementsGroup.add(jRadioButton5);
+        jRadioButton5.setText("D2");
+
+        elementsGroup.add(jRadioButton6);
+        jRadioButton6.setText("M1");
+        jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton6ActionPerformed(evt);
+            }
+        });
+
+        elementsGroup.add(jRadioButton7);
+        jRadioButton7.setText("M2");
+
+        jButton1.setText("Очистить");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Показать");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
         optionsPanel.setLayout(optionsPanelLayout);
         optionsPanelLayout.setHorizontalGroup(
             optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(chkbxRandomValues, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(optionsPanelLayout.createSequentialGroup()
+                    .addComponent(checkBoxConstants)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(optionsPanelLayout.createSequentialGroup()
+                    .addComponent(jLabel1)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnSolve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(FillBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(optionsPanelLayout.createSequentialGroup()
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chkbxRandomValues, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+                        .addComponent(jRadioButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                        .addComponent(jRadioButton6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+                        .addComponent(jRadioButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jRadioButton7))
                     .addGroup(optionsPanelLayout.createSequentialGroup()
-                        .addComponent(checkBoxConstants)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(optionsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnSolve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(FillBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jRadioButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jRadioButton3))
+                    .addComponent(depthSpinner))
+                .addGap(18, 18, 18)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)))
         );
+
+        optionsPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
+
         optionsPanelLayout.setVerticalGroup(
             optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
@@ -315,11 +391,50 @@ public class ParentFrame extends JFrame {
                 .addComponent(FillBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSolve)
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
+                    .addComponent(jRadioButton7)
+                    .addComponent(jRadioButton5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(depthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(11, 11, 11))
         );
 
-        messagesTextPane.setEditable(false);
-        jScrollPane1.setViewportView(messagesTextPane);
+        optionsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(optionsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
+        );
+
+        jSplitPane1.setLeftComponent(jPanel1);
 
         jMenu1.setText("Файл");
         jMenu1.add(jSeparator1);
@@ -377,32 +492,14 @@ public class ParentFrame extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 799, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+            .addComponent(jSplitPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(optionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(100, 100, 100))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        fillTableWithConstantsCheckBox.getAccessibleContext().setAccessibleName("FillConstants");
 
         pack();
         setLocationRelativeTo(null);
@@ -511,15 +608,25 @@ public class ParentFrame extends JFrame {
         }
     }
 
-    Work1Main w = new Work1Main();
+    
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
         double[][] a = getValuesFromTable();
+        w.setFrame(this);
         w.setM0(a);
         w.main();
-        String msg = ("\nPath: " + w.getPath() + "\nSum: " + w.getSum(a)
-                + " Time: " + w.getTime());
-        setMessage(msg);
+        StringBuilder blder = new StringBuilder();
+        blder.append("\nPath: ");
+        blder.append(w.getPath());
+        blder.append(w.getPath());
+        blder.append("\nSum");
+        blder.append(w.getSum(a));
+        blder.append(" Time: ");
+        blder.append(w.getTime());
+        
+
+        //w.mainNewMethod();
+        setMessage(blder.toString());
 
         // Example of using getters that get 3d matrix contents M1 matrix
         //w.getM1();
@@ -528,10 +635,6 @@ public class ParentFrame extends JFrame {
 
 
     }//GEN-LAST:event_btnSolveActionPerformed
-
-    private void fillTableWithConstantsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillTableWithConstantsCheckBoxActionPerformed
-        chkbxRandomValues.setSelected(false);
-    }//GEN-LAST:event_fillTableWithConstantsCheckBoxActionPerformed
 
     private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
         dispose();
@@ -568,6 +671,26 @@ public class ParentFrame extends JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         loadDataFromFile();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton6ActionPerformed
+
+    private void valueTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_valueTableMouseClicked
+        if (evt.getClickCount() == 1){
+            valueTable.editCellAt(evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_valueTableMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        prepareMessage();
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        messagesTextPane.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void resizeColumns() {
 
@@ -650,36 +773,7 @@ public class ParentFrame extends JFrame {
             }
         }
     }
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton FillBtn;
-    private javax.swing.JSpinner MatrixSizeSpinner;
-    private javax.swing.JButton btnSolve;
-    private javax.swing.JCheckBox checkBoxConstants;
-    private javax.swing.JCheckBox chkbxRandomValues;
-    private javax.swing.JSpinner constantSpinner;
-    private javax.swing.JMenuItem exitMenu;
-    private javax.swing.JCheckBox fillTableWithConstantsCheckBox;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable matrixColumn1;
-    private javax.swing.JTextPane messagesTextPane;
-    private javax.swing.JPanel optionsPanel;
-    private javax.swing.JMenuItem parametersMenu;
-    private javax.swing.JTable valueTable;
-    // End of variables declaration//GEN-END:variables
-String delimeter = "---------------------";
-
+    
     private void saveInformationFromFormToTextFile() {
 
         JFileChooser fc = new JFileChooser();
@@ -826,4 +920,81 @@ String delimeter = "---------------------";
         setTableValue(newValues);
 
     }
+    
+    private void prepareMessage() {
+        
+        StringBuilder builder   =   new StringBuilder();
+        int count               =   (int) depthSpinner.getValue();
+        
+        try{
+            builder = appendMatrixToBuilder(builder, w.getD1(count) , "D1");
+            builder = appendMatrixToBuilder(builder, w.getD2(count) , "D2");
+            builder = appendMatrixToBuilder(builder, w.getDD(count) , "DD");
+            builder = appendMatrixToBuilder(builder, w.getM1(count) , "M1");
+            builder = appendMatrixToBuilder(builder, w.getM2(count) , "M2");
+        } catch (Exception e){
+            setMessage("Сначала необходимо нажать кнопку вычислить!");
+        }
+        
+        setMessage(builder.toString());
+    }
+
+    private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1, String name) {
+        
+        builder.append(delimeter);
+        builder.append(name);
+        builder.append(delimeter);
+        builder.append(System.lineSeparator());
+        
+        for (double[] d11 : d1) {
+            for (double e : d11) {
+                    builder.append(e);
+                }
+            builder.append(System.lineSeparator());
+        }
+        
+        return builder;
+    }
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton FillBtn;
+    private javax.swing.JSpinner MatrixSizeSpinner;
+    private javax.swing.JButton btnSolve;
+    private javax.swing.JCheckBox checkBoxConstants;
+    private javax.swing.JCheckBox chkbxRandomValues;
+    private javax.swing.JSpinner depthSpinner;
+    private javax.swing.ButtonGroup elementsGroup;
+    private javax.swing.JMenuItem exitMenu;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JRadioButton jRadioButton6;
+    private javax.swing.JRadioButton jRadioButton7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTable matrixColumn1;
+    private javax.swing.JTextPane messagesTextPane;
+    private javax.swing.JPanel optionsPanel;
+    private javax.swing.JMenuItem parametersMenu;
+    private javax.swing.JTable valueTable;
+    // End of variables declaration//GEN-END:variables
+String delimeter = "---------------------";
+Work1Main w      = new Work1Main();
+
+    
 }
