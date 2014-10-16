@@ -89,7 +89,7 @@ public class ParentFrame extends JFrame {
         parametersMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
+        setAlwaysOnTop(false);
 
         matrixColumn1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         matrixColumn1.setModel(new javax.swing.table.DefaultTableModel(
@@ -768,7 +768,7 @@ public class ParentFrame extends JFrame {
         int size = matrix.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                System.out.print(matrix[i][j]);
+                //System.out.print(matrix[i][j]);//todo
             }
         }
     }

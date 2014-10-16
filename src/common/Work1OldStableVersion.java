@@ -87,8 +87,8 @@ public class Work1OldStableVersion {
 
     public static void fillP() {
         for (int i = 0; i < p.length; i++) {
-            p[i][0] = -10;
-            p[i][1] = -10;
+            p[i][0] = -1;
+            p[i][1] = -1;
         }
     }
 
@@ -254,13 +254,18 @@ public class Work1OldStableVersion {
     }
 
     public static int[] getD(double[][] DD, int i) {
+        /**
+         * Цикл
+         *  1. Найти ДД.
+         *  2. Найти макс эдемент ДД.
+         *  3. Найти соотв. элемент в пути(исходной матрице).
+         *  4. Преобразовать матрицу.
+         */
+
         int[] d;
         if (i == 0) {
             d = max(DD);
         } else {
-            if (i == 7) {
-                i = 7;
-            }
             d = maxNo0(DD, beforeP[0], beforeP[1]);//maxNo0(DD);
             /*p("(" + (d[0] + 1) + " " + (d[1] + 1) + ")");
             if (!checkMax(d[0], d[1])) {//todo По идее, нужно удалить. И проверить работает ли после.
@@ -300,12 +305,12 @@ public class Work1OldStableVersion {
             nj = 0;
         }*/
 
-        double maxValue1 = Double.MIN_VALUE;
-        double maxValue2 = Double.MIN_VALUE;
+        double maxValue1 = - Double.MAX_VALUE;
+        double maxValue2 = - Double.MAX_VALUE;
 
         try {
             for (int i = 0; i < DD.length; i++) {
-                if (DD[i][nj] != 0 && DD[i][nj] > maxValue1) {
+                if (i != nj && DD[i][nj] > maxValue1) {
                     maxValue1 = DD[i][nj];
                     di = i;
                 }
@@ -316,7 +321,7 @@ public class Work1OldStableVersion {
 
 
         for (int j = 0; j < DD.length; j++) {
-            if (DD[ni][j] != 0 && DD[ni][j] > maxValue2) {
+            if (j != ni  && DD[ni][j] > maxValue2) {
                 maxValue2 = DD[ni][j];
                 dj = j;
             }
@@ -326,7 +331,8 @@ public class Work1OldStableVersion {
             if (maxValue1 == Double.MIN_VALUE) {
                 newMethod(ni);
             } else {
-                return new int[]{di, nj};
+                //return new int[]{di, nj};
+                return new int[]{ni, dj};
             }
 
         }
@@ -376,8 +382,8 @@ public class Work1OldStableVersion {
     }
 
     void getPath(int[] d, int i) {
-        int x = d[0];
-        int y = d[1];
+        int x = d[0];//5
+        int y = d[1];//2
 
 //(6-7) (4-6) (5-4) (7-3) (3-2) (2-1) (1-5)
         p[i][0] = mi[x];//7(6)
@@ -401,7 +407,7 @@ public class Work1OldStableVersion {
 
         mi = remove(mi, y);
         mj = remove(mj, y);
-        //p(Arrays.deepToString(p));
+        p(Arrays.deepToString(p));
     }
 
     int[] remove(int[] mi, int y) {
@@ -576,7 +582,7 @@ public class Work1OldStableVersion {
     }
 
     private static void out(double[][] M) {
-        if (M == null) {
+        /*if (M == null) {//todo Вернуть?
             return;
         }
         for (int i = 0; i < M.length; i++) {
@@ -591,7 +597,7 @@ public class Work1OldStableVersion {
                 }
             }
         }
-        System.out.println("");
+        System.out.println("");*/
     }
 
     private static void out(int[][] XXX) {
