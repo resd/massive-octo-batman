@@ -5,8 +5,8 @@ package com.deltapackage;/*
  */
 
 
+import common.C;
 import common.Work1Main;
-import common.Work1OldStableVersion;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -955,7 +955,7 @@ public class ParentFrame extends JFrame {
                 if (i == i1) {
                     builder.append("-");
                 } else {
-                    builder.append(Work1OldStableVersion.round(e));
+                    builder.append(C.round(e));
                 }
                 builder.append("\t");
             }
