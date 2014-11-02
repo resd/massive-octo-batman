@@ -4,23 +4,6 @@ import com.deltapackage.ParentFrame;
 
 public class Work1OldStableVersion {
 
-    /**
-     * Изначально.
-     * 2667
-     * 6299
-     * <p/>
-     * Без cloneMatrix() (которую нужно сделать опциональной)
-     * 2618
-     * 6124
-     * <p/>
-     * Оптимизацию нормализации (с учетом прерываний при нахождении нуля)
-     * 2495
-     * 5817
-     *
-     * Сведение fillP и create в 1 функцию. Цил обнуления сведен к одной операции.
-     * 2482
-     * 5790
-     */
     private ParentFrame frame;
 
     double[][] M0 = {
@@ -221,14 +204,14 @@ public class Work1OldStableVersion {
          */
         int[] d;
         if (i == 0) {
-            d = max(DD);
+            d = maxForFirstElement(DD);
         } else {
-            d = maxNo0(DD, beforeP[0], beforeP[1]);//maxNo0(DD);
+            d = max(DD, beforeP[0], beforeP[1]);//max(DD);
         }
         return d;
     }
 
-    private static int[] max(double[][] DD) {
+    private static int[] maxForFirstElement(double[][] DD) {
         double max = -Double.MAX_VALUE;
         int di = 0, dj = 0;
 
@@ -244,9 +227,9 @@ public class Work1OldStableVersion {
         return new int[]{di, dj};
     }
 
-    private static int[] maxNo0(double[][] DD, int ni, int nj) {
-        double maxValue1 = - Double.MAX_VALUE;
-        double maxValue2 = - Double.MAX_VALUE;
+    private static int[] max(double[][] DD, int ni, int nj) {
+        double maxValue1 = -Double.MAX_VALUE;
+        double maxValue2 = -Double.MAX_VALUE;
         int di = 0, dj = 0;
 
         for (int i = 0; i < DD.length; i++) {
