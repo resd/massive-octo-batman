@@ -71,12 +71,12 @@ public class Work1OldStableVersion {
             }
         }
         for (int i = 0; i < M.length; i++) {
+            if (minArrI[i] == 0) {
+                continue;
+            }
             for (int j = 0; j < M.length; j++) {
-                if (minArrI[j] == 0) {
-                    break;
-                }
                 if (i != j) {
-                    M[i][j] -= minArrI[j];
+                    M[i][j] -= minArrI[i];
                 }
             }
         }
@@ -91,12 +91,12 @@ public class Work1OldStableVersion {
             }
         }
         for (int i = 0; i < M.length; i++) {
+            if (minArrJ[i] == 0) {
+                continue;
+            }
             for (int j = 0; j < M.length; j++) {
-                if (minArrJ[j] == 0) {
-                    break;
-                }
                 if (i != j) {
-                    M[j][i] -= minArrJ[j];
+                    M[j][i] -= minArrJ[i];
                 }
             }
         }

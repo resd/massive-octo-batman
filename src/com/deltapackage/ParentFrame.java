@@ -5,8 +5,11 @@ package com.deltapackage;/*
  */
 
 
+import com.newpackage.table.CustomCellRenderer;
+import common.BruteforceAlgo;
 import common.C;
 import common.Work1Main;
+import simpleMethod.ClassicAlgo;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,11 +21,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author Евгений
  */
+@SuppressWarnings("all")
 public class ParentFrame extends JFrame {
 
     public void setMessage(String msg) {
@@ -37,6 +43,17 @@ public class ParentFrame extends JFrame {
         setNormalGrid(valueTable);
         setTablesSize(10);
         fillValues();
+
+        CustomCellRenderer renderer = new CustomCellRenderer();
+        DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+        singleclick.setClickCountToStart(1);
+        //set the editor as default on every column
+        for (int i = 0; i < valueTable.getColumnCount(); i++) {
+            Class<?> columnClass = valueTable.getColumnClass(i);
+            valueTable.setDefaultEditor(columnClass, singleclick);
+            valueTable.setDefaultRenderer(columnClass, renderer);
+        }
+
     }
 
     private void setNormalGrid(JTable table) {
@@ -79,17 +96,15 @@ public class ParentFrame extends JFrame {
         depthSpinner = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        exitMenu = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        parametersMenu = new javax.swing.JMenuItem();
+        methodsComboBox = new javax.swing.JComboBox();
+        jPanel2 = new javax.swing.JPanel();
+        saveBtn = new javax.swing.JButton();
+        loadBtn = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(false);
+        setAlwaysOnTop(true);
 
         matrixColumn1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         matrixColumn1.setModel(new javax.swing.table.DefaultTableModel(
@@ -335,41 +350,50 @@ public class ParentFrame extends JFrame {
             }
         });
 
+        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Полный перебор", "Метод ветвей и границ (классический)", "Метод ветвей и границ" }));
+
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
         optionsPanel.setLayout(optionsPanelLayout);
         optionsPanelLayout.setHorizontalGroup(
             optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addComponent(chkbxRandomValues, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(optionsPanelLayout.createSequentialGroup()
-                    .addComponent(checkBoxConstants)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(optionsPanelLayout.createSequentialGroup()
-                    .addComponent(jLabel1)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addComponent(btnSolve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(FillBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(optionsPanelLayout.createSequentialGroup()
-                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
-                        .addComponent(jRadioButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                        .addComponent(jRadioButton6))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
-                        .addComponent(jRadioButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jRadioButton7))
-                    .addGroup(optionsPanelLayout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jRadioButton3))
-                    .addComponent(depthSpinner))
-                .addGap(18, 18, 18)
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)))
+                    .addComponent(chkbxRandomValues)
+                    .addGroup(optionsPanelLayout.createSequentialGroup()
+                        .addComponent(checkBoxConstants)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(optionsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(MatrixSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(optionsPanelLayout.createSequentialGroup()
+                .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(FillBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(methodsComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSolve, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, optionsPanelLayout.createSequentialGroup()
+                        .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+                                .addComponent(jRadioButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRadioButton6))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, optionsPanelLayout.createSequentialGroup()
+                                .addComponent(jRadioButton5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRadioButton7))
+                            .addGroup(optionsPanelLayout.createSequentialGroup()
+                                .addComponent(jRadioButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jRadioButton3))
+                            .addComponent(depthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(41, 41, 41))
         );
 
         optionsPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
@@ -390,6 +414,8 @@ public class ParentFrame extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(FillBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(methodsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSolve)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -397,8 +423,8 @@ public class ParentFrame extends JFrame {
                     .addComponent(jRadioButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton6))
+                    .addComponent(jRadioButton6)
+                    .addComponent(jRadioButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton2)
@@ -408,10 +434,61 @@ public class ParentFrame extends JFrame {
                 .addGroup(optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(depthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(11, 11, 11))
+                .addContainerGap())
         );
 
         optionsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
+
+        saveBtn.setText("Сохранить");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
+
+        loadBtn.setText("Загрузить");
+        loadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadBtnActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Настройки");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Выход");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(saveBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loadBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6)
+                .addGap(0, 0, 0))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 20, Short.MAX_VALUE)
+            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(loadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -419,74 +496,25 @@ public class ParentFrame extends JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(optionsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(20, 20, 20))
+                    .addComponent(optionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
-
-        jMenu1.setText("Файл");
-        jMenu1.add(jSeparator1);
-
-        exitMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        exitMenu.setText("Выход");
-        exitMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuActionPerformed(evt);
-            }
-        });
-        jMenu1.add(exitMenu);
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Сохранить");
-        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem1MouseClicked(evt);
-            }
-        });
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Загрузить");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Параметры");
-
-        parametersMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_TAB, java.awt.event.InputEvent.CTRL_MASK));
-        parametersMenu.setText("Настройки");
-        parametersMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                parametersMenuActionPerformed(evt);
-            }
-        });
-        jMenu2.add(parametersMenu);
-
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -497,7 +525,7 @@ public class ParentFrame extends JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -532,15 +560,30 @@ public class ParentFrame extends JFrame {
         } else {
 
             // Входной массив
-            double[][] M0 = {
-                {0, 0, 83, 9, 30, 6, 50},
-                {0, 0, 66, 37, 17, 12, 26},
-                {29, 1, 0, 19, 0, 12, 5},
-                {32, 83, 66, 0, 49, 0, 80},
-                {3, 21, 56, 7, 0, 0, 28},
-                {0, 85, 8, 42, 89, 0, 0},
-                {18, 0, 0, 0, 58, 13, 0}
-            };
+            double[][] M0
+                    = {
+                        {
+                            0, 0, 83, 9, 30, 6, 50
+                        },
+                        {
+                            0, 0, 66, 37, 17, 12, 26
+                        },
+                        {
+                            29, 1, 0, 19, 0, 12, 5
+                        },
+                        {
+                            32, 83, 66, 0, 49, 0, 80
+                        },
+                        {
+                            3, 21, 56, 7, 0, 0, 28
+                        },
+                        {
+                            0, 85, 8, 42, 89, 0, 0
+                        },
+                        {
+                            18, 0, 0, 0, 58, 13, 0
+                        }
+                    };
 
             M1 = M0;
 
@@ -608,40 +651,68 @@ public class ParentFrame extends JFrame {
         }
     }
 
-    
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
-        double[][] a = getValuesFromTable();
-        w.setFrame(this);
-        w.setM0(a);
-        w.main();
-        StringBuilder blder = new StringBuilder();
-        blder.append("\nPath: ");
-        blder.append(w.getPath());
-        blder.append("\nSum");
-        blder.append(w.getSum(a));
-        blder.append(" Time: ");
-        blder.append(w.getTime());
-        
 
-        //w.mainNewMethod();
-        setMessage(blder.toString());
+        String method = methodsComboBox.getSelectedItem().toString();
+
+        //JOptionPane.showMessageDialog(rootPane, method);
+
+        double[][] a = getValuesFromTable();
+        StringBuilder blder = new StringBuilder();
+        blder.append("\n\n");
+        blder.append(method);
+        blder.append(":");
+
+        switch (method) {
+            case "Полный перебор":
+                BruteforceAlgo bf = new BruteforceAlgo();
+                bf.setM0(a);
+                bf.main(a);
+                blder.append("\nPath: ");
+                blder.append(bf.getPath());
+                blder.append("\nSum = ");
+                blder.append(bf.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(bf.getTime());
+                //parseAndHighlightPath(bf.getPath());
+                //w.mainNewMethod();
+                setMessage(blder.toString());
+                break;
+            case "Метод ветвей и границ (классический)":
+                ClassicAlgo sm = new ClassicAlgo(a);
+                sm.main();
+                blder.append("\nPath: ");
+                blder.append(sm.getPath());
+                blder.append("\nSum = ");
+                blder.append(sm.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(sm.getTime());
+                setMessage(blder.toString());
+                break;
+            case "Метод ветвей и границ":
+                w.setFrame(this);
+                w.setM0(a);
+                w.main();
+                blder.append("\nPath: ");
+                blder.append(w.getPath());
+                blder.append("\nSum = ");
+                blder.append(w.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(w.getTime());
+                //parseAndHighlightPath(w.getPath());
+                //w.mainNewMethod();
+                setMessage(blder.toString());
+
+                break;
+        }
 
         // Example of using getters that get 3d matrix contents M1 matrix
         //w.getM1();
         // or with parameter that point to which matrix you want to get.
         //w.getM1(5);
 
-
     }//GEN-LAST:event_btnSolveActionPerformed
-
-    private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
-        dispose();
-    }//GEN-LAST:event_exitMenuActionPerformed
-
-    private void parametersMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parametersMenuActionPerformed
-        optionsPanel.setVisible(!optionsPanel.isVisible());
-    }//GEN-LAST:event_parametersMenuActionPerformed
 
     private void valueTableMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_valueTableMouseMoved
         Point p = evt.getPoint();
@@ -659,37 +730,45 @@ public class ParentFrame extends JFrame {
         jSpinner1.setEnabled(true);
     }//GEN-LAST:event_checkBoxConstantsMouseClicked
 
-    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
-        saveInformationFromFormToTextFile();
-    }//GEN-LAST:event_jMenuItem1MouseClicked
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        saveInformationFromFormToTextFile();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        loadDataFromFile();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton6ActionPerformed
 
     private void valueTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_valueTableMouseClicked
-        if (evt.getClickCount() == 1){
-            valueTable.editCellAt(evt.getX(), evt.getY());
+        if (evt.getClickCount() == 1) {
+
         }
     }//GEN-LAST:event_valueTableMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         prepareMessage();
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         messagesTextPane.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveBtnActionPerformed
+    {//GEN-HEADEREND:event_saveBtnActionPerformed
+        saveInformationFromFormToTextFile();
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loadBtnActionPerformed
+    {//GEN-HEADEREND:event_loadBtnActionPerformed
+        loadDataFromFile();
+    }//GEN-LAST:event_loadBtnActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton5ActionPerformed
+    {//GEN-HEADEREND:event_jButton5ActionPerformed
+        optionsPanel.setVisible(!optionsPanel.isVisible());
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton6ActionPerformed
+    {//GEN-HEADEREND:event_jButton6ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void resizeColumns() {
 
@@ -717,7 +796,11 @@ public class ParentFrame extends JFrame {
                     } else if (valueTable.getValueAt(i, j).equals("-")) {
                         matrix[i][j] = 0;
                     } else {
-                        matrix[i][j] = Double.parseDouble((String) valueTable.getValueAt(i, j));
+                        String str = o.toString();
+                        if (str.contains("*")){
+                            str = str.substring(0, str.length() - 1);
+                        }
+                        matrix[i][j] = Double.parseDouble((String) str);
                     }
                 } catch (NullPointerException e) {
                     System.out.println(e);
@@ -772,7 +855,7 @@ public class ParentFrame extends JFrame {
             }
         }
     }
-    
+
     private void saveInformationFromFormToTextFile() {
 
         JFileChooser fc = new JFileChooser();
@@ -846,7 +929,7 @@ public class ParentFrame extends JFrame {
         if (res == JFileChooser.APPROVE_OPTION) {
 
             try {
-                
+
                 java.util.List<String> fileContent = Files.readAllLines(fc.getSelectedFile().toPath(), Charset.forName("UTF-8"));
 
                 int delimeterCounter = 0;
@@ -894,14 +977,12 @@ public class ParentFrame extends JFrame {
             String values[] = line.split(" ");
             for (String value : values) {
 
-                
-
-                if (value.equals(" ") || value.equals("")){
+                if (value.equals(" ") || value.equals("")) {
                     continue;
                 }
-                
+
                 double newValue = 0;
-                
+
                 if (value.equals("-")) {
                     newValue = 0;
                 } else {
@@ -911,7 +992,7 @@ public class ParentFrame extends JFrame {
                 newValues[i][j] = newValue;
                 j++;
             }
-            j   =   0;
+            j = 0;
             i++;
         }
 
@@ -919,23 +1000,23 @@ public class ParentFrame extends JFrame {
         setTableValue(newValues);
 
     }
-    
+
     private void prepareMessage() {
-        
-        StringBuilder builder   =   new StringBuilder();
-        int count               =   (int) depthSpinner.getValue();
+
+        StringBuilder builder = new StringBuilder();
+        int count = (int) depthSpinner.getValue();
         builder.append("\n");
-        try{
-            builder = appendMatrixToBuilder(builder, w.getM0ch(count) , "M0");
-            builder = appendMatrixToBuilder(builder, w.getM1(count) , "M1");
-            builder = appendMatrixToBuilder(builder, w.getM2(count) , "M2");
-            builder = appendMatrixToBuilder(builder, w.getD1(count) , "D1");
-            builder = appendMatrixToBuilder(builder, w.getD2(count) , "D2");
-            builder = appendMatrixToBuilder(builder, w.getDD(count) , "DD");
-        } catch (Exception e){
+        try {
+            builder = appendMatrixToBuilder(builder, w.getM0ch(count), "M0");
+            builder = appendMatrixToBuilder(builder, w.getM1(count), "M1");
+            builder = appendMatrixToBuilder(builder, w.getM2(count), "M2");
+            builder = appendMatrixToBuilder(builder, w.getD1(count), "D1");
+            builder = appendMatrixToBuilder(builder, w.getD2(count), "D2");
+            builder = appendMatrixToBuilder(builder, w.getDD(count), "DD");
+        } catch (Exception e) {
             setMessage("Сначала необходимо нажать кнопку вычислить!");
         }
-        
+
         setMessage(builder.toString());
     }
 
@@ -946,7 +1027,6 @@ public class ParentFrame extends JFrame {
         builder.append(name);
         builder.append(delimeter);
         builder.append(System.lineSeparator());
-
 
         for (int i = 0; i < d1.length; i++) {
             double[] d11 = d1[i];
@@ -961,7 +1041,7 @@ public class ParentFrame extends JFrame {
             }
             builder.append("\n");
         }
-        
+
         return builder;
     }
 
@@ -974,16 +1054,13 @@ public class ParentFrame extends JFrame {
     private javax.swing.JCheckBox chkbxRandomValues;
     private javax.swing.JSpinner depthSpinner;
     private javax.swing.ButtonGroup elementsGroup;
-    private javax.swing.JMenuItem exitMenu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
@@ -993,17 +1070,48 @@ public class ParentFrame extends JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JButton loadBtn;
     private javax.swing.JTable matrixColumn1;
     private javax.swing.JTextPane messagesTextPane;
+    private javax.swing.JComboBox methodsComboBox;
     private javax.swing.JPanel optionsPanel;
-    private javax.swing.JMenuItem parametersMenu;
+    private javax.swing.JButton saveBtn;
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
-String delimeter = "---------------------";
-Work1Main w      = new Work1Main();
+    String delimeter = "---------------------";
+    Work1Main w = new Work1Main();
 
-    
+    private void parseAndHighlightPath(String path) {
+        //Path example
+        //(6-7) (7-3) (4-6) (3-5) (1-4) (5-2) (2-1)
+        Pattern p = Pattern.compile("\\d+");
+        Matcher m = p.matcher(path);
+
+        while (m.find()) {
+
+            int row = Integer.valueOf(m.group());
+
+            m.find();
+            int column = Integer.valueOf(m.group());
+            Object value = valueTable.getValueAt(row - 1, column - 1);
+            String str = value.toString();
+            if (str.contains("*"))
+                break;
+            else
+                valueTable.setValueAt(value + "*", row - 1, column - 1);
+
+        }
+
+    }
+
+    private void parseCell(String arrayList1) {
+
+        for (int i = 0; i < arrayList1.length(); i++) {
+
+        }
+
+    }
+
 }

@@ -1,7 +1,5 @@
 package common;
 
-import java.util.Arrays;
-
 /**
  * Created by Admin on 08.12.14.
  */
@@ -18,11 +16,30 @@ public class BruteforceAlgo {
             {0, 85, 8, 42, 89, 0, 0},  // 6
             {18, 0, 0, 0, 58, 13, 0}   // 7
     };
+    static double[][] example =
+            {
+                    {
+                            0, 90, 80, 40, 100
+                    },
+                    {
+                            60, 0, 40, 50, 70
+                    },
+                    {
+                            50, 30, 0, 60, 20
+                    },
+                    {
+                            10, 70, 20, 0, 50
+                    },
+                    {
+                            20, 40, 50, 20, 0
+                    }
+            };
     long sysTime;
     double minValue = Double.MAX_VALUE;
     int[] minPath = null;
 
     public void main(double[][] M0) {
+        yes = true;
         sysTime = System.currentTimeMillis();
         originalsize = M0.length;
         x = new int[originalsize];
@@ -30,45 +47,33 @@ public class BruteforceAlgo {
             x[i] = i;
         }
         double path;
+        boolean overhead = false;
         while (yes) {
             //System.out.println(c + ": " + Arrays.toString(x));
             path = 0;
             for (int i = 0; i < originalsize - 1; i++) {// Путь пройденный по индексам из x[]
                 path += M0[x[i]][x[i + 1]];
+                if (path > minValue) {
+                    overhead = true;
+                    break;
+                }
             }
-            path += M0[x[originalsize - 1]][x[0]];
-            if (path < minValue) {
-                minValue = path;
-                minPath = x.clone();
+            if (!overhead) {
+                path += M0[x[originalsize - 1]][x[0]];
+                if (path < minValue) {
+                    minValue = path;
+                    minPath = x.clone();
+                }
             }
+            overhead = false;
             next(x);
         }
-        System.out.println(minValue + ": " + Arrays.toString(minPath));
+        //System.out.println(minValue + ": " + Arrays.toString(minPath));
     }
 
     public static void main(String[] args) {
-        originalsize = M0.length;
-        x = new int[originalsize];
-        for (int i = 0; i < originalsize; i++) {
-            x[i] = i;
-        }
-        double minValue = Double.MAX_VALUE;
-        int[] minPath = null;
-        double path;
-        while (yes) {
-            //System.out.println(c + ": " + Arrays.toString(x));
-            path = 0;
-            for (int i = 0; i < originalsize - 1; i++) {// Путь пройденный по индексам из x[]
-                path += M0[x[i]][x[i + 1]];
-            }
-            path += M0[x[originalsize - 1]][x[0]];
-            if (path < minValue) {
-                minValue = path;
-                minPath = x.clone();
-            }
-            next(x);
-        }
-        System.out.println(minValue + ": " + Arrays.toString(minPath));
+        BruteforceAlgo bf = new BruteforceAlgo();
+        bf.main(example);
     }
 
     private static boolean next(int[] X) {
@@ -109,7 +114,12 @@ public class BruteforceAlgo {
     }
 
     public String getPath() {
-        return Arrays.toString(minPath);
+        StringBuffer str = new StringBuffer("");
+        for (int i = 0; i < originalsize - 1; i++) {
+            str.append("(").append(minPath[i] + 1).append("-").append(minPath[i + 1] + 1).append(") ");
+        }
+        str.append("(").append(minPath[originalsize - 1] + 1).append("-").append(minPath[0] + 1).append(") ");
+        return str.toString();
     }
 
     public double getSum(double[][] a) {

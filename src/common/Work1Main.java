@@ -38,7 +38,6 @@ public class Work1Main {
         double[][] M;
         sysTime = System.currentTimeMillis();
         w = new Work1OldStableVersion();
-        w.setM0(a);
         w.setOriginalsize(a.length);
         M = Arrays.copyOf(a, a.length);
 
