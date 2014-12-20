@@ -350,7 +350,8 @@ public class ParentFrame extends JFrame {
             }
         });
 
-        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Полный перебор", "Метод ветвей и границ (классический)", "Метод ветвей и границ" }));
+        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Все", "Полный перебор",
+                "МВиГ классический(без возвратов)", "МВиГ улучшенный(без разрывов)", "МВиГ улучшенный(с разрывами)"}));
 
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
         optionsPanel.setLayout(optionsPanelLayout);
@@ -656,19 +657,71 @@ public class ParentFrame extends JFrame {
 
         String method = methodsComboBox.getSelectedItem().toString();
 
+        messagesTextPane.setText("");
         //JOptionPane.showMessageDialog(rootPane, method);
 
         double[][] a = getValuesFromTable();
         StringBuilder blder = new StringBuilder();
         blder.append("\n\n");
-        blder.append(method);
-        blder.append(":");
+        BruteforceAlgo bf = new BruteforceAlgo();
+        ClassicAlgo sm = new ClassicAlgo(a);
 
         switch (method) {
-            case "Полный перебор":
-                BruteforceAlgo bf = new BruteforceAlgo();
+            case "Все":
                 bf.setM0(a);
                 bf.main(a);
+                blder.append("Полный перебор");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(bf.getPath());
+                blder.append("\nSum = ");
+                blder.append(bf.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(bf.getTime());
+                //parseAndHighlightPath(bf.getPath());
+                //w.mainNewMethod();
+
+                sm.main();
+                blder.append("\n\nМВиГ классический(без возвратов)");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(sm.getPath());
+                blder.append("\nSum = ");
+                blder.append(sm.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(sm.getTime());
+
+                w.setM0(a);
+                w.main();
+                blder.append("\n\nМВиГ улучшенный(без разрывов)");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(w.getPath());
+                blder.append("\nSum = ");
+                blder.append(w.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(w.getTime());
+                //parseAndHighlightPath(w.getPath());
+                //w.mainNewMethod();
+
+                w2.setM0(a);
+                w2.main();
+                blder.append("\n\nМВиГ улучшенный(с разрывов)");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(w2.getPath());
+                blder.append("\nSum = ");
+                blder.append(w2.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(w2.getTime());
+
+                setMessage(blder.toString());
+                break;
+            case "Полный перебор":
+                bf.setM0(a);
+                bf.main(a);
+                blder.append(method);
+                blder.append(":");
                 blder.append("\nPath: ");
                 blder.append(bf.getPath());
                 blder.append("\nSum = ");
@@ -679,9 +732,10 @@ public class ParentFrame extends JFrame {
                 //w.mainNewMethod();
                 setMessage(blder.toString());
                 break;
-            case "Метод ветвей и границ (классический)":
-                ClassicAlgo sm = new ClassicAlgo(a);
+            case "МВиГ классический(без возвратов)":
                 sm.main();
+                blder.append(method);
+                blder.append(":");
                 blder.append("\nPath: ");
                 blder.append(sm.getPath());
                 blder.append("\nSum = ");
@@ -690,10 +744,11 @@ public class ParentFrame extends JFrame {
                 blder.append(sm.getTime());
                 setMessage(blder.toString());
                 break;
-            case "Метод ветвей и границ":
-                w.setFrame(this);
+            case "МВиГ улучшенный(без разрывов)":
                 w.setM0(a);
                 w.main();
+                blder.append(method);
+                blder.append(":");
                 blder.append("\nPath: ");
                 blder.append(w.getPath());
                 blder.append("\nSum = ");
@@ -703,7 +758,21 @@ public class ParentFrame extends JFrame {
                 //parseAndHighlightPath(w.getPath());
                 //w.mainNewMethod();
                 setMessage(blder.toString());
-
+                break;
+            case "МВиГ улучшенный(с разрывами)":
+                w2.setM0(a);
+                w2.main();
+                blder.append(method);
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(w2.getPath());
+                blder.append("\nSum = ");
+                blder.append(w2.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(w2.getTime());
+                //parseAndHighlightPath(w.getPath());
+                //w.mainNewMethod();
+                setMessage(blder.toString());
                 break;
         }
 
@@ -1003,7 +1072,7 @@ public class ParentFrame extends JFrame {
 
     private void prepareMessage() {
 
-        StringBuilder builder = new StringBuilder();
+        /*StringBuilder builder = new StringBuilder();//todo Запилить в интерфейсе эти методы
         int count = (int) depthSpinner.getValue();
         builder.append("\n");
         try {
@@ -1017,7 +1086,7 @@ public class ParentFrame extends JFrame {
             setMessage("Сначала необходимо нажать кнопку вычислить!");
         }
 
-        setMessage(builder.toString());
+        setMessage(builder.toString());*/
     }
 
     private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1, String name) {
@@ -1081,7 +1150,8 @@ public class ParentFrame extends JFrame {
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
     String delimeter = "---------------------";
-    Work1Main w = new Work1Main();
+    Work1Main w = new Work1Main(1);
+    Work1Main w2 = new Work1Main(2);
 
     private void parseAndHighlightPath(String path) {
         //Path example

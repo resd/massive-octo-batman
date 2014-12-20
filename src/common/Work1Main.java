@@ -1,70 +1,70 @@
 
 package common;
 
-import com.deltapackage.ParentFrame;
-import java.util.Arrays;
+import simpleMethod.Work2OldStableVersion;
 
 /**
  * Created by Admin on 07.09.14.
  */
 public class Work1Main {
 
-    private ParentFrame frame;
-
-    public ParentFrame getFrame() {
-        return frame;
-    }
-
-    public void setFrame(ParentFrame frame) {
-        this.frame = frame;
-    }
-    
-    public Work1Main() {
-    }
-
-    public Work1Main(double[][] a) {
+    public Work1Main(double[][] a, int idMethod) {
         setM0(a);
+        this.idMethod = idMethod;
     }
 
+    public Work1Main(int idMethod) {
+        this.idMethod = idMethod;
+    }
+
+    private int idMethod;
     private int originalsize;
-    private double[][] a;
+    private double[][] M0;
     private int[][] p;
 
-    Work1OldStableVersion w;
+    Methods w;
 
     long sysTime;
 
+    /**
+     * Основной метод программы
+     */
     public void main() {
-        double[][] M;
+        double[][] M;                               // Получаем M
         sysTime = System.currentTimeMillis();
-        w = new Work1OldStableVersion();
-        w.setOriginalsize(a.length);
-        M = Arrays.copyOf(a, a.length);
+        if (idMethod == 1) {
+            M = Work1OldStableVersion.cloneMatrix(M0);
+            w = new Work1OldStableVersion(M);
+        } else {
+            M = Work2OldStableVersion.cloneMatrix(M0);
+            w = new Work2OldStableVersion(M);
+        }
 
-        double[][] DD;
+        double[][] DD;                              // Инициализация необходимых переменных
         int d[];
-
         w.initialize();
+
         int n = M.length - 2;
         for (int i = 0; i < n; i++) {
-            w.normalize(M);
-            DD = w.solve(M);
-            d = w.getD(DD, i);
-            w.getPath(d, i);
-            M = w.doM0(M, d[0], d[1]);
+            w.normalize(M);                 // Приведение матрицы к нормальной форме
+            DD = w.solve(M);                // Вычисление матрицы DD
+            d = w.getD(DD, i);              // Получение максимального элемента матрицы DD
+            w.getPath(d, i);                // Нахождение соответствия между макс. элем-том и путем
+                                                // в исходной матрице
+            M = w.doM0(M, d[0], d[1]);      // Вычитание максимального эле-та из матрицы M,
+                                                // получение приведенной матрицы
         }
-        w.computeLastElement();
+        w.computeLastElement();                     // Нахождение двух последних элементов пути
         p = w.getP();
     }
 
-    public double[][][] getM0ch() {
+  /*  public double[][][] getM0ch() {
         return w.getM0ch();
     }
 
-    /**
-     *
+    *//**
      * @return 3d matrix that contents all M1 matrix.
-     */
+     *//*
     public double[][][] getM1() {
         return w.getM1();
     }
@@ -108,7 +108,7 @@ public class Work1Main {
     public double[][] getDD(int count) {
         return w.getDD()[count];
     }
-
+*/
     public String getPath() {
         StringBuffer str = new StringBuffer("");
         for (int i = 0; i < originalsize; i++) {
@@ -135,7 +135,7 @@ public class Work1Main {
         for (int i = 0; i < a.length; i++) {
             clone[i] = a[i].clone();
         }
-        this.a = clone;
+        this.M0 = clone;
         originalsize = a.length;
     }
 

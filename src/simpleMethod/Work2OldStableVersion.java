@@ -1,6 +1,8 @@
-package common;
+package simpleMethod;
 
-public class Work1OldStableVersion implements Methods{
+import common.Methods;
+
+public class Work2OldStableVersion implements Methods{
 
     /*double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
@@ -29,7 +31,7 @@ public class Work1OldStableVersion implements Methods{
     static int[] mj;
     static int[] beforeP;
 
-    public Work1OldStableVersion(double[][] M0) {
+    public Work2OldStableVersion(double[][] M0) {
         originalsize = M0.length;
     }
 
@@ -128,7 +130,7 @@ public class Work1OldStableVersion implements Methods{
         return DDs;
     }
 
-    static double[][] cloneMatrix(double[][] a) {
+    public static double[][] cloneMatrix(double[][] a) {
         double[][] clone = a.clone();
 
         for (int i = 0; i < a.length; i++) {
@@ -203,12 +205,14 @@ public class Work1OldStableVersion implements Methods{
          *  3. Найти соотв. элемент в пути(исходной матрице).
          *  4. Преобразовать матрицу.
          */
+
         int[] d;
-        if (i == 0) {
+        d = maxForFirstElement(DD);
+        /*if (i == 0) {
             d = maxForFirstElement(DD);
         } else {
             d = max(DD, beforeP[0], beforeP[1]);//max(DD);
-        }
+        }*/
         return d;
     }
 
@@ -228,32 +232,6 @@ public class Work1OldStableVersion implements Methods{
         return new int[]{di, dj};
     }
 
-    private static int[] max(double[][] DD, int ni, int nj) {
-        double maxValue1 = -Double.MAX_VALUE;
-        double maxValue2 = -Double.MAX_VALUE;
-        int di = 0, dj = 0;
-
-        for (int i = 0; i < DD.length; i++) {
-            if (i != nj && DD[i][nj] > maxValue1) {
-                maxValue1 = DD[i][nj];
-                di = i;
-            }
-        }
-
-        for (int j = 0; j < DD.length; j++) {
-            if (j != ni && DD[ni][j] > maxValue2) {
-                maxValue2 = DD[ni][j];
-                dj = j;
-            }
-        }
-
-        if (maxValue1 == maxValue2) {
-            return new int[]{di, nj};
-        }
-
-        return (maxValue1 > maxValue2) ? new int[]{di, nj} : new int[]{ni, dj};
-    }
-
     public void getPath(int[] d, int i) {
         int x = d[0];
         int y = d[1];
@@ -261,14 +239,14 @@ public class Work1OldStableVersion implements Methods{
         p[i][0] = mi[x];
         p[i][1] = mj[y];
 
-        if (x <= y) {
+        /*if (x <= y) {
             beforeP[0] = x;
             beforeP[1] = x;
         } else {
             beforeP[1] = x - 1;
             beforeP[0] = x - 1;
 
-        }
+        }*/
 
         mi[x] = mi[y];
 
@@ -343,7 +321,7 @@ public class Work1OldStableVersion implements Methods{
     }
 
     public static void setOriginalsize(int originalsize) {
-        Work1OldStableVersion.originalsize = originalsize;
+        Work2OldStableVersion.originalsize = originalsize;
     }
 
     public int[][] getP() {
@@ -351,7 +329,7 @@ public class Work1OldStableVersion implements Methods{
     }
 
     public static void setSaveAdditionalResult(boolean saveAdditionalResult) {
-        Work1OldStableVersion.saveAdditionalResult = saveAdditionalResult;
+        Work2OldStableVersion.saveAdditionalResult = saveAdditionalResult;
     }
 
     public double[][][] getM0ch() {

@@ -12,30 +12,30 @@ public class ClassicAlgo {
      * Сделать вариант с возвратами.
      */
     private static double[][] array;
-    //private static StringBuilder path = new StringBuilder();
     private static double H = 0;
     private static int originalsize;
-    public static String delimeter = "========================================";
-    static int[][] p;
-    static int[] mi;
-    static int[] mj;
-    static int[] beforeP;
-    static double[] minArrI;
-    static double[] minArrJ;
+    private static String delimeter = "========================================";
+    private static int[][] p;
+    private static int[] mi;
+    private static int[] mj;
+    private static int[] beforeP;
+    private static double[] minArrI;
+    private static double[] minArrJ;
     private static long sysTime;
+
+    public static double[][] getArray() {
+        return array;
+    }
 
     //конструктор
     public ClassicAlgo(double[][] array) {
         ClassicAlgo.array = cloneMatrix(array);
-
+        originalsize = array.length;
     }
 
     private static void initialize() {
-        /*if (path.length() != 0)
-            path.delete(0, path.length() - 1);*/
         double M = Double.POSITIVE_INFINITY;
         H = 0;
-        originalsize = array.length;
         mi = new int[originalsize];
         mj = new int[originalsize];
         beforeP = new int[2];
@@ -215,6 +215,7 @@ public class ClassicAlgo {
                 }
             }
         }
+        //map = sortByValue(map);
 
         /*Iterator<Map.Entry<Object, Double>> i = map.entrySet().iterator();
         while(i.hasNext()){
@@ -224,6 +225,23 @@ public class ClassicAlgo {
         System.err.println("\n");*/
         return map;
 
+    }
+
+    public static <K, V extends Comparable<? super V>> Map<K, V>
+    sortByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+            @Override
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
 
     private static int[] difineEdge(Map map) {
@@ -240,8 +258,31 @@ public class ClassicAlgo {
                 edge = key1;
             }
         }
-        //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+        array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
         return edge;
+    }
+
+    private static int[] difineEdgeWithout(Map map) {
+        double comparator = 0;
+        int[] edge = new int[2];
+
+        /*for (Object entrySet : map.entrySet()) {
+            Map.Entry entry = (Map.Entry) entrySet;
+            double sum = (double) entry.getValue();
+            int[] key1 = (int[]) entry.getKey();
+
+            if (sum > comparator) {
+                comparator = sum;
+                edge = key1;
+            }
+        }*/
+        List<Map.Entry<Object,Object>> entryList =
+                new ArrayList<Map.Entry<Object, Object>>(map.entrySet());
+        Map.Entry<Object, Object> lastEntry =
+                entryList.get(entryList.size()-1);
+
+        //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+        return (int[]) lastEntry.getKey();
     }
 
     // Считаем H включая max элемент их map и заменяя его Infinity
@@ -265,14 +306,10 @@ public class ClassicAlgo {
         return (double) entry.getValue();
     }
 
-    private static double[][] getHWithout(Map map) {
-        Iterator iterator = map.entrySet().iterator();
-        Map.Entry entry = (Map.Entry) iterator.next();
-        double sum = (double) entry.getValue();
-        int[] key1 = (int[]) entry.getKey();
+    private static double[][] getHWithout(int[] edge, double sum) {
         double[][] M1;
-        getPathForZero(array, key1);
-        M1 = setElementsM0toM(array, key1[0], key1[1]);
+        getPathForZero(array, edge);
+        M1 = setElementsM0toM(array, edge[0], edge[1]);
         normalize(M1);
         return M1;
     }
@@ -329,82 +366,116 @@ public class ClassicAlgo {
     }
 
     private static void solve() {
-
         double HWith;
         double HWithout;
-
-        /*display(array, "initial state");
-
-        //находим минимальные значения в строках
-        getMinInRow(array);
-
-        //вычитаем минимальные значения из строки
-        deductMinFromRow(array, false);
-
-        display(array, "массив");
-
-        //находим минимальные значения в колонках
-        getMinInCollumn(array);
-
-        //вычитаем минимальные значения из столбца
-        deductMinFromRow(array, true);
-        display(array, "массив");
-
-        //получаем длину маршрута
-        setH(getSumOfDelta());*/
-        //вот здесь заканчивается правильное решение и начинается белиберда
-
         normalize(array);
         setH(getSumOfDelta());
-
         //System.out.println(delimeter);
         Map map = new HashMap<Object, Double>();
-        Map m = new HashMap<Object, Double>();
+        Map maparr = new HashMap<Integer, Map>();
         Iterator iterator;
         Map.Entry entry;
-        int[] edge;
+        int[] edge = new int[0];
+        double sum = 0;
         double[][] M1;
-        //entry.getValue();
+        /*map.put(1, 2);
+        map.put(3, 4);
+        map.put(5, 6);
+        m.put(3, 4);
+        iterator = m.entrySet().iterator();
+        entry = (Map.Entry) iterator.next();
+        map.remove(entry.getKey());*/
         int count = array.length - 2;
+        Map st = new LinkedHashMap<Integer, ArrayList<Struct>>(count);
+        /*st.put(1, 2);
+        st.put(1, 3);
+        st.put(4, 2);
+        st.put(4, 2);
+        st.put(4, 5);*/
+        Struct s = null;
+        ArrayList arrayList = null;
         for (int i = 0; i < count; i++) {
-            while (true) {
-                m.clear();
+
+            if (maparr.get(i) == null) { // Если матрица не существует
                 map.clear();
-                map = defineMapEdge();
-                edge = difineEdge(map);
-                m.put(edge, (double) map.get(edge));
-                HWith = getHWith(m);
-                M1 = getHWithout(m);
-                HWithout = getSumOfDelta();
-                if (HWithout < HWith) {
+                map = defineMapEdge();      // то создать её
+                List<Map.Entry<Object, Object>> entryList =
+                        new ArrayList<Map.Entry<Object, Object>>(map.entrySet());
+                Map.Entry<Object, Object> lastEntry =
+                        entryList.get(entryList.size() - 1);
+                edge = (int[]) lastEntry.getKey();
+                sum = (double) lastEntry.getValue();
+                maparr.put(i, map);
+            } else { // допилить
+                map = (Map) maparr.get(count);
+                //map.remove(entry.getKey()); // lastEntry.getKey()
+            }
+            HWith = sum;
+            M1 = getHWithout(edge, sum);
+            HWithout = getSumOfDelta();
+            //C.p(delimeter);
+            //C.p("Step = " + (i + 1));
+            //C.p("HWith = " + HWith);
+            //C.p("HWithout = " + HWithout);
+            getPath(edge, i);
+
+            /*if (st.get(i) == null) {
+                s = new Struct();
+                s.setAll(i,
+                        map, edge, HWith,
+                        HWithout, array, getH() + HWith,
+                        getH() + HWithout, p, true);
+                arrayList = new ArrayList<Struct>();
+                arrayList.add(s);
+                st.put(i, arrayList);
+                //st.put(i, new ArrayList<Struct>().add(s));
+            } else {
+                //arrayList = (ArrayList) st.get(i);
+                // arrayList.add(s);//todo  realize and test
+                // st.put(i, arrayList);
+            }*/
+
+            setH(HWithout);
+            array = cloneMatrix(M1);
+
+
+            /*for (Object entrySet : map.entrySet()) {
+                entry = (Map.Entry) entrySet;
+                double sum = (double) entry.getValue();
+                int id = (int) entry.getKey();
+
+                if (HWithout > sum) {
+
+                } else {
                     getPath(edge, i);
                     array = cloneMatrix(M1);
                     break;
-                } else {
-                    iterator = map.entrySet().iterator();
-                    entry = (Map.Entry) iterator.next();
-                    map.remove(entry.getKey());
-                }
-            }
 
-            setH(HWithout);
-            /*path.append("(").append(edge[0] + 1)
-                    .append("-")
-                    .append(edge[1] + 1)
-                    .append(") ");*/
-            /*System.out.println("KEY : " + edge[0] + ":" + edge[1]);
-            System.out.println(comparator);
-            //setH(getSumOfDelta());*/
+                        *//*iterator = map.entrySet().iterator();
+                        entry = (Map.Entry) iterator.next();
+                        map.remove(entry.getKey());*//*
+                }
+            }*/
+        }
+        count = 0;
+        for (Object entrySet : st.entrySet()) {
+            entry = (Map.Entry) entrySet;
+            arrayList = (ArrayList) entry.getValue();
+            Struct ss = (Struct) arrayList.get(0);
+            System.err.println("i = " + count + "  getHWithSum = " + ss.getHWithSum());
+            System.err.println("i = " + count + "  getHWithoutSum = " + ss.getHWithoutSum());
+            System.err.println("\n");
+            count++;
         }
     }
 
-    public static void main() {
+    public void main() {
         sysTime = System.currentTimeMillis();
         initialize();
         solve();
         computeLastElement();
-        //System.out.println("Sum = " + s.getSum(example) + ", H = " + H);
-        //System.out.println("Path = " + s.getPath());
+        //System.out.println("Sum = " + this.getSum(getArray()) + ", H = " + H);
+        //System.out.println("Path = " + this.getPath());
     }
 
     public String getPath() {
@@ -469,12 +540,8 @@ public class ClassicAlgo {
         return clone;
     }
 
-}
 
-
-
-/*
-public static void main(String[] args) {
+    public static void main(String[] args) {
         sysTime = System.currentTimeMillis();
         double M = Double.POSITIVE_INFINITY;
 
@@ -507,11 +574,44 @@ public static void main(String[] args) {
                 {18, 0, 0, 0, 58, 13, M}
         };
 
+        /*
+        
+
+         */
+        double[][] M1 = {
+                {
+                    M,	12,	22,	28,	32,	40,	46
+                },
+                {
+                    12,	M,	10	,40,	20,	28,	34
+                },
+                {
+                    22	,10,	M	,50	,10	,18	,24
+                },
+                {
+                    28,	27,	17,	M	,27,	35	,41
+                },
+                {
+                    32,	20	,10	,60,	M,	8,	14
+                },
+                {
+                    46	,34	,24	,74	,14	,M,	6
+                },
+                {
+                    52	,40	,30	,80	,20,	6	,M
+                }
+        };
+        
         //System.err.println(array[0][3]+ array[3][2]+ array[2][4]+ array[4][1]+ array[1][0]);
+        ClassicAlgo ca = new ClassicAlgo(M1);
         initialize();
         solve();
         computeLastElement();
-        System.out.println("Sum = " + s.getSum(example) + ", H = " + H);
-        System.out.println("Path = " + s.getPath());
+        /*p[originalsize - 2][0] = 3;
+        p[originalsize - 2][1] = 4;
+        p[originalsize - 1][0] = 2;
+        p[originalsize - 1][1] = 6;*/
+        System.out.println("Sum = " + ca.getSum(M1) + ", H = " + H);
+        System.out.println("Path = " + ca.getPath());
     }
- */
+}
