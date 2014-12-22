@@ -258,7 +258,7 @@ public class ClassicAlgo {
                 edge = key1;
             }
         }
-        array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+        //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
         //array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
         return edge;
     }
@@ -311,7 +311,9 @@ public class ClassicAlgo {
         double[][] M1;
         //getPathForZero(array, edge);
         //getPathAlternative(array, edge);
-        M1 = setElementsM0toM(array, edge[0], edge[1]);
+        array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
+        changeJI(array, edge[0], edge[1]);
+        M1 = setElementsM0toM(array, edge[1], edge[1]);
         normalize(M1);
         return M1;
     }
@@ -340,6 +342,17 @@ public class ClassicAlgo {
         array[di][x] = Double.POSITIVE_INFINITY;
     }
 
+    private static double[][] changeJI(double[][] M0, int di, int dj) {
+        double temp;
+        for (int j = 0; j < M0.length; j++) {
+            temp = M0[dj][j];
+            M0[dj][j] = M0[di][j];
+            M0[di][j] = temp;
+        }
+
+        return M0;
+    }
+
     private static double[][] setElementsM0toM(double[][] M0, int di, int dj) {
         double[][] M1 = new double[M0.length - 1][M0.length - 1];
         int ki = 0;
@@ -366,7 +379,9 @@ public class ClassicAlgo {
         int y = d[1];
         p[i][0] = mi[x];
         p[i][1] = mj[y];
-        mi = remove(mi, x);
+        mi[x] = mi[y];
+
+        mi = remove(mi, y);
         mj = remove(mj, y);
     }
 
@@ -545,7 +560,7 @@ public class ClassicAlgo {
     }
 
     public static void computeLastElement() {
-            p[originalsize - 2][0] = mi[0];//todo Выбрать всё, кроме M
+            p[originalsize - 2][0] = mi[0];
             p[originalsize - 2][1] = mj[1];
             p[originalsize - 1][0] = mi[1];
             p[originalsize - 1][1] = mj[0];
