@@ -245,7 +245,7 @@ public class ClassicAlgo {
     }
 
     private static int[] difineEdge(Map map) {
-        double comparator = 0;
+        double comparator = -Double.MAX_VALUE;
         int[] edge = new int[2];
 
         for (Object entrySet : map.entrySet()) {
@@ -259,6 +259,7 @@ public class ClassicAlgo {
             }
         }
         array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+        //array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
         return edge;
     }
 
@@ -308,7 +309,8 @@ public class ClassicAlgo {
 
     private static double[][] getHWithout(int[] edge, double sum) {
         double[][] M1;
-        getPathForZero(array, edge);
+        //getPathForZero(array, edge);
+        //getPathAlternative(array, edge);
         M1 = setElementsM0toM(array, edge[0], edge[1]);
         normalize(M1);
         return M1;
@@ -319,10 +321,20 @@ public class ClassicAlgo {
         int y = d[1];
         int len = array[0].length;
         int di = -1;
+        boolean yes = true;
         for (int i = 0; i < len; i++) {
-            if (array[i][y] == Double.POSITIVE_INFINITY) {
-                di = i;
-                break;
+            if (array[i][y] == Double.POSITIVE_INFINITY && i != x) {
+                for (int j = 0; j < len; j++) {
+                    if (array[i][j] == Double.POSITIVE_INFINITY && j != y) {
+                        yes = false;
+                        break;
+                    }
+                }
+                if (yes) {
+                    di = i;
+                    break;
+                }
+                yes = true;
             }
         }
         array[di][x] = Double.POSITIVE_INFINITY;
@@ -393,10 +405,18 @@ public class ClassicAlgo {
         st.put(4, 2);
         st.put(4, 5);*/
         Struct s = null;
+        Map m = new LinkedHashMap<Object, Object>();
         ArrayList arrayList = null;
         for (int i = 0; i < count; i++) {
 
-            if (maparr.get(i) == null) { // Если матрица не существует
+            m.clear();
+            map.clear();
+            map = defineMapEdge();
+            edge = difineEdge(map);
+            double temp = (double) map.get(edge);
+            m.put(edge, (double) map.get(edge));
+
+            /*if (maparr.get(i) == null) { // Если матрица не существует
                 map.clear();
                 map = defineMapEdge();      // то создать её
                 List<Map.Entry<Object, Object>> entryList =
@@ -409,7 +429,7 @@ public class ClassicAlgo {
             } else { // допилить
                 map = (Map) maparr.get(count);
                 //map.remove(entry.getKey()); // lastEntry.getKey()
-            }
+            }*/
             HWith = sum;
             M1 = getHWithout(edge, sum);
             HWithout = getSumOfDelta();
@@ -499,10 +519,10 @@ public class ClassicAlgo {
     }
 
     private static void getPathForZero(double[][] array, int[] d) {
-        int x = d[0];
-        int y = d[1];
-        int mx = mi[x];//3
-        int my = mj[y];//5
+        int x = d[0];//0
+        int y = d[1];//2
+        int mx = mi[x];
+        int my = mj[y];
         int di = -1;
         int dj = -1;
         for (int i = 0; i < mi.length; i++) {// перепилить поиск в быстрый поиск.todo
@@ -525,10 +545,10 @@ public class ClassicAlgo {
     }
 
     public static void computeLastElement() {
-            p[originalsize - 2][0] = mi[0];
-            p[originalsize - 2][1] = mj[0];
+            p[originalsize - 2][0] = mi[0];//todo Выбрать всё, кроме M
+            p[originalsize - 2][1] = mj[1];
             p[originalsize - 1][0] = mi[1];
-            p[originalsize - 1][1] = mj[1];
+            p[originalsize - 1][1] = mj[0];
     }
 
     private static double[][] cloneMatrix(double[][] a) {
@@ -603,7 +623,7 @@ public class ClassicAlgo {
         };
         
         //System.err.println(array[0][3]+ array[3][2]+ array[2][4]+ array[4][1]+ array[1][0]);
-        ClassicAlgo ca = new ClassicAlgo(M1);
+        ClassicAlgo ca = new ClassicAlgo(example);
         initialize();
         solve();
         computeLastElement();
@@ -611,7 +631,7 @@ public class ClassicAlgo {
         p[originalsize - 2][1] = 4;
         p[originalsize - 1][0] = 2;
         p[originalsize - 1][1] = 6;*/
-        System.out.println("Sum = " + ca.getSum(M1) + ", H = " + H);
+        System.out.println("Sum = " + ca.getSum(example) + ", H = " + H);
         System.out.println("Path = " + ca.getPath());
     }
 }
