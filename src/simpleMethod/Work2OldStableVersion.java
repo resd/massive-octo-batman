@@ -307,17 +307,10 @@ public class Work2OldStableVersion implements Methods{
     }
 
     public void computeLastElement() {
-        if (mj[0] == mi[0] || mj[1] == mi[0]) {
-            p[originalsize - 2][0] = mi[1];
-            p[originalsize - 2][1] = mi[0];
-            p[originalsize - 1][0] = mi[0];
-            p[originalsize - 1][1] = mj[1];
-        } else {
-            p[originalsize - 2][0] = mi[0];
-            p[originalsize - 2][1] = mi[1];
-            p[originalsize - 1][0] = mi[1];
-            p[originalsize - 1][1] = mj[0];
-        }
+        p[originalsize - 2][0] = mi[0];
+        p[originalsize - 2][1] = mj[1];
+        p[originalsize - 1][0] = mi[1];
+        p[originalsize - 1][1] = mj[0];
     }
 
     public static void setOriginalsize(int originalsize) {

@@ -104,7 +104,7 @@ public class ParentFrame extends JFrame {
         jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
+        //setAlwaysOnTop(true);
 
         matrixColumn1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         matrixColumn1.setModel(new javax.swing.table.DefaultTableModel(
