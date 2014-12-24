@@ -107,16 +107,6 @@ public class Work1OldStableVersion implements Methods{
         D1s = doDfromM(M0, M1s);
         D2s = doDfromM(M1s, M2s);
         DDs = doDDfromD(M0, D1s, D2s);
-        if (saveAdditionalResult) {
-            M0ch[count] = cloneMatrix(M0);
-            M1[count] = cloneMatrix(M1s);
-            M1[count] = cloneMatrix(M1s);
-            M2[count] = cloneMatrix(M2s);
-            D1[count] = cloneMatrix(D1s);
-            D2[count] = cloneMatrix(D2s);
-            DD[count] = cloneMatrix(DDs);
-            count++;
-        }
         return DDs; // Возврат DD
     }
 

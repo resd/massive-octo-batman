@@ -56,54 +56,46 @@ public class Work2OldStableVersion implements Methods{
         count = 0;
     }
 
-    public double[][] normalize(double[][] M) {
-        double[] minArrI = new double[M.length];
-        double[] minArrJ = new double[M.length];
-        for (int i = 0; i < M.length; i++) {
-            minArrI[i] = Double.MAX_VALUE;
-            minArrJ[i] = Double.MAX_VALUE;
-        }
-        for (int i = 0; i < M.length; i++) {
+    public void normalize(double[][] M) {
+        double min = Double.MAX_VALUE;
+
+        for (int i = 0; i < M.length; i++) { // Нахождение минимальных значений в каждой строке
             for (int j = 0; j < M.length; j++) {
-                if (i != j && M[i][j] < minArrI[i]) {
-                    minArrI[i] = M[i][j];
+                if (i != j && M[i][j] < min) {
+                    min = M[i][j];
                     if (M[i][j] == 0) {
                         break;
                     }
                 }
             }
-        }
-        for (int i = 0; i < M.length; i++) {
-            if (minArrI[i] == 0) {
-                continue;
-            }
-            for (int j = 0; j < M.length; j++) {
-                if (i != j) {
-                    M[i][j] -= minArrI[i];
+            if (min != 0) { // Вычитание из каждой строки минимальный элемент
+                for (int j = 0; j < M.length; j++) {
+                    if (i != j) {
+                        M[i][j] -= min;
+                    }
                 }
             }
+            min = Double.MAX_VALUE;
         }
-        for (int i = 0; i < M.length; i++) {
+
+        for (int i = 0; i < M.length; i++) { // Нахождение минимальных значений в каждом столбце
             for (int j = 0; j < M.length; j++) {
-                if (i != j && M[j][i] < minArrJ[i]) {
-                    minArrJ[i] = M[j][i];
+                if (i != j && M[j][i] < min) {
+                    min = M[j][i];
                     if (M[j][i] == 0) {
                         break;
                     }
                 }
             }
-        }
-        for (int i = 0; i < M.length; i++) {
-            if (minArrJ[i] == 0) {
-                continue;
-            }
-            for (int j = 0; j < M.length; j++) {
-                if (i != j) {
-                    M[j][i] -= minArrJ[i];
+            if (min != 0) { // Вычитание из каждого столбца минимальный элемент
+                for (int j = 0; j < M.length; j++) {
+                    if (i != j) {
+                        M[j][i] -= min;
+                    }
                 }
             }
+            min = Double.MAX_VALUE;
         }
-        return M;
     }
 
     public double[][] solve(double[][] M0) {

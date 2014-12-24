@@ -5,7 +5,7 @@ package common;
  */
 public interface Methods {
     void initialize();
-    public double[][] normalize(double[][] M);
+    public void normalize(double[][] M);
     public double[][] solve(double[][] M0);
     public int[] getD(double[][] DD, int i);
     void getPath(int[] d, int i);

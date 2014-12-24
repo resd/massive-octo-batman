@@ -303,7 +303,7 @@ public class ParentFrame extends JFrame {
         jSpinner1.setEnabled(false);
 
         MatrixSizeSpinner.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        MatrixSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100000, 1));
         MatrixSizeSpinner.setToolTipText("");
 
         FillBtn.setText("Заполнить");
@@ -668,7 +668,7 @@ public class ParentFrame extends JFrame {
 
         switch (method) {
             case "Все":
-                bf.setM0(a);
+                /*bf.setM0(a);
                 bf.main(a);
                 blder.append("Полный перебор");
                 blder.append(":");
@@ -677,7 +677,7 @@ public class ParentFrame extends JFrame {
                 blder.append("\nSum = ");
                 blder.append(bf.getSum(a));
                 blder.append(",  Time: ");
-                blder.append(bf.getTime());
+                blder.append(bf.getTime());*/
                 //parseAndHighlightPath(bf.getPath());
                 //w.mainNewMethod();
 
