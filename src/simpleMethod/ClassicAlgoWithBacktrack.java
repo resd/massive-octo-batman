@@ -1,12 +1,14 @@
 package simpleMethod;
 
+import common.BruteforceAlgo;
+
 import java.util.*;
 
 /**
  * @author zabr1
  */
 @SuppressWarnings({"unused", "all"})
-public class ClassicAlgo {
+public class ClassicAlgoWithBacktrack {
     /**
      * Сделать вариант без возвратов.
      * Сделать вариант с возвратами.
@@ -18,18 +20,19 @@ public class ClassicAlgo {
     private static int[][] p;
     private static int[] mi;
     private static int[] mj;
-    private static int[] beforeP;
     private static double[] minArrI;
     private static double[] minArrJ;
     private static long sysTime;
+    private static Struct minStruct;
+    private static double minStructNum = -1;
 
     public static double[][] getArray() {
         return array;
     }
 
     //конструктор
-    public ClassicAlgo(double[][] array) {
-        ClassicAlgo.array = cloneMatrix(array);
+    public ClassicAlgoWithBacktrack(double[][] array) {
+        ClassicAlgoWithBacktrack.array = cloneMatrix(array);
         originalsize = array.length;
     }
 
@@ -38,7 +41,6 @@ public class ClassicAlgo {
         H = 0;
         mi = new int[originalsize];
         mj = new int[originalsize];
-        beforeP = new int[2];
         p = new int[originalsize][2];
         for (int i = 0; i < originalsize; i++) {
             array[i][i] = M;
@@ -49,15 +51,39 @@ public class ClassicAlgo {
         }
     }
 
+    public static int[][] getP() {
+        return p;
+    }
+
+    public static void setP(int[][] p) {
+        ClassicAlgoWithBacktrack.p = p;
+    }
+
     public static double getH() {
         return H;
     }
 
-    public static void setH(double H) {
-        ClassicAlgo.H += H;
+    public static void setH(double H)  {
+        ClassicAlgoWithBacktrack.H = H;
     }
 
-    private static double[][] normalize(double[][] M) {
+    public static int[] getMj() {
+        return mj;
+    }
+
+    public static void setMj(int[] mj) {
+        ClassicAlgoWithBacktrack.mj = mj;
+    }
+
+    public static int[] getMi() {
+        return mi;
+    }
+
+    public static void setMi(int[] mi) {
+        ClassicAlgoWithBacktrack.mi = mi;
+    }
+
+    private static double[][] normalize(double[][] M) {//todo сразу считать minSum, правда если нужно.
         minArrI = null;
         minArrJ = null;
         minArrI = new double[M.length];
@@ -110,7 +136,7 @@ public class ClassicAlgo {
     }
 
     public static void setArray(double[][] array) {
-        ClassicAlgo.array = array;
+        ClassicAlgoWithBacktrack.array = array;
     }
 
     //получает минимальное значение в строке
@@ -258,8 +284,6 @@ public class ClassicAlgo {
                 edge = key1;
             }
         }
-        //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
-        //array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
         return edge;
     }
 
@@ -314,6 +338,10 @@ public class ClassicAlgo {
         array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
         changeJI(array, edge[0], edge[1]);
         M1 = setElementsM0toM(array, edge[1], edge[1]);
+        for (int i = 0; i < M1.length; i++) {
+            if (M1[i][i] != Double.POSITIVE_INFINITY)
+                System.err.println("\n ASDFSAFSADFSAFSAD FASDF ASDF ASD FSADF ASDfas\nADFSADFSADF\nADFASDFSAFSA\n");
+        }
         normalize(M1);
         return M1;
     }
@@ -396,14 +424,13 @@ public class ClassicAlgo {
         double HWith;
         double HWithout;
         normalize(array);
-        setH(getSumOfDelta());
+        setH(getH() + getSumOfDelta());
         //System.out.println(delimeter);
         Map map = new HashMap<Object, Double>();
         Map maparr = new HashMap<Integer, Map>();
         Iterator iterator;
         Map.Entry entry;
         int[] edge = new int[0];
-        double sum = 0;
         double[][] M1;
         /*map.put(1, 2);
         map.put(3, 4);
@@ -414,22 +441,19 @@ public class ClassicAlgo {
         map.remove(entry.getKey());*/
         int count = array.length - 2;
         Map st = new LinkedHashMap<Integer, ArrayList<Struct>>(count);
+        ArrayList[] dh = new ArrayList[originalsize];
         /*st.put(1, 2);
         st.put(1, 3);
         st.put(4, 2);
         st.put(4, 2);
         st.put(4, 5);*/
         Struct s = null;
-        Map m = new LinkedHashMap<Object, Object>();
         ArrayList arrayList = null;
         for (int i = 0; i < count; i++) {
-
-            m.clear();
             map.clear();
             map = defineMapEdge();
             edge = difineEdge(map);
-            double temp = (double) map.get(edge);
-            m.put(edge, (double) map.get(edge));
+            HWith = (double) map.get(edge);
 
             /*if (maparr.get(i) == null) { // Если матрица не существует
                 map.clear();
@@ -445,15 +469,12 @@ public class ClassicAlgo {
                 map = (Map) maparr.get(count);
                 //map.remove(entry.getKey()); // lastEntry.getKey()
             }*/
-            HWith = sum;
-            M1 = getHWithout(edge, sum);
+            M1 = getHWithout(edge, HWith);
             HWithout = getSumOfDelta();
             //C.p(delimeter);
             //C.p("Step = " + (i + 1));
             //C.p("HWith = " + HWith);
             //C.p("HWithout = " + HWithout);
-            getPath(edge, i);
-
             /*if (st.get(i) == null) {
                 s = new Struct();
                 s.setAll(i,
@@ -469,11 +490,106 @@ public class ClassicAlgo {
                 // arrayList.add(s);//todo  realize and test
                 // st.put(i, arrayList);
             }*/
+            Struct sa = new Struct(i, edge.clone(), HWith, HWithout, cloneMatrix(array), getH(), cloneMatrix(getP()));
+            //sa.setAll(i, edge.clone(), HWith, HWithout, cloneMatrix(array), getH(), p.clone(), mi.clone(), mj.clone());
+            if (dh[i] == null) {
+                dh[i] = new ArrayList<Struct>();
+            }
+            /*if (i != 0) {
+                if (false) {
+                } else {*/
+            double min;
+            if (HWithout <= HWith) {
+                getPath(edge, i);
+                setH(getH() + HWithout);
+                array = cloneMatrix(M1);
+                sa.setActivatehwo(true);//todo трехразрядная логика или как проверить, что мы уже прошли эту вершину?
+                min = getH();
+            } else {
+                array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+                array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+                array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+                normalize(array);
+                i--;
+                sa.setActivatehw(true);
+                setH(getH() + HWith);
+                min = getH();
+            }
+               /* }
+            } else {
+                if (HWithout < HWith) {
+                    getPath(edge, i);
+                    setH(getH() + HWithout);
+                    array = cloneMatrix(M1);
+                } else {
+                    array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+                    array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+                    array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+                }
+            }*/
+            sa.setAdditional(cloneMatrix(getP()), cloneMatrix(M1), mi.clone(), mj.clone());// todo Safe delete pNew.
+            dh[i].add(sa);
 
-            setH(HWithout);
-            array = cloneMatrix(M1);
+            if (minStruct != null && min > minStructNum) {
+                setP(minStruct.getP());
+                setH(minStruct.getHWithSum());
+                setMi(minStruct.getMi());
+                setMj(minStruct.getMj());
+                i = minStruct.getId();
+                array = cloneMatrix(minStruct.getArray());
+                min = minStruct.getHWithoutSum() > minStruct.getHWithSum() ? minStruct.getHWithSum() : minStruct.getHWithoutSum();
+            }
 
+            // Проверить нет ли решений меньше, чем уже полученное решение
+            // Прыгнуть на то решение
+            boolean stop = false;
+            for (int k = 0; k < dh.length; k++) {
+                Struct temp;
+                if (stop || dh[k] == null) break;// todo dh[k] == null  nado ili net?
+                for (int j = 0; j < dh[k].size(); j++) {
+                    temp = (Struct) dh[k].get(j);
+                    if (!temp.isActivatehw() && temp.getHWithSum() < min) {
+                        if (minStruct == null) {
+                            minStruct = sa;
+                            minStructNum = temp.getHWithSum();
+                        } else {
+                        }
+                        //((Struct) dh[i].get(dh[i].size() - 1)).setActivatehwo(true);
+                        //((Struct) dh[i].get(dh[i].size() - 1)).setActivatehw(true);
+                        setP(temp.getP());
+                        setH(temp.getHWithSum());
+                        setMi(temp.getMi());
+                        setMj(temp.getMj());
+                        i = temp.getId() - 1;
+                        array = cloneMatrix(temp.getArray());
+                        //((Struct) dh[i].get(j)).setActivatehw(true);// i0 j0
+                        array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;// todo stop here
+                        array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+                        array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+                        normalize(array);
+                        stop = true;
+                        break;
+                    } else if (!temp.isActivatehwo() && temp.getHWithoutSum() < min) {
+                        if (minStruct == null) {
+                            minStruct = sa;
+                            minStructNum = temp.getHWithSum();
+                        } else {
+                        }
+                        //((Struct) dh[i].get(dh[i].size())).setActivatehwo(true);
+                        //((Struct) dh[i].get(dh[i].size())).setActivatehw(true);
+                        setP(temp.getpNew());
+                        setH(temp.getHWithoutSum());
+                        setMi(temp.getMi());
+                        setMj(temp.getMj());
+                        i = temp.getId();
+                        array = cloneMatrix(temp.getArray());
+                        stop = true;
+                        break;
+                    }
+                }
+            }
 
+            sa = null;
             /*for (Object entrySet : map.entrySet()) {
                 entry = (Map.Entry) entrySet;
                 double sum = (double) entry.getValue();
@@ -560,13 +676,13 @@ public class ClassicAlgo {
     }
 
     public static void computeLastElement() {
-        p[originalsize - 2][0] = mi[0];
-        p[originalsize - 2][1] = mj[1];
-        p[originalsize - 1][0] = mi[1];
-        p[originalsize - 1][1] = mj[0];
+            p[originalsize - 2][0] = mi[0];
+            p[originalsize - 2][1] = mj[1];
+            p[originalsize - 1][0] = mi[1];
+            p[originalsize - 1][1] = mj[0];
     }
 
-    private static double[][] cloneMatrix(double[][] a) {
+    public static double[][] cloneMatrix(double[][] a) {
         double[][] clone = a.clone();
 
         for (int i = 0; i < a.length; i++) {
@@ -575,6 +691,14 @@ public class ClassicAlgo {
         return clone;
     }
 
+    public static int[][] cloneMatrix(int[][] a) {
+        int[][] clone = a.clone();
+
+        for (int i = 0; i < a.length; i++) {
+            clone[i] = a[i].clone();
+        }
+        return clone;
+    }
 
     public static void main(String[] args) {
         sysTime = System.currentTimeMillis();
@@ -615,38 +739,55 @@ public class ClassicAlgo {
          */
         double[][] M1 = {
                 {
-                        M,	12,	22,	28,	32,	40,	46
+                    M,	12,	22,	28,	32,	40,	46
                 },
                 {
-                        12,	M,	10	,40,	20,	28,	34
+                    12,	M,	10	,40,	20,	28,	34
                 },
                 {
-                        22	,10,	M	,50	,10	,18	,24
+                    22	,10,	M	,50	,10	,18	,24
                 },
                 {
-                        28,	27,	17,	M	,27,	35	,41
+                    28,	27,	17,	M	,27,	35	,41
                 },
                 {
-                        32,	20	,10	,60,	M,	8,	14
+                    32,	20	,10	,60,	M,	8,	14
                 },
                 {
-                        46	,34	,24	,74	,14	,M,	6
+                    46	,34	,24	,74	,14	,M,	6
                 },
                 {
-                        52	,40	,30	,80	,20,	6	,M
+                    52	,40	,30	,80	,20,	6	,M
                 }
         };
 
+        print(M0);
         //System.err.println(array[0][3]+ array[3][2]+ array[2][4]+ array[4][1]+ array[1][0]);
-        ClassicAlgo ca = new ClassicAlgo(example);
+    }
+
+    private static void print(double[][] example) {
+        ClassicAlgoWithBacktrack ca = new ClassicAlgoWithBacktrack(example);
         initialize();
         solve();
         computeLastElement();
-        /*p[originalsize - 2][0] = 3;
-        p[originalsize - 2][1] = 4;
-        p[originalsize - 1][0] = 2;
-        p[originalsize - 1][1] = 6;*/
         System.out.println("Sum = " + ca.getSum(example) + ", H = " + H);
         System.out.println("Path = " + ca.getPath());
+        BruteforceAlgo bf = new BruteforceAlgo();
+        StringBuilder blder = new StringBuilder();
+        bf.setM0(example);
+        bf.main(example);
+        blder.append("\nPath: ");
+        blder.append(bf.getPath());
+        blder.append("\nSum = ");
+        blder.append(bf.getSum(example));
+        blder.append(",  Time: ");
+        blder.append(bf.getTime());
+        //parseAndHighlightPath(bf.getPath());
+        //w.mainNewMethod();
+        System.out.println(blder.toString());
     }
+    static double[][] a = new double[][]{{1,2},{3,4}};
+    static double[][] b;
+    static double[][] c;
+
 }

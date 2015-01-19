@@ -1,44 +1,72 @@
 package simpleMethod;
 
-import java.util.Map;
-
 /**
  * Created by Admin on 19.12.14.
  */
 public class Struct {
     private int id;
-    private int beforId;
-    private Map map;// Нужно?
+    //private int beforId;  // Нужно?
     private int[] edge;
     private double HWith;
     private double HWithout;
+    private double H;
     private int[][] p;
+    private int[][] pNew;
     private double[][] array;
+    private double[][] M1;
     private double HWithSum;
     private double HWithoutSum;
-    private boolean activate;
+
+    public boolean isActivatehw() {
+        return activatehw;
+    }
+
+    public void setActivatehw(boolean activatehw) {
+        this.activatehw = activatehw;
+    }
+
+    public boolean isActivatehwo() {
+        return activatehwo;
+    }
+
+    public void setActivatehwo(boolean activatehwo) {
+        this.activatehwo = activatehwo;
+    }
+
+    private boolean activatehw;
+    private boolean activatehwo;
+    private int[] mi;
+    private int[] mj;
 
 
-    public void setAll(int id, Map map, int[] edge, double HWith, double HWithout, double[][] array, double HWithSum,
-                      double HWithoutSum, int[][] p, boolean activate) {
-        this.id = id;
-        this.map = map;
+    public void setAll(int id, int[] edge, double HWith, double HWithout, double[][] array, double H,
+                       int[][] p, int[] mi, int[] mj) {
+        /*this.id = id;
         this.edge = edge;
         this.HWith = HWith;
         this.HWithout = HWithout;
         this.array = array;
-        this.HWithSum = HWithSum;
-        this.HWithoutSum = HWithoutSum;
-        this.activate = activate;
+        this.H = H;
+        this.HWithSum = HWith + H;
+        this.HWithoutSum = HWithout + H;
         this.p = p;
+        this.mi = mi;
+        this.mj = mj;*/
+    }
+
+    public void setAdditional(int[][] pNew, double[][] M1, int[] mi, int[] mj) {
+        this.M1 = M1;
+        this.pNew = pNew;
+        this.mi = mi;
+        this.mj = mj;
+    }
+
+    public double getH() {
+        return H;
     }
 
     public int getId() {
         return id;
-    }
-
-    public Map getMap() {
-        return map;
     }
 
     public int[] getEdge() {
@@ -69,10 +97,33 @@ public class Struct {
         return HWithoutSum;
     }
 
-    public boolean isActivate() {
-        return activate;
+    public int[][] getpNew() {
+        return pNew;
     }
 
-    public Struct() {}
+    public double[][] getM1() {
+        return M1;
+    }
+
+    public int[] getMi() {
+        return mi;
+    }
+
+    public int[] getMj() {
+        return mj;
+    }
+
+    public Struct(int id, int[] edge, double HWith, double HWithout, double[][] array, double H,
+                  int[][] p) {
+        this.id = id;
+        this.edge = edge;
+        this.HWith = HWith;
+        this.HWithout = HWithout;
+        this.array = array;
+        this.H = H;
+        this.HWithSum = HWith + H;
+        this.HWithoutSum = HWithout + H;
+        this.p = p;
+    }
 
 }

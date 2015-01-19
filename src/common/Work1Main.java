@@ -1,12 +1,20 @@
 
 package common;
 
-import simpleMethod.Work2OldStableVersion;
-
 /**
  * Created by Admin on 07.09.14.
  */
 public class Work1Main {
+
+double[][] M0 = {
+            {0, 0, 83, 9, 30, 6, 50},
+            {0, 0, 66, 37, 17, 12, 26},
+            {29, 1, 0, 19, 0, 12, 5},
+            {32, 83, 66, 0, 49, 0, 80},
+            {3, 21, 56, 7, 0, 0, 28},
+            {0, 85, 8, 42, 89, 0, 0},
+            {18, 0, 0, 0, 58, 13, 0}
+    };
 
     public Work1Main(double[][] a, int idMethod) {
         setM0(a);
@@ -19,28 +27,20 @@ public class Work1Main {
 
     private int idMethod;
     private int originalsize;
-    private double[][] M0;
     private int[][] p;
 
     Methods w;
 
     long sysTime;
-
+	
     /**
      * Основной метод программы
      */
     public void main() {
-        double[][] M;                               // Получаем M
-        sysTime = System.currentTimeMillis();
-        if (idMethod == 1) {
-            M = Work1OldStableVersion.cloneMatrix(M0);
-            w = new Work1OldStableVersion(M);
-        } else {
-            M = Work2OldStableVersion.cloneMatrix(M0);
-            w = new Work2OldStableVersion(M);
-        }
-
-        double[][] DD;                              // Инициализация необходимых переменных
+        double[][] M;                               // Инициализация необходимых переменных
+        M = Work1OldStableVersion.cloneMatrix(M0);
+        w = new Work1OldStableVersion(M);
+        double[][] DD;
         int d[];
         w.initialize();
 

@@ -668,16 +668,18 @@ public class ParentFrame extends JFrame {
 
         switch (method) {
             case "Все":
-                /*bf.setM0(a);
-                bf.main(a);
-                blder.append("Полный перебор");
-                blder.append(":");
-                blder.append("\nPath: ");
-                blder.append(bf.getPath());
-                blder.append("\nSum = ");
-                blder.append(bf.getSum(a));
-                blder.append(",  Time: ");
-                blder.append(bf.getTime());*/
+                if ((Integer) MatrixSizeSpinner.getValue() < 13) {
+                    bf.setM0(a);
+                    bf.main(a);
+                    blder.append("Полный перебор");
+                    blder.append(":");
+                    blder.append("\nPath: ");
+                    blder.append(bf.getPath());
+                    blder.append("\nSum = ");
+                    blder.append(bf.getSum(a));
+                    blder.append(",  Time: ");
+                    blder.append(bf.getTime());
+                }
                 //parseAndHighlightPath(bf.getPath());
                 //w.mainNewMethod();
 

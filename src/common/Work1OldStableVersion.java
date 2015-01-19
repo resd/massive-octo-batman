@@ -2,7 +2,7 @@ package common;
 
 public class Work1OldStableVersion implements Methods{
 
-    /*double[][] M0 = {
+    double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
             {29, 1, 0, 19, 0, 12, 5},
@@ -10,8 +10,7 @@ public class Work1OldStableVersion implements Methods{
             {3, 21, 56, 7, 0, 0, 28},
             {0, 85, 8, 42, 89, 0, 0},
             {18, 0, 0, 0, 58, 13, 0}
-    };*/
-
+    };
     static double[][][] M0ch;
     static double[][][] M1;
     static double[][][] M2;
@@ -19,13 +18,10 @@ public class Work1OldStableVersion implements Methods{
     static double[][][] D2;
     static double[][][] DD;
     static int count;
-
     static boolean saveAdditionalResult;
-
     static int originalsize;
     static int[][] p;
     static int[] mi;
-
     static int[] mj;
     static int[] beforeP;
 
@@ -267,7 +263,7 @@ public class Work1OldStableVersion implements Methods{
     }
 
     private static double[][] setElementsM0toM(double[][] M0, int dj) {//  Вычитаем строку и столбец, возвращаем полученную редуцированную матрицу
-        double[][] M1 = new double[M0.length - 1][M0.length - 1];
+        double[][] M1 = new double[M0.length - 1][M0.length - 1]; // todo попробовать перерилить это через systemarraycopy()
         int ki = 0;
         int kj;
         for (int i = 0; i < M0.length; i++) {
