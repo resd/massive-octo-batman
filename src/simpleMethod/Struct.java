@@ -4,18 +4,24 @@ package simpleMethod;
  * Created by Admin on 19.12.14.
  */
 public class Struct {
-    private int id;
-    //private int beforId;  // Нужно?
     private int[] edge;
     private double HWith;
     private double HWithout;
     private double H;
+    private int pathCount;
     private int[][] p;
     private int[][] pNew;
     private double[][] array;
     private double[][] M1;
     private double HWithSum;
     private double HWithoutSum;
+    private int[] miOld;
+    private int[] mjOld;
+    private int pathCountNew;
+
+    public int getPathCountNew() {
+        return pathCountNew;
+    }
 
     public boolean isActivatehw() {
         return activatehw;
@@ -54,19 +60,16 @@ public class Struct {
         this.mj = mj;*/
     }
 
-    public void setAdditional(int[][] pNew, double[][] M1, int[] mi, int[] mj) {
+    public void setAdditional(int[][] pNew, double[][] M1, int[] mi, int[] mj, int pathCountNew) {
         this.M1 = M1;
         this.pNew = pNew;
         this.mi = mi;
         this.mj = mj;
+        this.pathCountNew = pathCountNew;
     }
 
     public double getH() {
         return H;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int[] getEdge() {
@@ -113,17 +116,33 @@ public class Struct {
         return mj;
     }
 
-    public Struct(int id, int[] edge, double HWith, double HWithout, double[][] array, double H,
-                  int[][] p) {
-        this.id = id;
+    public int getPathCount() {
+        return pathCount;
+    }
+
+    public int[] getMiOld() {
+        return miOld;
+    }
+
+    public int[] getMjOld() {
+        return mjOld;
+    }
+
+    public Struct(int[] edge, double HWith, double HWithout, double[][] array, double H,
+                  int[][] p, int pathCount) {
         this.edge = edge;
         this.HWith = HWith;
         this.HWithout = HWithout;
         this.array = array;
         this.H = H;
+        this.pathCount = pathCount;
         this.HWithSum = HWith + H;
         this.HWithoutSum = HWithout + H;
         this.p = p;
     }
 
+    public void addMiMj(int[] miOld, int[] mjOld) {
+        this.miOld = miOld;
+        this.mjOld = mjOld;
+    }
 }

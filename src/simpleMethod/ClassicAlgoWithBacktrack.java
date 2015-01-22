@@ -228,7 +228,7 @@ public class ClassicAlgoWithBacktrack {
 
             for (int j = 0; j < array[i].length; j++) {
 
-                if (array[i][j] == 0 && array[i][j] != Double.POSITIVE_INFINITY) {
+                if (array[i][j] == 0) {
 
                     int[] indexes = new int[2];
                     indexes[0] = i;
@@ -250,24 +250,6 @@ public class ClassicAlgoWithBacktrack {
         }
         System.err.println("\n");*/
         return map;
-
-    }
-
-    public static <K, V extends Comparable<? super V>> Map<K, V>
-    sortByValue(Map<K, V> map) {
-        List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-            @Override
-            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        Map<K, V> result = new LinkedHashMap<>();
-        for (Map.Entry<K, V> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
     }
 
     private static int[] difineEdge(Map map) {
@@ -339,8 +321,9 @@ public class ClassicAlgoWithBacktrack {
         changeJI(array, edge[0], edge[1]);
         M1 = setElementsM0toM(array, edge[1], edge[1]);
         for (int i = 0; i < M1.length; i++) {
-            if (M1[i][i] != Double.POSITIVE_INFINITY)
-                System.err.println("\n ASDFSAFSADFSAFSAD FASDF ASDF ASD FSADF ASDfas\nADFSADFSADF\nADFASDFSAFSA\n");
+            //if (M1[i][i] != Double.POSITIVE_INFINITY)
+                //M1[i][i] = Double.POSITIVE_INFINITY;
+                //System.err.println("\n ASDFSAFSADFSAFSAD FASDF ASDF ASD FSADF ASDfas\nADFSADFSADF\nADFASDFSAFSA\n");
         }
         normalize(M1);
         return M1;
@@ -402,11 +385,13 @@ public class ClassicAlgoWithBacktrack {
         return M1;
     }
 
-    private static void getPath(int[] d, int i) {
+    private static int pathCount = 0;
+    private static void getPath(int[] d) {
         int x = d[0];
         int y = d[1];
-        p[i][0] = mi[x];
-        p[i][1] = mj[y];
+        p[pathCount][0] = mi[x];
+        p[pathCount][1] = mj[y];
+        pathCount++;
         mi[x] = mi[y];
 
         mi = remove(mi, y);
@@ -420,6 +405,9 @@ public class ClassicAlgoWithBacktrack {
         return tmp;
     }
 
+    private static int count;
+    private static int minStructIndex;
+    private static boolean minStructBoolean;
     private static void solve() {
         double HWith;
         double HWithout;
@@ -428,8 +416,6 @@ public class ClassicAlgoWithBacktrack {
         //System.out.println(delimeter);
         Map map = new HashMap<Object, Double>();
         Map maparr = new HashMap<Integer, Map>();
-        Iterator iterator;
-        Map.Entry entry;
         int[] edge = new int[0];
         double[][] M1;
         /*map.put(1, 2);
@@ -439,183 +425,116 @@ public class ClassicAlgoWithBacktrack {
         iterator = m.entrySet().iterator();
         entry = (Map.Entry) iterator.next();
         map.remove(entry.getKey());*/
-        int count = array.length - 2;
-        Map st = new LinkedHashMap<Integer, ArrayList<Struct>>(count);
-        ArrayList[] dh = new ArrayList[originalsize];
-        /*st.put(1, 2);
-        st.put(1, 3);
-        st.put(4, 2);
-        st.put(4, 2);
-        st.put(4, 5);*/
-        Struct s = null;
-        ArrayList arrayList = null;
-        for (int i = 0; i < count; i++) {
+        ArrayList<Struct> da = new ArrayList();
+        while(true) {
             map.clear();
             map = defineMapEdge();
             edge = difineEdge(map);
             HWith = (double) map.get(edge);
 
-            /*if (maparr.get(i) == null) { // Если матрица не существует
-                map.clear();
-                map = defineMapEdge();      // то создать её
-                List<Map.Entry<Object, Object>> entryList =
-                        new ArrayList<Map.Entry<Object, Object>>(map.entrySet());
-                Map.Entry<Object, Object> lastEntry =
-                        entryList.get(entryList.size() - 1);
-                edge = (int[]) lastEntry.getKey();
-                sum = (double) lastEntry.getValue();
-                maparr.put(i, map);
-            } else { // допилить
-                map = (Map) maparr.get(count);
-                //map.remove(entry.getKey()); // lastEntry.getKey()
-            }*/
             M1 = getHWithout(edge, HWith);
             HWithout = getSumOfDelta();
-            //C.p(delimeter);
-            //C.p("Step = " + (i + 1));
-            //C.p("HWith = " + HWith);
-            //C.p("HWithout = " + HWithout);
-            /*if (st.get(i) == null) {
-                s = new Struct();
-                s.setAll(i,
-                        map, edge, HWith,
-                        HWithout, array, getH() + HWith,
-                        getH() + HWithout, p, true);
-                arrayList = new ArrayList<Struct>();
-                arrayList.add(s);
-                st.put(i, arrayList);
-                //st.put(i, new ArrayList<Struct>().add(s));
-            } else {
-                //arrayList = (ArrayList) st.get(i);
-                // arrayList.add(s);//todo  realize and test
-                // st.put(i, arrayList);
-            }*/
-            Struct sa = new Struct(i, edge.clone(), HWith, HWithout, cloneMatrix(array), getH(), cloneMatrix(getP()));
-            //sa.setAll(i, edge.clone(), HWith, HWithout, cloneMatrix(array), getH(), p.clone(), mi.clone(), mj.clone());
-            if (dh[i] == null) {
-                dh[i] = new ArrayList<Struct>();
-            }
-            /*if (i != 0) {
-                if (false) {
-                } else {*/
+
+            Struct sa = new Struct(edge.clone(), HWith, HWithout, cloneMatrix(array), getH(), cloneMatrix(getP()), pathCount);
+            sa.addMiMj(mi.clone(), mj.clone());
+
             double min;
             if (HWithout <= HWith) {
-                getPath(edge, i);
+                getPath(edge);
                 setH(getH() + HWithout);
                 array = cloneMatrix(M1);
-                sa.setActivatehwo(true);//todo трехразрядная логика или как проверить, что мы уже прошли эту вершину?
+                sa.setActivatehwo(true);
                 min = getH();
             } else {
-                array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
-                array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
-                array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+                //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+                //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+                //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
                 normalize(array);
-                i--;
                 sa.setActivatehw(true);
                 setH(getH() + HWith);
                 min = getH();
             }
-               /* }
-            } else {
-                if (HWithout < HWith) {
-                    getPath(edge, i);
-                    setH(getH() + HWithout);
-                    array = cloneMatrix(M1);
-                } else {
-                    array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
-                    array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
-                    array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
-                }
-            }*/
-            sa.setAdditional(cloneMatrix(getP()), cloneMatrix(M1), mi.clone(), mj.clone());// todo Safe delete pNew.
-            dh[i].add(sa);
 
-            if (minStruct != null && min > minStructNum) {
-                setP(minStruct.getP());
-                setH(minStruct.getHWithSum());
-                setMi(minStruct.getMi());
-                setMj(minStruct.getMj());
-                i = minStruct.getId();
-                array = cloneMatrix(minStruct.getArray());
+            sa.setAdditional(cloneMatrix(getP()), cloneMatrix(M1), mi.clone(), mj.clone(), pathCount);// todo Safe delete pNew.
+            da.add(sa);
+
+            if (minStructNum != -1 && min > minStructNum) {
+                if (minStruct.getHWithout() <= minStruct.getHWith()) {
+                    setP(minStruct.getpNew().clone());
+                    setH(minStruct.getH() + minStruct.getHWithout());
+                    setMi(minStruct.getMi().clone());
+                    setMj(minStruct.getMj().clone());
+                    array = cloneMatrix(minStruct.getM1());
+                    pathCount = minStruct.getPathCountNew();
+                } else {
+                    setP(minStruct.getP().clone());
+                    setH(minStruct.getH() + minStruct.getHWith());
+                    setMi(minStruct.getMiOld().clone());
+                    setMj(minStruct.getMjOld().clone());
+                    array = cloneMatrix(minStruct.getArray());
+                    pathCount = minStruct.getPathCount();//todo create pathCountOld
+                    normalize(array);
+                }
                 min = minStruct.getHWithoutSum() > minStruct.getHWithSum() ? minStruct.getHWithSum() : minStruct.getHWithoutSum();
+                minStructBoolean = true;
+                minStructNum = -1;
             }
 
             // Проверить нет ли решений меньше, чем уже полученное решение
             // Прыгнуть на то решение
             boolean stop = false;
-            for (int k = 0; k < dh.length; k++) {
-                Struct temp;
-                if (stop || dh[k] == null) break;// todo dh[k] == null  nado ili net?
-                for (int j = 0; j < dh[k].size(); j++) {
-                    temp = (Struct) dh[k].get(j);
+            if (minStructNum == -1 || array.length == 2) {
+                for (int i = 0; i < da.size(); i++) {
+                    Struct temp = da.get(i);
+                    if (stop) break;
                     if (!temp.isActivatehw() && temp.getHWithSum() < min) {
-                        if (minStruct == null) {
+                        if (!minStructBoolean) {
                             minStruct = sa;
-                            minStructNum = temp.getHWithSum();
+                            minStructNum = min;
                         } else {
+                            minStructNum = min;
                         }
-                        //((Struct) dh[i].get(dh[i].size() - 1)).setActivatehwo(true);
-                        //((Struct) dh[i].get(dh[i].size() - 1)).setActivatehw(true);
-                        setP(temp.getP());
+                        ((Struct) da.get(i)).setActivatehwo(true);
+                        ((Struct) da.get(i)).setActivatehw(true);
+                        setP(temp.getP().clone());
                         setH(temp.getHWithSum());
-                        setMi(temp.getMi());
-                        setMj(temp.getMj());
-                        i = temp.getId() - 1;
+                        setMi(temp.getMiOld().clone());
+                        setMj(temp.getMjOld().clone());
+                        pathCount = temp.getPathCountNew();
                         array = cloneMatrix(temp.getArray());
                         //((Struct) dh[i].get(j)).setActivatehw(true);// i0 j0
-                        array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;// todo stop here
-                        array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
-                        array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+                        //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;// todo stop here
+                        //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+                        //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
                         normalize(array);
                         stop = true;
                         break;
                     } else if (!temp.isActivatehwo() && temp.getHWithoutSum() < min) {
-                        if (minStruct == null) {
+                        if (!minStructBoolean) {
                             minStruct = sa;
-                            minStructNum = temp.getHWithSum();
+                            minStructNum = min;
                         } else {
+                            minStructNum = min;
                         }
-                        //((Struct) dh[i].get(dh[i].size())).setActivatehwo(true);
-                        //((Struct) dh[i].get(dh[i].size())).setActivatehw(true);
-                        setP(temp.getpNew());
+                        ((Struct) da.get(i)).setActivatehwo(true);
+                        ((Struct) da.get(i)).setActivatehw(true);
+                        setP(temp.getpNew().clone());
                         setH(temp.getHWithoutSum());
-                        setMi(temp.getMi());
-                        setMj(temp.getMj());
-                        i = temp.getId();
+                        setMi(temp.getMi().clone());
+                        setMj(temp.getMj().clone());
+                        pathCount = temp.getPathCount();
                         array = cloneMatrix(temp.getArray());
                         stop = true;
                         break;
                     }
                 }
             }
+            minStructBoolean = false;
 
             sa = null;
-            /*for (Object entrySet : map.entrySet()) {
-                entry = (Map.Entry) entrySet;
-                double sum = (double) entry.getValue();
-                int id = (int) entry.getKey();
-
-                if (HWithout > sum) {
-
-                } else {
-                    getPath(edge, i);
-                    array = cloneMatrix(M1);
-                    break;
-
-                        *//*iterator = map.entrySet().iterator();
-                        entry = (Map.Entry) iterator.next();
-                        map.remove(entry.getKey());*//*
-                }
-            }*/
-        }
-        count = 0;
-        for (Object entrySet : st.entrySet()) {
-            entry = (Map.Entry) entrySet;
-            arrayList = (ArrayList) entry.getValue();
-            Struct ss = (Struct) arrayList.get(0);
-            System.err.println("i = " + count + "  getHWithSum = " + ss.getHWithSum());
-            System.err.println("i = " + count + "  getHWithoutSum = " + ss.getHWithoutSum());
-            System.err.println("\n");
+            if (array.length < 3) {
+                break;
+            }
             count++;
         }
     }
@@ -625,6 +544,7 @@ public class ClassicAlgoWithBacktrack {
         initialize();
         solve();
         computeLastElement();
+
         //System.out.println("Sum = " + this.getSum(getArray()) + ", H = " + H);
         //System.out.println("Path = " + this.getPath());
     }
@@ -770,7 +690,7 @@ public class ClassicAlgoWithBacktrack {
         initialize();
         solve();
         computeLastElement();
-        System.out.println("Sum = " + ca.getSum(example) + ", H = " + H);
+        System.out.println("Sum = " + ca.getSum(example) + ", H = " + H + ", count = " + count);
         System.out.println("Path = " + ca.getPath());
         BruteforceAlgo bf = new BruteforceAlgo();
         StringBuilder blder = new StringBuilder();

@@ -10,6 +10,7 @@ import common.BruteforceAlgo;
 import common.C;
 import common.Work1Main;
 import simpleMethod.ClassicAlgo;
+import simpleMethod.ClassicAlgoWithBacktrack;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -350,7 +351,7 @@ public class ParentFrame extends JFrame {
             }
         });
 
-        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Все", "Полный перебор",
+        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Все", "Полный перебор","МВиГ классический",
                 "МВиГ классический(без возвратов)", "МВиГ улучшенный(без разрывов)", "МВиГ улучшенный(с разрывами)"}));
 
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
@@ -665,6 +666,7 @@ public class ParentFrame extends JFrame {
         blder.append("\n\n");
         BruteforceAlgo bf = new BruteforceAlgo();
         ClassicAlgo sm = new ClassicAlgo(a);
+        ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
 
         switch (method) {
             case "Все":
@@ -682,6 +684,16 @@ public class ParentFrame extends JFrame {
                 }
                 //parseAndHighlightPath(bf.getPath());
                 //w.mainNewMethod();
+
+                clwb.main();
+                blder.append("\n\nМВиГ классический");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(clwb.getPath());
+                blder.append("\nSum = ");
+                blder.append(clwb.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(clwb.getTime());
 
                 sm.main();
                 blder.append("\n\nМВиГ классический(без возвратов)");
