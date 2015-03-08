@@ -11,19 +11,18 @@ public class Work1OldStableVersion implements Methods{
             {0, 85, 8, 42, 89, 0, 0},
             {18, 0, 0, 0, 58, 13, 0}
     };
-    static double[][][] M0ch;
-    static double[][][] M1;
-    static double[][][] M2;
-    static double[][][] D1;
-    static double[][][] D2;
-    static double[][][] DD;
-    static int count;
-    static boolean saveAdditionalResult;
-    static int originalsize;
-    static int[][] p;
-    static int[] mi;
-    static int[] mj;
-    static int[] beforeP;
+    double[][][] M0ch;
+    double[][][] M1ch;
+    double[][][] M2ch;
+    double[][][] D1ch;
+    double[][][] D2ch;
+    double[][][] DDch;
+    boolean saveAdditionalResult;
+    int originalsize;
+    int[][] p;
+    int[] mi;
+    int[] mj;
+    int[] beforeP;
 
     public Work1OldStableVersion(double[][] M0) {
         originalsize = M0.length;
@@ -40,14 +39,13 @@ public class Work1OldStableVersion implements Methods{
             p[i][1] = -1;
         }
         M0ch = new double[originalsize - 2][][];
-        M1 = new double[originalsize - 2][][];
-        M2 = new double[originalsize - 2][][];
-        D1 = new double[originalsize - 2][][];
-        D2 = new double[originalsize - 2][][];
-        DD = new double[originalsize - 2][][];
+        M1ch = new double[originalsize - 2][][];
+        M2ch = new double[originalsize - 2][][];
+        D1ch = new double[originalsize - 2][][];
+        D2ch = new double[originalsize - 2][][];
+        DDch = new double[originalsize - 2][][];
         beforeP = new int[2];
         saveAdditionalResult = false;
-        count = 0;
     }
 
     public void normalize(double[][] M) { // Приведение матрицы к нормальному виду
@@ -92,18 +90,18 @@ public class Work1OldStableVersion implements Methods{
         }
     }
 
-    public double[][] solve(double[][] M0) {// Метод вычисления матрицы приведений DD
-        double[][] M1s; //  Объявление необходимых для расчета переменных
-        double[][] M2s;
-        double[][] D1s;
-        double[][] D2s;
-        double[][] DDs;
-        M1s = doMfromM0(M0); // Методы для расчета
-        M2s = doMfromM0(M1s);
-        D1s = doDfromM(M0, M1s);
-        D2s = doDfromM(M1s, M2s);
-        DDs = doDDfromD(M0, D1s, D2s);
-        return DDs; // Возврат DD
+    public double[][] solve(double[][] M0) {// Метод вычисления матрицы приведений DDch
+        double[][] M1; //  Объявление необходимых для расчета переменных
+        double[][] M2;
+        double[][] D1;
+        double[][] D2;
+        double[][] DD;
+        M1 = doMfromM0(M0);              // Методы для расчета
+        M2 = doMfromM0(M1);
+        D1 = doDfromM(M0, M1);
+        D2 = doDfromM(M1, M2);
+        DD = doDDfromD(M0, D1, D2);
+        return DD; // Возврат DD
     }
 
     static double[][] cloneMatrix(double[][] a) { // Метод для копирования матриц
@@ -114,45 +112,41 @@ public class Work1OldStableVersion implements Methods{
         return clone;
     }
 
-    private static double[][] doMfromM0(double[][] M0) {// Метод для вычисление матрицы М
+    private double[][] doMfromM0(double[][] M0) {// Метод для вычисление матрицы М
         double[][] M = new double[M0.length][M0.length];
         double alfa = 0.005;
         for (int i = 0; i < M.length; i++) {
             for (int j = 0; j < M.length; j++) {
-                if (i == j)
-                    M[i][j] = 0;
-                M[i][j] = M0[i][j] - alfa * dpaij(M0, i, j);
+                if (i != j)
+                    M[i][j] = M0[i][j] - alfa * dpaij(M0, i, j);
             }
         }
         return M;
     }
 
-    private static double[][] doDfromM(double[][] M0, double[][] M1) {// Метод для вычисление матрицы D
+    private double[][] doDfromM(double[][] M0, double[][] M1) {// Метод для вычисление матрицы D
         double[][] D = new double[M0.length][M0.length];
         for (int i = 0; i < D.length; i++) {
             for (int j = 0; j < D.length; j++) {
-                if (i == j)
-                    D[i][j] = 0;
-                D[i][j] = dpaij(M1, i, j) - dpaij(M0, i, j);
+                if (i != j)
+                    D[i][j] = dpaij(M1, i, j) - dpaij(M0, i, j);
             }
         }
         return D;
     }
 
-    private static double[][] doDDfromD(double[][] M0, double[][] D1, double[][] D2) { // Метод для вычисление матрицы приведений DD
+    private double[][] doDDfromD(double[][] M0, double[][] D1, double[][] D2) { // Метод для вычисление матрицы приведений DDch
         double[][] DD = new double[D1.length][D1.length];
         for (int i = 0; i < DD.length; i++) {
             for (int j = 0; j < DD.length; j++) {
-                if (i == j)
-                    DD[i][j] = 0;
-                else if (M0[i][j] == 0)
+                if (i != j && M0[i][j] == 0)
                     DD[i][j] = D2[i][j] - D1[i][j];
             }
         }
         return DD;
     }
 
-    private static double dpaij(double[][] M0, int di, int dj) {// Метод для вычисление оценки ветви
+    private double dpaij(double[][] M0, int di, int dj) {// Метод для вычисление оценки ветви
         double dpaij;
         double zaik = 0;
         double zakj = 0;
@@ -175,19 +169,19 @@ public class Work1OldStableVersion implements Methods{
     public int[] getD(double[][] DD, int i) {
         int[] d;
         if (i == 0) {
-            d = maxForFirstElement(DD); // Метод для получение максимального элемента для первой матрицы DD
+            d = maxForFirstElement(DD); // Метод для получение максимального элемента для первой матрицы DDch
         } else {
-            d = max(DD, beforeP[0], beforeP[1]);// Метод для получение максимального элемента для последующих матриц DD
+            d = max(DD, beforeP[0], beforeP[1]);// Метод для получение максимального элемента для последующих матриц DDch
         }
         return d;
     }
 
-    private static int[] maxForFirstElement(double[][] DD) {
+    private int[] maxForFirstElement(double[][] DD) {
         double max = -Double.MAX_VALUE;
         int di = 0, dj = 0;
 
         for (int i = 0; i < DD.length; i++) {   //  Цикл для прохода по строкам
-            for (int j = 0; j < DD.length; j++) {   // и столбцам матрицы DD
+            for (int j = 0; j < DD.length; j++) {   // и столбцам матрицы DDch
                 if (i != j && DD[i][j] > max) { // и нахождения координат
                     max = DD[i][j]; // максимального элемента
                     di = i;
@@ -198,7 +192,7 @@ public class Work1OldStableVersion implements Methods{
         return new int[]{di, dj};
     }
 
-    private static int[] max(double[][] DD, int ni, int nj) {
+    private int[] max(double[][] DD, int ni, int nj) {
         double maxValue1 = -Double.MAX_VALUE;
         double maxValue2 = -Double.MAX_VALUE;
         int di = 0, dj = 0;
@@ -208,7 +202,7 @@ public class Work1OldStableVersion implements Methods{
                 maxValue1 = DD[i][nj];
                 di = i;
             }
-            if (i != ni && DD[ni][i] > maxValue2) {// Поиск максимального элемента в строке
+            if (i != ni && DD[ni][i] > maxValue2) {// Поиск максимального элемента в столбце
                 maxValue2 = DD[ni][i];
                 dj = i;
             }
@@ -251,7 +245,7 @@ public class Work1OldStableVersion implements Methods{
         return setElementsM0toM(M0, j);// Новая матрица без j-й строки и j-го столбца
     }
 
-    private static double[][] changeJI(double[][] M0, int di, int dj) {// Меняем строку со столбцом
+    private double[][] changeJI(double[][] M0, int di, int dj) {// Меняем строку со столбцом
         double temp;
         for (int j = 0; j < M0.length; j++) {
             temp = M0[dj][j];
@@ -262,7 +256,7 @@ public class Work1OldStableVersion implements Methods{
         return M0;
     }
 
-    private static double[][] setElementsM0toM(double[][] M0, int dj) {//  Вычитаем строку и столбец, возвращаем полученную редуцированную матрицу
+    private double[][] setElementsM0toM(double[][] M0, int dj) {//  Вычитаем строку и столбец, возвращаем полученную редуцированную матрицу
         double[][] M1 = new double[M0.length - 1][M0.length - 1]; // todo попробовать перерилить это через systemarraycopy()
         int ki = 0;
         int kj;
@@ -303,7 +297,7 @@ public class Work1OldStableVersion implements Methods{
         return p;
     }
 
-    /*public static void setSaveAdditionalResult(boolean saveAdditionalResult) {
+    /*public void setSaveAdditionalResult(boolean saveAdditionalResult) {
         Work1OldStableVersion.saveAdditionalResult = saveAdditionalResult;
     }
 
@@ -311,31 +305,31 @@ public class Work1OldStableVersion implements Methods{
         return M0ch;
     }
 
-    public static void setOriginalsize(int originalsize) {
+    public void setOriginalsize(int originalsize) {
         Work1OldStableVersion.originalsize = originalsize;
     }
 
     *//**
-     * @return 3d matrix that contents all M1 matrix.
+     * @return 3d matrix that contents all M1ch matrix.
      *//*
-    public double[][][] getM1() {
-        return M1;
+    public double[][][] getM1ch() {
+        return M1ch;
     }
 
-    public double[][][] getM2() {
-        return M2;
+    public double[][][] getM2ch() {
+        return M2ch;
     }
 
-    public double[][][] getD1() {
-        return D1;
+    public double[][][] getD1ch() {
+        return D1ch;
     }
 
-    public double[][][] getD2() {
-        return D2;
+    public double[][][] getD2ch() {
+        return D2ch;
     }
 
-    public double[][][] getDD() {
-        return DD;
+    public double[][][] getDDch() {
+        return DDch;
     }*/
 
     /**

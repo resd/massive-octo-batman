@@ -13,7 +13,7 @@ public class C {
         System.out.println(s + "");
     }
 
-    private static void out(double[][] M) {
+    public static void out(double[][] M) {
         if (M == null) {
             return;
         }

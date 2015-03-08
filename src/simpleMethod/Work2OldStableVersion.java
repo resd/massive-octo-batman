@@ -14,22 +14,22 @@ public class Work2OldStableVersion implements Methods{
             {18, 0, 0, 0, 58, 13, 0}
     };*/
 
-    static double[][][] M0ch;
-    static double[][][] M1;
-    static double[][][] M2;
-    static double[][][] D1;
-    static double[][][] D2;
-    static double[][][] DD;
-    static int count;
+    double[][][] M0ch;
+    double[][][] M1ch;
+    double[][][] M2ch;
+    double[][][] D1ch;
+    double[][][] D2ch;
+    double[][][] DDch;
+    int count;
 
-    static boolean saveAdditionalResult;
+    boolean saveAdditionalResult;
 
-    static int originalsize;
-    static int[][] p;
-    static int[] mi;
+    int originalsize;
+    int[][] p;
+    int[] mi;
 
-    static int[] mj;
-    static int[] beforeP;
+    int[] mj;
+    int[] beforeP;
 
     public Work2OldStableVersion(double[][] M0) {
         originalsize = M0.length;
@@ -46,11 +46,11 @@ public class Work2OldStableVersion implements Methods{
             p[i][1] = -1;
         }
         M0ch = new double[originalsize - 2][][];
-        M1 = new double[originalsize - 2][][];
-        M2 = new double[originalsize - 2][][];
-        D1 = new double[originalsize - 2][][];
-        D2 = new double[originalsize - 2][][];
-        DD = new double[originalsize - 2][][];
+        M1ch = new double[originalsize - 2][][];
+        M2ch = new double[originalsize - 2][][];
+        D1ch = new double[originalsize - 2][][];
+        D2ch = new double[originalsize - 2][][];
+        DDch = new double[originalsize - 2][][];
         beforeP = new int[2];
         saveAdditionalResult = false;
         count = 0;
@@ -99,30 +99,30 @@ public class Work2OldStableVersion implements Methods{
     }
 
     public double[][] solve(double[][] M0) {
-        double[][] M1s;
-        double[][] M2s;
-        double[][] D1s;
-        double[][] D2s;
-        double[][] DDs;
-        M1s = doMfromM0(M0);
-        M2s = doMfromM0(M1s);
-        D1s = doDfromM(M0, M1s);
-        D2s = doDfromM(M1s, M2s);
-        DDs = doDDfromD(M0, D1s, D2s);
-        if (saveAdditionalResult) {
+        double[][] M1;
+        double[][] M2;
+        double[][] D1;
+        double[][] D2;
+        double[][] DD;
+        M1 = doMfromM0(M0);
+        M2 = doMfromM0(M1);
+        D1 = doDfromM(M0, M1);
+        D2 = doDfromM(M1, M2);
+        DD = doDDfromD(M0, D1, D2);
+        /*if (saveAdditionalResult) {
             M0ch[count] = cloneMatrix(M0);
-            M1[count] = cloneMatrix(M1s);
-            M1[count] = cloneMatrix(M1s);
-            M2[count] = cloneMatrix(M2s);
-            D1[count] = cloneMatrix(D1s);
-            D2[count] = cloneMatrix(D2s);
-            DD[count] = cloneMatrix(DDs);
+            M1ch[count] = cloneMatrix(M1s);
+            M1ch[count] = cloneMatrix(M1s);
+            M2ch[count] = cloneMatrix(M2s);
+            D1ch[count] = cloneMatrix(D1s);
+            D2ch[count] = cloneMatrix(D2s);
+            DDch[count] = cloneMatrix(DDs);
             count++;
-        }
-        return DDs;
+        }*/
+        return DD;
     }
 
-    public static double[][] cloneMatrix(double[][] a) {
+    public double[][] cloneMatrix(double[][] a) {
         double[][] clone = a.clone();
 
         for (int i = 0; i < a.length; i++) {
@@ -131,7 +131,7 @@ public class Work2OldStableVersion implements Methods{
         return clone;
     }
 
-    private static double[][] doMfromM0(double[][] M0) {
+    private double[][] doMfromM0(double[][] M0) {
         double[][] M = new double[M0.length][M0.length];
         double alfa = 0.005;
         for (int i = 0; i < M.length; i++) {
@@ -144,7 +144,7 @@ public class Work2OldStableVersion implements Methods{
         return M;
     }
 
-    private static double[][] doDfromM(double[][] M0, double[][] M1) {
+    private double[][] doDfromM(double[][] M0, double[][] M1) {
         double[][] D = new double[M0.length][M0.length];
         for (int i = 0; i < D.length; i++) {
             for (int j = 0; j < D.length; j++) {
@@ -156,7 +156,7 @@ public class Work2OldStableVersion implements Methods{
         return D;
     }
 
-    private static double[][] doDDfromD(double[][] M0, double[][] D1, double[][] D2) {
+    private double[][] doDDfromD(double[][] M0, double[][] D1, double[][] D2) {
         double[][] DD = new double[D1.length][D1.length];
         for (int i = 0; i < DD.length; i++) {
             for (int j = 0; j < DD.length; j++) {
@@ -169,7 +169,7 @@ public class Work2OldStableVersion implements Methods{
         return DD;
     }
 
-    private static double dpaij(double[][] M0, int di, int dj) {
+    private double dpaij(double[][] M0, int di, int dj) {
         double dpaij;
         double zaik = 0;
         double zakj = 0;
@@ -201,14 +201,14 @@ public class Work2OldStableVersion implements Methods{
         int[] d;
         d = maxForFirstElement(DD);
         /*if (i == 0) {
-            d = maxForFirstElement(DD);
+            d = maxForFirstElement(DDch);
         } else {
-            d = max(DD, beforeP[0], beforeP[1]);//max(DD);
+            d = max(DDch, beforeP[0], beforeP[1]);//max(DDch);
         }*/
         return d;
     }
 
-    private static int[] maxForFirstElement(double[][] DD) {
+    private int[] maxForFirstElement(double[][] DD) {
         double max = -Double.MAX_VALUE;
         int di = 0, dj = 0;
 
@@ -230,15 +230,6 @@ public class Work2OldStableVersion implements Methods{
 
         p[i][0] = mi[x];
         p[i][1] = mj[y];
-
-        /*if (x <= y) {
-            beforeP[0] = x;
-            beforeP[1] = x;
-        } else {
-            beforeP[1] = x - 1;
-            beforeP[0] = x - 1;
-
-        }*/
 
         mi[x] = mi[y];
 
@@ -266,7 +257,7 @@ public class Work2OldStableVersion implements Methods{
         return M1;
     }
 
-    private static double[][] changeJI(double[][] M0, int di, int dj) {
+    private double[][] changeJI(double[][] M0, int di, int dj) {
         double temp;
         for (int j = 0; j < M0.length; j++) {
             temp = M0[dj][j];
@@ -277,7 +268,7 @@ public class Work2OldStableVersion implements Methods{
         return M0;
     }
 
-    private static double[][] setElementsM0toM(double[][] M0, int dj) {
+    private double[][] setElementsM0toM(double[][] M0, int dj) {
         double[][] M1 = new double[M0.length - 1][M0.length - 1];
         int ki = 0;
         int kj;
@@ -305,51 +296,51 @@ public class Work2OldStableVersion implements Methods{
         p[originalsize - 1][1] = mj[0];
     }
 
-    public static void setOriginalsize(int originalsize) {
-        Work2OldStableVersion.originalsize = originalsize;
-    }
+/*    public void setOriginalsize(int originalsize) {
+        this.originalsize = originalsize;
+    }*/
 
     public int[][] getP() {
         return p;
     }
 
-    public static void setSaveAdditionalResult(boolean saveAdditionalResult) {
-        Work2OldStableVersion.saveAdditionalResult = saveAdditionalResult;
+    /*public void setSaveAdditionalResult(boolean saveAdditionalResult) {
+        this.saveAdditionalResult = saveAdditionalResult;
     }
 
     public double[][][] getM0ch() {
         return M0ch;
     }
 
-    /**
-     * @return 3d matrix that contents all M1 matrix.
-     */
-    public double[][][] getM1() {
-        return M1;
+    *//**
+     * @return 3d matrix that contents all M1ch matrix.
+     *//*
+    public double[][][] getM1ch() {
+        return M1ch;
     }
 
-    public double[][][] getM2() {
-        return M2;
+    public double[][][] getM2ch() {
+        return M2ch;
     }
 
-    public double[][][] getD1() {
-        return D1;
+    public double[][][] getD1ch() {
+        return D1ch;
     }
 
-    public double[][][] getD2() {
-        return D2;
+    public double[][][] getD2ch() {
+        return D2ch;
     }
 
-    public double[][][] getDD() {
-        return DD;
-    }
+    public double[][][] getDDch() {
+        return DDch;
+    }*/
 
- /* public static void main(String[] args) {
+ /* public void main(String[] args) {
         double[][] M;
         Work2 w = new Work2();
         M = Arrays.copyOf(w.M0, w.M0.length);
 
-        double[][] DD;
+        double[][] DDch;
         int d[];
         originalsize = w.M0.length;
         p = new int[originalsize][2];
@@ -361,9 +352,9 @@ public class Work2OldStableVersion implements Methods{
         int n = M.length - 2;//2
         for (int i = 0; i < n; i++) {
             normalize(M);
-            DD = solve(M);
+            DDch = solve(M);
 
-            d = getD(DD, i);
+            d = getD(DDch, i);
             w.getPath(d, i);
             M = doM0(M, d[0], d[1]);
         }

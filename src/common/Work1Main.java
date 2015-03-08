@@ -1,6 +1,8 @@
 
 package common;
 
+import simpleMethod.Work2OldStableVersion;
+
 /**
  * Created by Admin on 07.09.14.
  */
@@ -29,17 +31,18 @@ double[][] M0 = {
     private int originalsize;
     private int[][] p;
 
-    Methods w;
+    private Methods w;
 
-    long sysTime;
+    private long sysTime;
 	
     /**
      * Основной метод программы
      */
     public void main() {
-        double[][] M;                               // Инициализация необходимых переменных
+        sysTime = System.currentTimeMillis();
+        double[][] M;
         M = Work1OldStableVersion.cloneMatrix(M0);
-        w = new Work1OldStableVersion(M);
+
         double[][] DD;
         int d[];
         w.initialize();
@@ -47,8 +50,8 @@ double[][] M0 = {
         int n = M.length - 2;
         for (int i = 0; i < n; i++) {
             w.normalize(M);                 // Приведение матрицы к нормальной форме
-            DD = w.solve(M);                // Вычисление матрицы DD
-            d = w.getD(DD, i);              // Получение максимального элемента матрицы DD
+            DD = w.solve(M);                // Вычисление матрицы DDch
+            d = w.getD(DD, i);              // Получение максимального элемента матрицы DDch
             w.getPath(d, i);                // Нахождение соответствия между макс. элем-том и путем
                                                 // в исходной матрице
             M = w.doM0(M, d[0], d[1]);      // Вычитание максимального эле-та из матрицы M,
@@ -63,50 +66,50 @@ double[][] M0 = {
     }
 
     *//**
-     * @return 3d matrix that contents all M1 matrix.
+     * @return 3d matrix that contents all M1ch matrix.
      *//*
-    public double[][][] getM1() {
-        return w.getM1();
+    public double[][][] getM1ch() {
+        return w.getM1ch();
     }
 
-    public double[][][] getM2() {
-        return w.getM2();
+    public double[][][] getM2ch() {
+        return w.getM2ch();
     }
 
-    public double[][][] getD1() {
-        return w.getD1();
+    public double[][][] getD1ch() {
+        return w.getD1ch();
     }
 
-    public double[][][] getD2() {
-        return w.getD2();
+    public double[][][] getD2ch() {
+        return w.getD2ch();
     }
 
-    public double[][][] getDD() {
-        return w.getDD();
+    public double[][][] getDDch() {
+        return w.getDDch();
     }
 
     public double[][] getM0ch(int count) {
         return w.getM0ch()[count];
     }
 
-    public double[][] getM1(int count) {
-        return w.getM1()[count];
+    public double[][] getM1ch(int count) {
+        return w.getM1ch()[count];
     }
 
-    public double[][] getM2(int count) {
-        return w.getM2()[count];
+    public double[][] getM2ch(int count) {
+        return w.getM2ch()[count];
     }
 
-    public double[][] getD1(int count) {
-        return w.getD1()[count];
+    public double[][] getD1ch(int count) {
+        return w.getD1ch()[count];
     }
 
-    public double[][] getD2(int count) {
-        return w.getD2()[count];
+    public double[][] getD2ch(int count) {
+        return w.getD2ch()[count];
     }
 
-    public double[][] getDD(int count) {
-        return w.getDD()[count];
+    public double[][] getDDch(int count) {
+        return w.getDDch()[count];
     }
 */
     public String getPath() {
@@ -137,6 +140,12 @@ double[][] M0 = {
         }
         this.M0 = clone;
         originalsize = a.length;
+
+        if (idMethod == 1) {
+            w = new Work1OldStableVersion(Work1OldStableVersion.cloneMatrix(M0));
+        } else {
+            w = new Work2OldStableVersion(Work1OldStableVersion.cloneMatrix(M0));
+        }
     }
 
 }

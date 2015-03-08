@@ -128,12 +128,15 @@ public class Struct {
         return mjOld;
     }
 
-    public Struct(int[] edge, double HWith, double HWithout, double[][] array, double H,
+    public void setArray(double[][] array) {
+        this.array = array;
+    }
+
+    public void newStruct(int[] edge, double HWith, double HWithout, double H,
                   int[][] p, int pathCount) {
         this.edge = edge;
         this.HWith = HWith;
         this.HWithout = HWithout;
-        this.array = array;
         this.H = H;
         this.pathCount = pathCount;
         this.HWithSum = HWith + H;

@@ -88,7 +88,7 @@ public class ClassicAlgo {
         }
         for (int i = 0; i < M.length; i++) {
             for (int j = 0; j < M.length; j++) {
-                if (M[i][j] != Double.POSITIVE_INFINITY && M[j][i] < minArrJ[i]) {
+                if (M[j][i] != Double.POSITIVE_INFINITY && M[j][i] < minArrJ[i]) {
                     minArrJ[i] = M[j][i];
                     if (M[j][i] == 0) {
                         break;
@@ -483,7 +483,7 @@ public class ClassicAlgo {
 
                 } else {
                     getPath(edge, i);
-                    array = cloneMatrix(M1);
+                    array = cloneMatrix(M1ch);
                     break;
 
                         *//*iterator = map.entrySet().iterator();
@@ -517,6 +517,24 @@ public class ClassicAlgo {
         StringBuffer str = new StringBuffer("");
         for (int i = 0; i < originalsize; i++) {
             str.append("(").append(p[i][0] + 1).append("-").append(p[i][1] + 1).append(") ");
+        }
+        int[][] pc = new int[originalsize][2];
+        int t = 0;
+        int c = 0;
+        str.append('\n');
+        for (int i = 0; i < originalsize; i++) {
+            for (int j = 0; j < originalsize; j++) {
+                if (p[j][0] == t) {
+                    pc[c][0] = p[j][0];
+                    pc[c][1] = p[j][1];
+                    c++;
+                    t = p[j][1];
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < originalsize; i++) {
+            str.append("(").append(pc[i][0] + 1).append("-").append(pc[i][1] + 1).append(") ");
         }
         return str.toString();
     }

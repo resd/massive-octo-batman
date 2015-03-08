@@ -656,6 +656,8 @@ public class ParentFrame extends JFrame {
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
+        //setTablesSize(5);
+        //fillValues();
         String method = methodsComboBox.getSelectedItem().toString();
 
         messagesTextPane.setText("");
@@ -695,6 +697,8 @@ public class ParentFrame extends JFrame {
                 blder.append(",  Time: ");
                 blder.append(clwb.getTime());
 
+                //if (clwb.getSum(a) > bf.getSum(a))  setTablesSize(555);
+
                 sm.main();
                 blder.append("\n\nМВиГ классический(без возвратов)");
                 blder.append(":");
@@ -720,7 +724,7 @@ public class ParentFrame extends JFrame {
 
                 w2.setM0(a);
                 w2.main();
-                blder.append("\n\nМВиГ улучшенный(с разрывов)");
+                blder.append("\n\nМВиГ улучшенный(с разрывами)");
                 blder.append(":");
                 blder.append("\nPath: ");
                 blder.append(w2.getPath());
@@ -728,7 +732,6 @@ public class ParentFrame extends JFrame {
                 blder.append(w2.getSum(a));
                 blder.append(",  Time: ");
                 blder.append(w2.getTime());
-
                 setMessage(blder.toString());
                 break;
             case "Полный перебор":
@@ -744,6 +747,18 @@ public class ParentFrame extends JFrame {
                 blder.append(bf.getTime());
                 //parseAndHighlightPath(bf.getPath());
                 //w.mainNewMethod();
+                setMessage(blder.toString());
+                break;
+            case "МВиГ классический":
+                clwb.main();
+                blder.append(method);
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(clwb.getPath());
+                blder.append("\nSum = ");
+                blder.append(clwb.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(clwb.getTime());
                 setMessage(blder.toString());
                 break;
             case "МВиГ классический(без возвратов)":
@@ -791,9 +806,9 @@ public class ParentFrame extends JFrame {
         }
 
         // Example of using getters that get 3d matrix contents M1 matrix
-        //w.getM1();
+        //w.getM1ch();
         // or with parameter that point to which matrix you want to get.
-        //w.getM1(5);
+        //w.getM1ch(5);
 
     }//GEN-LAST:event_btnSolveActionPerformed
 
@@ -1091,11 +1106,11 @@ public class ParentFrame extends JFrame {
         builder.append("\n");
         try {
             builder = appendMatrixToBuilder(builder, w.getM0ch(count), "M0");
-            builder = appendMatrixToBuilder(builder, w.getM1(count), "M1");
-            builder = appendMatrixToBuilder(builder, w.getM2(count), "M2");
-            builder = appendMatrixToBuilder(builder, w.getD1(count), "D1");
-            builder = appendMatrixToBuilder(builder, w.getD2(count), "D2");
-            builder = appendMatrixToBuilder(builder, w.getDD(count), "DD");
+            builder = appendMatrixToBuilder(builder, w.getM1ch(count), "M1");
+            builder = appendMatrixToBuilder(builder, w.getM2ch(count), "M2");
+            builder = appendMatrixToBuilder(builder, w.getD1ch(count), "D1");
+            builder = appendMatrixToBuilder(builder, w.getD2ch(count), "D2");
+            builder = appendMatrixToBuilder(builder, w.getDDch(count), "DD");
         } catch (Exception e) {
             setMessage("Сначала необходимо нажать кнопку вычислить!");
         }
