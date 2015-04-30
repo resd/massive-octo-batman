@@ -30,6 +30,7 @@ public class ClassicAlgoWithBacktrack {
     private Struct minStruct;
     private double minStructNum = -1;
 
+
     public double[][] getArray() {
         return array;
     }
@@ -54,6 +55,16 @@ public class ClassicAlgoWithBacktrack {
             p[i][0] = -2;
             p[i][1] = -2;
         }
+    }
+
+    public void setArray(double[][] array) {
+        this.array = cloneMatrix(array);
+        originalsize = array.length;
+    }
+
+    public void setA(double[][] a) {
+        this.a = cloneMatrix(a);
+        originalsize = array.length;
     }
 
     public int[][] getP() {
@@ -248,6 +259,36 @@ public class ClassicAlgoWithBacktrack {
         return map;
     }
 
+    private ArrayList difineEdges(Map map) {
+        double comparator = -Double.MAX_VALUE;
+        int[] edge = new int[2];
+        ArrayList edges = new ArrayList();
+        int count = 1;
+
+        for (Object entrySet : map.entrySet()) {
+            Map.Entry entry = (Map.Entry) entrySet;
+            double sum = (double) entry.getValue();
+            int[] key1 = (int[]) entry.getKey();
+
+            if (sum > comparator) {
+                comparator = sum;
+                edge = key1;
+            }
+        }
+        edges.add(edge);
+        for (Object entrySet : map.entrySet()) {
+            Map.Entry entry = (Map.Entry) entrySet;
+            double sum = (double) entry.getValue();
+            int[] key1 = (int[]) entry.getKey();
+
+            if (sum == comparator && key1 != edge) {
+                edges.add(key1);
+                count++;
+            }
+        }
+        return edges;
+    }
+
     private int[] difineEdge(Map map) {
         double comparator = -Double.MAX_VALUE;
         int[] edge = new int[2];
@@ -344,7 +385,19 @@ public class ClassicAlgoWithBacktrack {
         p[pathCount][0] = mi[x];
         p[pathCount][1] = mj[y];
         pathCount++;
-        mi[x] = mi[y];//todo need?
+        mi[x] = mi[y];
+
+        mi = remove(mi, y);
+        mj = remove(mj, y);
+    }
+
+    private void getPath(int[] d, int[] mi, int[] mj, int pathCount) {
+        int x = d[0];
+        int y = d[1];
+        p[pathCount][0] = mi[x];
+        p[pathCount][1] = mj[y];
+        pathCount++;
+        mi[x] = mi[y];
 
         mi = remove(mi, y);
         mj = remove(mj, y);
@@ -361,6 +414,10 @@ public class ClassicAlgoWithBacktrack {
     private boolean minStructBoolean;
     private double[][][] arrs;
     private double[][] arrayC;
+    private ArrayList<Struct> da;
+    double[][] M1;
+    double min;
+    ArrayList mins;
     private void solve() {
         double HWith;
         double HWithout;
@@ -369,7 +426,6 @@ public class ClassicAlgoWithBacktrack {
         //System.out.println(delimeter);
         Map map = new HashMap<Object, Double>();
         int[] edge;
-        double[][] M1;
         /*map.put(1, 2);
         map.put(3, 4);
         map.put(5, 6);
@@ -377,65 +433,38 @@ public class ClassicAlgoWithBacktrack {
         iterator = m.entrySet().iterator();
         entry = (Map.Entry) iterator.next();
         map.remove(entry.getKey());*/
-        ArrayList<Struct> da = new ArrayList();
+        da = new ArrayList();
+        mins = new ArrayList();
         //arrs = new double[originalsize*10][][];
         int countBackWith = 0;
         int countHwith = 0;
         while(true) {
             Struct sa = new Struct();
-            double min;
             if (array.length > 2) {
                 //arrs[count] = cloneMatrix(array);
+                mins.clear();
                 map.clear();
                 map = defineMapEdge();
-                edge = difineEdge(map);
+                //edge = difineEdge(map);
+                ArrayList edges = difineEdges(map);
+                /*edge = difineEdge(map);
                 HWith = (double) map.get(edge);
-
-                arrayC = cloneMatrix(array);
-                array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
-                M1 = getHWithout(edge, HWith);
-                HWithout = getSumOfDelta();
-
-                arrayC[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
-                normalize(arrayC);
-                sa.setArray(cloneMatrix(arrayC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
-                sa.newStruct(edge.clone(), HWith, HWithout, getH(), cloneMatrix(getP()), pathCount);
-                sa.addMiMj(mi.clone(), mj.clone());
-
-                //todo сделать вечисление path здеся. удалить тама. перепилить, чтобы работало.
-
-                System.out.println((H + HWithout) + ",  " + (H + HWith) + "     (" + (mi[edge[0]] + 1) + ", " + (mj[edge[1]] + 1) + ")");
-                //System.out.println("");display(array);System.out.println("");
-
-                if (HWithout <= HWith) {
-                    getPath(edge);
-                    setH(getH() + HWithout);
-                    array = cloneMatrix(M1);
-                    sa.setActivatehwo(true);
-                    min = getH();
-                } else {
-                    //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
-                    //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
-                    //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
-                    countHwith++;
-                    sa.setActivatehw(true);
-                    setH(getH() + HWith);
-                    min = getH();
-                    int x = edge[0];
-                    int y = edge[1];
-                    int[][] pC = cloneMatrix(p);
-                    int[] miC = mi.clone();
-                    int[] mjC = mj.clone();
-                    pC[pathCount][0] = miC[x];
-                    pC[pathCount][1] = mjC[y];
-                    miC[x] = miC[y];//todo need?
-
-                    miC = remove(miC, y);
-                    mjC = remove(mjC, y);
-                    sa.setAdditional(cloneMatrix(pC), cloneMatrix(M1), miC.clone(), mjC.clone(), pathCount+1);// todo Safe delete pNew.
+                sa = chooseHone(edge, HWith);*/
+                //checkMin(sa);
+                /*for (int i = 1; i < edges.size(); i++) {
+                    edge = (int[])edges.get(i);
+                    HWith = (double) map.get(edge);
+                    chooseH(edge, HWith);// todo need return sa ?
+                }*/
+                /*double temp = -Double.MAX_VALUE;
+                for (int i = 0; i < mins.size(); i++) {
+                    if ((double) mins.get(i) > temp) {
+                        temp = (double) mins.get(i);
+                    }
                 }
-                //System.out.println("");display(array);System.out.println("");
-
+                int index = mins.indexOf(temp);
+                index = da.size() - edges.size() + index;*/
+                sa = chooseHone((int[])edges.get(0), (double) map.get((int[])edges.get(0)));
             } else {
                 array = null;
                 M1 = null;
@@ -456,11 +485,11 @@ public class ClassicAlgoWithBacktrack {
                 sa.setActivatehw(true);
             }
             if (sa.getM1() == null) {
-                sa.setAdditional(cloneMatrix(p), cloneMatrix(M1), mi.clone(), mj.clone(), pathCount);// todo Safe delete pNew.
+                sa.setAdditional(cloneMatrix(p), cloneMatrix(M1), mi.clone(), mj.clone(), pathCount);
             }
             da.add(sa);
 
-            if (minStructNum != -1 && min > minStructNum) {
+            /*if (minStructNum != -1 && min > minStructNum) {
                 if (minStruct.getHWithout() <= minStruct.getHWith()) {
                     setP(minStruct.getpNew().clone());
                     setH(minStruct.getH() + minStruct.getHWithout());
@@ -474,62 +503,16 @@ public class ClassicAlgoWithBacktrack {
                     setMi(minStruct.getMiOld().clone());
                     setMj(minStruct.getMjOld().clone());
                     array = cloneMatrix(minStruct.getArray());
-                    pathCount = minStruct.getPathCount();//todo create pathCountOld
+                    pathCount = minStruct.getPathCount();
                     normalize(array);
                 }
                 min = minStruct.getHWithoutSum() > minStruct.getHWithSum() ? minStruct.getHWithSum() : minStruct.getHWithoutSum();
                 minStructBoolean = true;
                 minStructNum = -1;
-            }
+            }*/
 
-            // Проверить нет ли решений меньше, чем уже полученное решение
-            // Прыгнуть на то решение
-            boolean stop = false;
-            for (int i = 0; i < da.size(); i++) {
-                Struct temp = da.get(i);
-                if (stop) break;
-                if (!temp.isActivatehw() && temp.getHWithSum() < min) {
-                    if (!minStructBoolean) {
-                        minStruct = sa;
-                        minStructNum = min;
-                    } else {
-                        minStructNum = min;
-                    }
-                    ((Struct) da.get(i)).setActivatehwo(true);
-                    ((Struct) da.get(i)).setActivatehw(true);
-                    setP(temp.getP().clone());
-                    setH(temp.getHWithSum());
-                    setMi(temp.getMiOld().clone());
-                    setMj(temp.getMjOld().clone());
-                    pathCount = temp.getPathCount();
-                    array = cloneMatrix(temp.getArray());
-                    //((Struct) dh[i].get(j)).setActivatehw(true);// i0 j0
-                    //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;// todo stop here
-                    //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
-                    //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
-                    normalize(array);// todo почему отсутствие этой строчки уменьшает дерево на 1 ветку?
-                    stop = true;
-                    break;
-                } else if (!temp.isActivatehwo() && temp.getHWithoutSum() < min) {
-                    if (!minStructBoolean) {
-                        minStruct = sa;
-                        minStructNum = min;
-                    } else {
-                        minStructNum = min;
-                    }
-                    countBackWith++;
-                    ((Struct) da.get(i)).setActivatehwo(true);
-                    ((Struct) da.get(i)).setActivatehw(true);
-                    setP(temp.getpNew().clone());
-                    setH(temp.getHWithoutSum());
-                    setMi(temp.getMi().clone());
-                    setMj(temp.getMj().clone());
-                    pathCount = temp.getPathCountNew();
-                    array = cloneMatrix(temp.getM1());
-                    stop = true;
-                    break;
-                }
-            }
+            checkMin(sa);
+
             minStructBoolean = false;
 
             sa = null;
@@ -538,11 +521,172 @@ public class ClassicAlgoWithBacktrack {
             }
             count++;
         }
-        System.out.println("countBackWith = " + countBackWith);
+        /*System.out.println("countBackWith = " + countBackWith);todo
         System.out.println("countHwith = " + countHwith);
-        System.out.println("count = " + count);
+        System.out.println("count = " + count);*/
     }
 
+    private Struct chooseH(int[] edge, double HWith) {
+        double HWithout;
+        double[][] arrayCC = cloneMatrix(arrayC);
+        double[][] arrayY = cloneMatrix(array);
+        double[][] M1C = cloneMatrix(M1);
+        Struct sa = new Struct();
+        double HC = getH();
+        int pathCountC = pathCount;
+        int[] miC = mi.clone();
+        int[] mjC = mj.clone();
+        int[][] pC = cloneMatrix(p);
+        arrayCC = cloneMatrix(arrayY);
+
+        arrayY[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
+        M1C = getHWithout(edge, HWith);
+        HWithout = getSumOfDelta();
+
+        arrayCC[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+        normalize(arrayCC);
+        sa.setArray(cloneMatrix(arrayCC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
+        sa.newStruct(edge.clone(), HWith, HWithout, getH(), cloneMatrix(getP()), pathCountC);
+        sa.addMiMj(miC.clone(), mjC.clone());
+
+
+        //System.out.println((H + HWithout) + ",  " + (H + HWith) + "     (" + (miC[edge[0]] + 1) + ", " + (mjC[edge[1]] + 1) + ")");
+        //System.out.println("");display(array);System.out.println("");
+
+        if (HWithout <= HWith) {
+            getPath(edge, miC, mjC, pathCountC);
+            pathCountC++;
+            setH(getH() + HWithout);
+            arrayY = cloneMatrix(M1C);
+            sa.setActivatehwo(true);
+            mins.add(getH());
+        } else {
+            //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+            //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+            //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+            //countHwith++;
+            sa.setActivatehw(true);
+            setH(getH() + HWith);
+            mins.add(getH());
+            int x = edge[0];
+            int y = edge[1];
+
+            pC[pathCountC][0] = miC[x];
+            pC[pathCountC][1] = mjC[y];
+            miC[x] = miC[y];
+
+            miC = remove(miC, y);
+            mjC = remove(mjC, y);
+            sa.setAdditional(cloneMatrix(pC), cloneMatrix(M1C), miC.clone(), mjC.clone(), pathCountC + 1);
+        }
+        H = HC;
+        sa.setAdditional(cloneMatrix(pC), cloneMatrix(M1C), miC.clone(), mjC.clone(), pathCountC);
+        da.add(sa);
+        //System.out.println("");display(array);System.out.println("");
+        return sa;
+    }
+
+    private Struct chooseHone(int[] edge, double HWith) {
+        double HWithout;
+        Struct sa = new Struct();
+
+        arrayC = cloneMatrix(array);
+        array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
+        M1 = getHWithout(edge, HWith);
+        HWithout = getSumOfDelta();
+
+        arrayC[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+        normalize(arrayC);
+        sa.setArray(cloneMatrix(arrayC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
+        sa.newStruct(edge.clone(), HWith, HWithout, getH(), cloneMatrix(getP()), pathCount);
+        sa.addMiMj(mi.clone(), mj.clone());
+
+
+        //todo System.out.println((H + HWithout) + ",  " + (H + HWith) + "     (" + (mi[edge[0]] + 1) + ", " + (mj[edge[1]] + 1) + ")");
+        //System.out.println("");display(array);System.out.println("");
+
+        if (HWithout <= HWith) {
+            getPath(edge);
+            setH(getH() + HWithout);
+            array = cloneMatrix(M1);
+            sa.setActivatehwo(true);
+            min = getH();
+        } else {
+            //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+            //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+            //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+            //countHwith++;
+            sa.setActivatehw(true);
+            setH(getH() + HWith);
+            min = getH();
+            int x = edge[0];
+            int y = edge[1];
+            int[][] pC = cloneMatrix(p);
+            int[] miC = mi.clone();
+            int[] mjC = mj.clone();
+            pC[pathCount][0] = miC[x];
+            pC[pathCount][1] = mjC[y];
+            miC[x] = miC[y];
+
+            miC = remove(miC, y);
+            mjC = remove(mjC, y);
+            sa.setAdditional(cloneMatrix(pC), cloneMatrix(M1), miC.clone(), mjC.clone(), pathCount + 1);
+        }
+        //da.add(sa);
+        //System.out.println("");display(array);System.out.println("");
+        return sa;
+    }
+
+    private void checkMin(Struct sa) {
+        // Проверить нет ли решений меньше, чем уже полученное решение
+        // Прыгнуть на то решение
+        boolean stop = false;
+        for (int i = 0; i < da.size(); i++) {
+            Struct temp = da.get(i);
+            if (stop) break;
+            if (!temp.isActivatehw() && temp.getHWithSum() < min) {
+                if (!minStructBoolean) {
+                    minStruct = sa;
+                    minStructNum = min;
+                } else {
+                    minStructNum = min;
+                }
+                ((Struct) da.get(i)).setActivatehwo(true);
+                ((Struct) da.get(i)).setActivatehw(true);
+                setP(temp.getP().clone());
+                setH(temp.getHWithSum());
+                setMi(temp.getMiOld().clone());
+                setMj(temp.getMjOld().clone());
+                pathCount = temp.getPathCount();
+                array = cloneMatrix(temp.getArray());
+                //((Struct) dh[i].get(j)).setActivatehw(true);// i0 j0
+                //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+                //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
+                //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+                normalize(array);
+                stop = true;
+                break;
+            } else if (!temp.isActivatehwo() && temp.getHWithoutSum() < min) {
+                if (!minStructBoolean) {
+                    minStruct = sa;
+                    minStructNum = min;
+                } else {
+                    minStructNum = min;
+                }
+                //countBackWith++;
+                ((Struct) da.get(i)).setActivatehwo(true);
+                ((Struct) da.get(i)).setActivatehw(true);
+                setP(temp.getpNew().clone());
+                setH(temp.getHWithoutSum());
+                setMi(temp.getMi().clone());
+                setMj(temp.getMj().clone());
+                pathCount = temp.getPathCountNew();
+                array = cloneMatrix(temp.getM1());
+                stop = true;
+                break;
+            }
+        }
+    }
     public void main() {
         sysTime = System.currentTimeMillis();
         initialize();

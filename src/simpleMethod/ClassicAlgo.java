@@ -110,7 +110,8 @@ public class ClassicAlgo {
     }
 
     public static void setArray(double[][] array) {
-        ClassicAlgo.array = array;
+        ClassicAlgo.array = cloneMatrix(array);
+        originalsize = array.length;
     }
 
     //получает минимальное значение в строке

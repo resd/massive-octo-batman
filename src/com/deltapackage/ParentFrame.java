@@ -11,6 +11,8 @@ import common.C;
 import common.Work1Main;
 import simpleMethod.ClassicAlgo;
 import simpleMethod.ClassicAlgoWithBacktrack;
+import simpleMethod.FarAlgo;
+import simpleMethod.NearAlgoEveryDot;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -351,8 +353,8 @@ public class ParentFrame extends JFrame {
             }
         });
 
-        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Все", "Полный перебор","МВиГ классический",
-                "МВиГ классический(без возвратов)", "МВиГ улучшенный(без разрывов)", "МВиГ улучшенный(с разрывами)"}));
+        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Все", "Полный перебор", "МВиГ классический",
+                "МВиГ классический(без возвратов)", "МВиГ улучшенный(без разрывов)", "МВиГ улучшенный(с разрывами)", "Ближнего соседа", "Дальнего соседа"}));
 
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
         optionsPanel.setLayout(optionsPanelLayout);
@@ -656,11 +658,11 @@ public class ParentFrame extends JFrame {
 
     private void btnSolveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSolveActionPerformed
 
-        //setTablesSize(5);
+        //setTablesSize(7);
         //fillValues();
         String method = methodsComboBox.getSelectedItem().toString();
 
-        messagesTextPane.setText("");
+        //messagesTextPane.setText("");
         //JOptionPane.showMessageDialog(rootPane, method);
 
         double[][] a = getValuesFromTable();
@@ -669,6 +671,9 @@ public class ParentFrame extends JFrame {
         BruteforceAlgo bf = new BruteforceAlgo();
         ClassicAlgo sm = new ClassicAlgo(a);
         ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
+        NearAlgoEveryDot na = new NearAlgoEveryDot(a);
+        FarAlgo fa = new FarAlgo(a);
+        double sum;
 
         switch (method) {
             case "Все":
@@ -697,8 +702,6 @@ public class ParentFrame extends JFrame {
                 blder.append(",  Time: ");
                 blder.append(clwb.getTime());
 
-                //if (clwb.getSum(a) > bf.getSum(a))  setTablesSize(555);
-
                 sm.main();
                 blder.append("\n\nМВиГ классический(без возвратов)");
                 blder.append(":");
@@ -708,6 +711,8 @@ public class ParentFrame extends JFrame {
                 blder.append(sm.getSum(a));
                 blder.append(",  Time: ");
                 blder.append(sm.getTime());
+
+                //if (clwb.getSum(a) > sm.getSum(a))  setTablesSize(555);
 
                 w.setM0(a);
                 w.main();
@@ -732,6 +737,27 @@ public class ParentFrame extends JFrame {
                 blder.append(w2.getSum(a));
                 blder.append(",  Time: ");
                 blder.append(w2.getTime());
+
+                na.go();
+                sum = na.getSum(a);
+                blder.append("\n\nБлижнего соседа");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(na.getPath());
+                blder.append("\nSum = ");
+                blder.append(sum);
+                blder.append(",  Time: ");
+                blder.append(na.getTime());
+
+                fa.go();
+                blder.append("\n\nДальнего соседа");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(fa.getPath());
+                blder.append("\nSum = ");
+                blder.append(fa.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(fa.getTime());
                 setMessage(blder.toString());
                 break;
             case "Полный перебор":
@@ -803,6 +829,30 @@ public class ParentFrame extends JFrame {
                 //w.mainNewMethod();
                 setMessage(blder.toString());
                 break;
+            case "Ближнего соседа":
+                na.go();
+                sum = na.getSum(a);
+                blder.append("\n\nБлижнего соседа");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(na.getPath());
+                blder.append("\nSum = ");
+                blder.append(sum);
+                blder.append(",  Time: ");
+                blder.append(na.getTime());
+                break;
+            case "Дальнего соседа":
+                fa.go();
+                blder.append("\n\nДальнего соседа");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(fa.getPath());
+                blder.append("\nSum = ");
+                blder.append(fa.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(fa.getTime());
+                setMessage(blder.toString());
+                break;
         }
 
         // Example of using getters that get 3d matrix contents M1 matrix
@@ -840,7 +890,150 @@ public class ParentFrame extends JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        prepareMessage();
+        //prepareMessage();
+        messagesTextPane.setText("");
+        int matrixSize = ((Integer) ((JSpinner) MatrixSizeSpinner).getValue());//10;todo
+        setTablesSize(matrixSize);
+        //((JSpinner) MatrixSizeSpinner).setValue(matrixSize);todo
+        chkbxRandomValues.setSelected(true);
+
+        String method = methodsComboBox.getSelectedItem().toString();
+        messagesTextPane.setText("");
+        //JOptionPane.showMessageDialog(rootPane, method);
+        if ((Integer) MatrixSizeSpinner.getValue() > 12) return;
+
+        double[][] a = new double[][]{{}};
+        StringBuilder blder = new StringBuilder();
+        //blder.append("\n\n");
+        BruteforceAlgo bf = new BruteforceAlgo();
+        ClassicAlgo sm = new ClassicAlgo(a);
+        ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
+        NearAlgoEveryDot na = new NearAlgoEveryDot(a);
+        FarAlgo fa = new FarAlgo(a);
+        double sum;
+        int m1 = 0;
+        int m2 = 0;
+        int m3 = 0;
+        int m4 = 0;
+        int m5 = 0;
+        int m6 = 0;
+        double pp;
+        int count = 100;
+        depthSpinner.setValue(count);
+        int n = (int) depthSpinner.getValue();
+        double[] s = new double[6];
+        int kfa = 0;
+        int kcl = 0;
+        boolean flag = false;
+
+        for (int i = 0; i < n; i++) {
+            fillValues();
+            a = getValuesFromTable();
+            bf = new BruteforceAlgo();
+            //bf.setM0(a);
+            bf.main(a);
+            pp = bf.getSum(a);
+            switch (method) {
+                case "Все":
+                    try {
+                        clwb = new ClassicAlgoWithBacktrack(a);
+                        //clwb.setA(a);
+                        //clwb.setArray(a);
+                        clwb.main();
+                        s[0] = clwb.getSum(a);
+                        if (pp == clwb.getSum(a)) m1++;
+                    } catch (Exception e) {
+                        kcl++;
+                        e.printStackTrace();
+                    }
+
+                    sm = new ClassicAlgo(a);
+                    //sm.setArray(a);
+                    sm.main();
+                    s[1] = sm.getSum(a);
+                    if (pp == sm.getSum(a)) m2++;
+
+                    w = new Work1Main(1);
+                    w.setM0(a);
+                    w.main();
+                    s[2] = w.getSum(a);
+                    if (pp == w.getSum(a)) m3++;
+
+                    w2 = new Work1Main(2);
+                    w2.setM0(a);
+                    w2.main();
+                    s[3] = w2.getSum(a);
+                    if (pp == w2.getSum(a)) m4++;
+
+                    na = new NearAlgoEveryDot(a);
+                    //na.setM0(a);
+                    na.go();
+                    s[4] = na.getSum(a);
+                    if (pp == na.getSum(a)) m5++;
+
+                    try {
+                        fa = new FarAlgo(a);
+                        //fa.setM0(a);
+                        fa.go();
+                        s[5] = fa.getSum(a);
+                        if (pp == fa.getSum(a)) m6++;
+                    } catch (Exception e) {
+                        kfa++;
+                        //flag = true;
+                        e.printStackTrace();
+                    }
+                    //C.p(pp);
+                    //C.p(Arrays.toString(s));
+                    break;
+                case "Дальнего соседа":
+                    try {
+                        fa = new FarAlgo(a);
+                        //fa.setM0(a);
+                        fa.go();
+                        s[5] = fa.getSum(a);
+                        if (pp == fa.getSum(a)) m6++;
+                    } catch (Exception e) {
+                        kfa++;
+                        //flag = true;
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+            if (flag) break;
+        }
+        blder.append("МВиГ классический");
+        blder.append(":");
+        //blder.append(kcl);
+        blder.append("\nSum = ");
+        blder.append(m1);
+
+        blder.append("\n\nМВиГ классический(без возвратов)");
+        blder.append(":");
+        blder.append("\nSum = ");
+        blder.append(m2);
+
+        blder.append("\n\nМВиГ улучшенный(без разрывов)");
+        blder.append(":");
+        blder.append("\nSum = ");
+        blder.append(m3);
+
+        blder.append("\n\nМВиГ улучшенный(с разрывами)");
+        blder.append(":");
+        blder.append("\nSum = ");
+        blder.append(m4);
+
+        blder.append("\n\nБлижнего соседа");
+        blder.append(":");
+        blder.append("\nSum = ");
+        blder.append(m5);
+
+        blder.append("\n\nДальнего соседа");
+        blder.append(":");
+        //blder.append(kfa);
+        blder.append("\nSum = ");
+        blder.append(m6);
+        setMessage(blder.toString());
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
