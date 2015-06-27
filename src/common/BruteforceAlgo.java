@@ -46,6 +46,7 @@ public class BruteforceAlgo {
         for (int i = 0; i < originalsize; i++) {
             x[i] = i;
         }
+        int count = 0;
         double path;
         boolean overhead = false;
         while (yes) {
@@ -67,8 +68,11 @@ public class BruteforceAlgo {
             }
             overhead = false;
             next(x);
+            count++;
         }
-        //System.out.println(minValue + ": " + Arrays.toString(minPath));
+        //System.out.println(count);
+        //System.out.println("x: " + Arrays.toString(x));
+        //System.out.println("minValue: " + Arrays.toString(minPath));
     }
 
     public static void main(String[] args) {

@@ -1,17 +1,14 @@
-package simpleMethod;
+package anotherTryMVIG;
 
 import common.BruteforceAlgo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zabr1
  */
 @SuppressWarnings({"unused", "all"})
-public class ClassicAlgoWithBacktrack {
+public class ClassicAlgoAnother {
     /**
      * Сделать вариант без возвратов.
      * Сделать вариант с возвратами.
@@ -36,7 +33,7 @@ public class ClassicAlgoWithBacktrack {
     }
 
     //конструктор
-    public ClassicAlgoWithBacktrack(double[][] array) {
+    public ClassicAlgoAnother(double[][] array) {
         this.array = cloneMatrix(array);
         this.a = cloneMatrix(array);
         originalsize = array.length;
@@ -225,7 +222,7 @@ public class ClassicAlgoWithBacktrack {
         return sum;
     }
 
-    //находим нулевые элементы, определяем ребро ветвления
+    // Находим max суммы всех нулевых эл-тов по каждой СиС
     private Map defineMapEdge() {
 
         Map map = new LinkedHashMap<Object, Object>();
@@ -259,12 +256,14 @@ public class ClassicAlgoWithBacktrack {
         return map;
     }
 
+    // Находим эл-т соотв-щий max сумме из карты map
     private ArrayList difineEdges(Map map) {
         double comparator = -Double.MAX_VALUE;
         int[] edge = new int[2];
         ArrayList edges = new ArrayList();
         int count = 1;
 
+        // Находим коорд-ты max эл-та
         for (Object entrySet : map.entrySet()) {
             Map.Entry entry = (Map.Entry) entrySet;
             double sum = (double) entry.getValue();
@@ -275,12 +274,13 @@ public class ClassicAlgoWithBacktrack {
                 edge = key1;
             }
         }
+        // Добавляем найденный эл-т в edges
         edges.add(edge);
+        // Проверяем, есть ли в map эл-ты с таким же max значением
         for (Object entrySet : map.entrySet()) {
             Map.Entry entry = (Map.Entry) entrySet;
             double sum = (double) entry.getValue();
             int[] key1 = (int[]) entry.getKey();
-
             if (sum == comparator && key1 != edge) {
                 edges.add(key1);
                 count++;
@@ -418,57 +418,78 @@ public class ClassicAlgoWithBacktrack {
     double[][] M1;
     double min;
     ArrayList mins;
+    int[][] minP;
+    double minSum;
     private void solve() {
+        // Нормализация
+        normalize(array);
+        // Задание начальное нижней оценки H
+        setH(getH() + getSumOfDelta());
+        // Объявление переменных
         double HWith;
         double HWithout;
-        normalize(array);
-        setH(getH() + getSumOfDelta());
-        //System.out.println(delimeter);
         Map map = new HashMap<Object, Double>();
         int[] edge;
-        /*map.put(1, 2);
-        map.put(3, 4);
-        map.put(5, 6);
-        m.put(3, 4);
-        iterator = m.entrySet().iterator();
-        entry = (Map.Entry) iterator.next();
-        map.remove(entry.getKey());*/
         da = new ArrayList();
         mins = new ArrayList();
-        //arrs = new double[originalsize*10][][];
+        minP = new int[originalsize][2];
         int countBackWith = 0;
         int countHwith = 0;
-        // Пока не переберутся все варианты
-        while(true) {
+        // Пока длина матрицы > 2
+        while(array.length > 2) {
             Struct sa = new Struct();
+            // Очистка матриц
+            mins.clear();
+            map.clear();
+            // Находим max суммы всех нулевых эл-тов по каждой СиС
+            map = defineMapEdge();
+            // Находим эл-т соотв-щий max сумме из карты map
+            ArrayList edges = difineEdges(map);
+            // Формирует объект Struct только из эл-тов HWithout
+            sa = chooseHoneLeftOnly((int[]) edges.get(0), (double) map.get((int[]) edges.get(0)));
+            if (sa.getM1() == null) {
+                sa.setAdditional(cloneMatrix(p), cloneMatrix(M1), mi.clone(), mj.clone(), pathCount);
+            }
+            da.add(sa);
+            sa = null;
+            //count++;
+        }
+        Struct sa = new Struct();
+        array = null;
+        M1 = null;
+        p[originalsize - 2][0] = mi[0];
+        p[originalsize - 2][1] = mj[1];
+        p[originalsize - 1][0] = mi[1];
+        p[originalsize - 1][1] = mj[0];
+        double Sum = 0;
+        for (int k = 0; k < originalsize; k++) {
+            Sum += a[p[k][0]][p[k][1]];
+        }
+        HWithout = Sum - getH();
+        if (HWithout < 0) System.out.println("Error with Sum - H = " + HWithout);
+        setH(getH() + HWithout);
+        min = getH();
+        HWith = Double.POSITIVE_INFINITY;
+        sa.newStruct(null, HWith, HWithout, getH(), cloneMatrix(getP()), pathCount);
+        sa.setActivatehw(true);
+        sa.setActivatehwo(true);
+        //da.add(sa);
+        minSum = min;
+        minP = cloneMatrix(getP());
+        checkDa();
+        boolean bool = checkMin(sa);
+        // Пока не переберутся все варианты
+        while(bool) { // checkMin(sa)
+            sa = new Struct();
             // Если длина матрицы > 2
             if (array.length > 2) {
-                //arrs[count] = cloneMatrix(array);
                 // Очистка матриц
                 mins.clear();
                 map.clear();
                 // Находим max суммы всех нулевых эл-тов по каждой СиС
                 map = defineMapEdge();
-                //edge = difineEdge(map);
                 // Находим эл-т соотв-щий max сумме из карты map
                 ArrayList edges = difineEdges(map);
-                /*edge = difineEdge(map);
-                HWith = (double) map.get(edge);
-                sa = chooseHone(edge, HWith);*/
-                //checkMin(sa);
-                /*for (int i = 1; i < edges.size(); i++) {
-                    edge = (int[])edges.get(i);
-                    HWith = (double) map.get(edge);
-                    chooseH(edge, HWith);// todo need return sa ?
-                }*/
-                /*double temp = -Double.MAX_VALUE;
-                for (int i = 0; i < mins.size(); i++) {
-                    if ((double) mins.get(i) > temp) {
-                        temp = (double) mins.get(i);
-                    }
-                }
-                int index = mins.indexOf(temp);
-                index = da.size() - edges.size() + index;*/
                 // Формирует объект Struct и помечает в нем большее из HWith и HWithout
                 sa = chooseHone((int[])edges.get(0), (double) map.get((int[])edges.get(0)));
             } else {
@@ -478,7 +499,7 @@ public class ClassicAlgoWithBacktrack {
                 p[originalsize - 2][1] = mj[1];
                 p[originalsize - 1][0] = mi[1];
                 p[originalsize - 1][1] = mj[0];
-                double Sum = 0;
+                Sum = 0;
                 for (int k = 0; k < originalsize; k++) {
                     Sum += a[p[k][0]][p[k][1]];
                 }
@@ -493,37 +514,38 @@ public class ClassicAlgoWithBacktrack {
             if (sa.getM1() == null) {
                 sa.setAdditional(cloneMatrix(p), cloneMatrix(M1), mi.clone(), mj.clone(), pathCount);
             }
-            da.add(sa);
 
-            /*if (minStructNum != -1 && min > minStructNum) {
-                if (minStruct.getHWithout() <= minStruct.getHWith()) {
-                    setP(minStruct.getpNew().clone());
-                    setH(minStruct.getH() + minStruct.getHWithout());
-                    setMi(minStruct.getMi().clone());
-                    setMj(minStruct.getMj().clone());
-                    array = cloneMatrix(minStruct.getM1());
-                    pathCount = minStruct.getPathCountNew();
-                } else {
-                    setP(minStruct.getP().clone());
-                    setH(minStruct.getH() + minStruct.getHWith());
-                    setMi(minStruct.getMiOld().clone());
-                    setMj(minStruct.getMjOld().clone());
-                    array = cloneMatrix(minStruct.getArray());
-                    pathCount = minStruct.getPathCount();
-                    normalize(array);
+            boolean exit = false;
+            if (sa.getHWithSum() > minSum && sa.getHWithoutSum() > minSum) {
+                checkDa();
+                if (da.size() == 0) {
+                    if (minSum < min) {
+                        setP(cloneMatrix(minP));
+                    }
+                    break;
                 }
-                min = minStruct.getHWithoutSum() > minStruct.getHWithSum() ? minStruct.getHWithSum() : minStruct.getHWithoutSum();
-                minStructBoolean = true;
-                minStructNum = -1;
-            }*/
-
-            checkMin(sa);
+                exit = checkMin(sa);
+            } else {
+                da.add(sa);
+                checkMin(sa);
+            }
 
             minStructBoolean = false;
 
             sa = null;
             if (array == null) {
-                break;
+                checkDa();
+                exit = checkMin(sa);
+                if (da.size() == 0 || !exit) {
+                    if (minSum < min) {
+                        setP(cloneMatrix(minP));
+                    }
+                    break;
+                }
+                if (minSum < min) {
+                    minSum = min;
+                    minP = cloneMatrix(getP());
+                }
             }
             count++;
         }
@@ -592,6 +614,36 @@ public class ClassicAlgoWithBacktrack {
         return sa;
     }
 
+    // Формирует объект Struct только из эл-тов HWithout
+    private Struct chooseHoneLeftOnly(int[] edge, double HWith) {
+        double HWithout;
+        Struct sa = new Struct();
+
+        arrayC = cloneMatrix(array);
+        array[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
+        M1 = getHWithout(edge, HWith);
+        HWithout = getSumOfDelta();
+
+        arrayC[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
+        normalize(arrayC);
+        sa.setArray(cloneMatrix(arrayC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
+        sa.newStruct(edge.clone(), HWith, HWithout, getH(), cloneMatrix(getP()), pathCount);
+        sa.addMiMj(mi.clone(), mj.clone());
+
+        //todo System.out.println((H + HWithout) + ",  " + (H + HWith) + "     (" + (mi[edge[0]] + 1) + ", " + (mj[edge[1]] + 1) + ")");
+        //System.out.println("");display(array);System.out.println("");
+
+        getPath(edge);
+        setH(getH() + HWithout);
+        array = cloneMatrix(M1);
+        sa.setActivatehwo(true);
+        min = getH();
+        //da.add(sa);
+        //System.out.println("");display(array);System.out.println("");
+        return sa;
+    }
+
+    // Формирует объект Struct и помечает в нем большее из HWith и HWithout
     private Struct chooseHone(int[] edge, double HWith) {
         double HWithout;
         Struct sa = new Struct();
@@ -643,13 +695,27 @@ public class ClassicAlgoWithBacktrack {
         return sa;
     }
 
-    private void checkMin(Struct sa) {
+    private void checkDa() {
+        int index = 0;
+        while (index != da.size()) {
+            Struct temp = da.get(index);
+            if (temp.isActivatehwo() && temp.getHWithSum() > minSum) { // todo  minSum or min ?
+                da.remove(temp);
+            } else if (temp.isActivatehw() && temp.getHWithoutSum() > minSum) {
+                da.remove(temp);
+            } else {
+                index++;
+            }
+            temp = null;
+        }
+    }
+
+    private boolean checkMin(Struct sa) {
         // Проверить нет ли решений меньше, чем уже полученное решение
         // Прыгнуть на то решение
         boolean stop = false;
         for (int i = 0; i < da.size(); i++) {
             Struct temp = da.get(i);
-            if (stop) break;
             if (!temp.isActivatehw() && temp.getHWithSum() < min) {
                 if (!minStructBoolean) {
                     minStruct = sa;
@@ -670,6 +736,7 @@ public class ClassicAlgoWithBacktrack {
                 //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
                 //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
                 normalize(array);
+                da.remove(temp);
                 stop = true;
                 break;
             } else if (!temp.isActivatehwo() && temp.getHWithoutSum() < min) {
@@ -688,10 +755,13 @@ public class ClassicAlgoWithBacktrack {
                 setMj(temp.getMj().clone());
                 pathCount = temp.getPathCountNew();
                 array = cloneMatrix(temp.getM1());
+                da.remove(temp);
                 stop = true;
                 break;
             }
+            temp = null;
         }
+        return stop;
     }
     public void main() {
         sysTime = System.currentTimeMillis();
@@ -795,7 +865,6 @@ public class ClassicAlgoWithBacktrack {
 
     public static void main(String[] args) {
         double M = Double.POSITIVE_INFINITY;
-
         double[][] example =
                 {
                         {
@@ -827,18 +896,13 @@ public class ClassicAlgoWithBacktrack {
 
         double[][] M2 = {
                 {M, 3, 93, 13, 33, 9, 57},
-                {4, M,77 , 42, 21, 16, 34},
-                {45,17, M, 36,16, 28,25},
+                {4, M, 77 , 42, 21, 16, 34},
+                {45, 17, M, 36,16, 28,25},
                 {39, 90, 80, M, 56, 7, 91},
-                {28,46, 88,33, M,25, 57},
+                {28, 46, 88,33, M,25, 57},
                 {3, 88,18, 46, 92, M, 7},
                 {44,26,33,27, 84, 39, M}
         };
-
-        /*
-
-
-         */
         double[][] M1 = {
                 {
                         M,	12,	22,	28,	32,	40,	46
@@ -862,8 +926,22 @@ public class ClassicAlgoWithBacktrack {
                         52	,40	,30	,80	,20,	6	,M
                 }
         };
-        ClassicAlgoWithBacktrack ca = new ClassicAlgoWithBacktrack(M2);
-        ca.print(M2);
+        double[][] M120 = {
+                /*{M,},
+                {,M,},
+                {,M,},
+                {,M,},
+                {,M}*/
+        };
+        double[][] MExc = {
+                {M,87,41,74,17},
+                {52,M,14,87,56},
+                {60,85,M,18,7},
+                {86,53,33,M,27},
+                {24,34,81,24,M}
+        };
+        ClassicAlgoAnother ca = new ClassicAlgoAnother(MExc);
+        ca.print(MExc);
 
         //ca.display(ca.arrs[1]);
         //System.out.println(ca.delimeter);
@@ -873,8 +951,9 @@ public class ClassicAlgoWithBacktrack {
 
     private void print(double[][] example) {
         initialize();
+        //solveLeft();
         solve();
-        computeLastElement();
+        //computeLastElement();
         System.out.println("Sum = " + getSum(example) + ", H = " + H + ", count = " + count);
         System.out.println("Path = " + getPath());
         BruteforceAlgo bf = new BruteforceAlgo();
@@ -890,6 +969,50 @@ public class ClassicAlgoWithBacktrack {
         //parseAndHighlightPath(bf.getPath());
         //w.mainNewMethod();
         System.out.println(blder.toString());
+    }
+
+    private void solveLeft() {
+        double HWith;
+        double HWithout;
+        normalize(array);
+        setH(getSumOfDelta());
+        Map map = new HashMap<Object, Double>();
+        Map maparr = new HashMap<Integer, Map>();
+        Iterator iterator;
+        Map.Entry entry;
+        int[] edge = new int[0];
+        double sum = 0;
+        double[][] M1;
+        int count = array.length - 2;
+        Map st = new LinkedHashMap<Integer, ArrayList<Struct>>(count);
+        Struct s = null;
+        Map m = new LinkedHashMap<Object, Object>();
+        ArrayList arrayList = null;
+        for (int i = 0; i < count; i++) {
+            m.clear();
+            map.clear();
+            map = defineMapEdge();
+            edge = difineEdge(map);
+            double temp = (double) map.get(edge);
+            m.put(edge, (double) map.get(edge));
+            HWith = sum;
+            M1 = getHWithout(edge, sum);
+            HWithout = getSumOfDelta();
+            getPath(edge);
+            setH(HWithout);
+            array = cloneMatrix(M1);
+        }
+        count = 0;
+        for (Object entrySet : st.entrySet()) {
+            entry = (Map.Entry) entrySet;
+            arrayList = (ArrayList) entry.getValue();
+            Struct ss = (Struct) arrayList.get(0);
+            System.err.println("i = " + count + "  getHWithSum = " + ss.getHWithSum());
+            System.err.println("i = " + count + "  getHWithoutSum = " + ss.getHWithoutSum());
+            System.err.println("\n");
+            count++;
+        }
+
     }
 
 }

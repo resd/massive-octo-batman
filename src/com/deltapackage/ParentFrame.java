@@ -5,6 +5,7 @@ package com.deltapackage;/*
  */
 
 
+import anotherTryMVIG.ClassicAlgoAnother;
 import com.newpackage.table.CustomCellRenderer;
 import common.BruteforceAlgo;
 import common.C;
@@ -353,7 +354,7 @@ public class ParentFrame extends JFrame {
             }
         });
 
-        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Все", "Полный перебор", "МВиГ классический",
+        methodsComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Все", "Полный перебор", "МВиГ классический (переделанный)", "МВиГ классический",
                 "МВиГ классический(без возвратов)", "МВиГ улучшенный(без разрывов)", "МВиГ улучшенный(с разрывами)", "Ближнего соседа", "Дальнего соседа"}));
 
         javax.swing.GroupLayout optionsPanelLayout = new javax.swing.GroupLayout(optionsPanel);
@@ -532,6 +533,7 @@ public class ParentFrame extends JFrame {
                 .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
                 .addContainerGap())
         );
+        depthSpinner.setValue(100);
 
         pack();
         setLocationRelativeTo(null);
@@ -662,13 +664,14 @@ public class ParentFrame extends JFrame {
         //fillValues();
         String method = methodsComboBox.getSelectedItem().toString();
 
-        //messagesTextPane.setText("");
+        messagesTextPane.setText(""); // todo del
         //JOptionPane.showMessageDialog(rootPane, method);
 
         double[][] a = getValuesFromTable();
         StringBuilder blder = new StringBuilder();
         blder.append("\n\n");
         BruteforceAlgo bf = new BruteforceAlgo();
+        ClassicAlgoAnother caa = new ClassicAlgoAnother(a);
         ClassicAlgo sm = new ClassicAlgo(a);
         ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
         NearAlgoEveryDot na = new NearAlgoEveryDot(a);
@@ -691,6 +694,17 @@ public class ParentFrame extends JFrame {
                 }
                 //parseAndHighlightPath(bf.getPath());
                 //w.mainNewMethod();
+
+
+                caa.main();
+                blder.append("\n\nМВиГ классический (переделанный)");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(caa.getPath());
+                blder.append("\nSum = ");
+                blder.append(caa.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(caa.getTime());
 
                 clwb.main();
                 blder.append("\n\nМВиГ классический");
@@ -749,15 +763,19 @@ public class ParentFrame extends JFrame {
                 blder.append(",  Time: ");
                 blder.append(na.getTime());
 
-                fa.go();
-                blder.append("\n\nДальнего соседа");
-                blder.append(":");
-                blder.append("\nPath: ");
-                blder.append(fa.getPath());
-                blder.append("\nSum = ");
-                blder.append(fa.getSum(a));
-                blder.append(",  Time: ");
-                blder.append(fa.getTime());
+                try {
+                    fa.go();
+                    blder.append("\n\nДальнего соседа");
+                    blder.append(":");
+                    blder.append("\nPath: ");
+                    blder.append(fa.getPath());
+                    blder.append("\nSum = ");
+                    blder.append(fa.getSum(a));
+                    blder.append(",  Time: ");
+                    blder.append(fa.getTime());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 setMessage(blder.toString());
                 break;
             case "Полный перебор":
@@ -786,6 +804,17 @@ public class ParentFrame extends JFrame {
                 blder.append(",  Time: ");
                 blder.append(clwb.getTime());
                 setMessage(blder.toString());
+                break;
+            case "МВиГ классический (переделанный)":
+                caa.main();
+                blder.append("\n\nМВиГ классический (переделанный)");
+                blder.append(":");
+                blder.append("\nPath: ");
+                blder.append(caa.getPath());
+                blder.append("\nSum = ");
+                blder.append(caa.getSum(a));
+                blder.append(",  Time: ");
+                blder.append(caa.getTime());
                 break;
             case "МВиГ классический(без возвратов)":
                 sm.main();
@@ -906,6 +935,7 @@ public class ParentFrame extends JFrame {
         StringBuilder blder = new StringBuilder();
         //blder.append("\n\n");
         BruteforceAlgo bf = new BruteforceAlgo();
+        ClassicAlgoAnother caa = new ClassicAlgoAnother(a);
         ClassicAlgo sm = new ClassicAlgo(a);
         ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
         NearAlgoEveryDot na = new NearAlgoEveryDot(a);
@@ -917,13 +947,27 @@ public class ParentFrame extends JFrame {
         int m4 = 0;
         int m5 = 0;
         int m6 = 0;
+        int m7 = 0;
+        long[] time = new long[7];
         double pp;
         int count = 100;
-        depthSpinner.setValue(count);
+        //depthSpinner.setValue(count);
         int n = (int) depthSpinner.getValue();
-        double[] s = new double[6];
+        double[] s = new double[7];
         int kfa = 0;
         int kcl = 0;
+        int countMethod = 7;
+        int[] countRigthMethod = new int[countMethod];
+        boolean[] countFlag = new boolean[countMethod];
+        boolean countFlagg = false;
+        int countRigth = 0;
+        int currentMethod = 0;
+        int tempValue = 0;
+        for (int i = 0; i < countMethod; i++) {
+            countRigthMethod[i] = 0;
+            time[i] = 0;
+            countFlag[i] = false;
+        }
         boolean flag = false;
 
         for (int i = 0; i < n; i++) {
@@ -933,105 +977,283 @@ public class ParentFrame extends JFrame {
             //bf.setM0(a);
             bf.main(a);
             pp = bf.getSum(a);
+            time[0] += bf.getTime();
             switch (method) {
                 case "Все":
+                    //currentMethod++;
+                    try {
+                        caa = new ClassicAlgoAnother(a);
+                        //clwb.setA(a);
+                        //clwb.setArray(a);
+                        caa.main();
+                        s[currentMethod] = caa.getSum(a);
+                        time[currentMethod] += caa.getTime();
+                        if (pp == caa.getSum(a)) {
+                            m7++;
+                            countFlagg = true;
+                            for (int j = currentMethod; j < countMethod; j++) {
+                                countFlag[j] = true;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        break;
+                    }
+
+                    currentMethod++;
                     try {
                         clwb = new ClassicAlgoWithBacktrack(a);
                         //clwb.setA(a);
                         //clwb.setArray(a);
                         clwb.main();
-                        s[0] = clwb.getSum(a);
-                        if (pp == clwb.getSum(a)) m1++;
+                        s[currentMethod] = clwb.getSum(a);
+                        time[currentMethod] += clwb.getTime();
+                        if (pp == clwb.getSum(a)) {
+                            m1++;
+                            countFlagg = true;
+                            for (int j = currentMethod; j < countMethod; j++) {
+                                countFlag[j] = true;
+                            }
+                            /*for (int j = 0; j < countMethod; j++) {
+                                countFlag[i] = true;
+                            }*/
+                        }
                     } catch (Exception e) {
                         kcl++;
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
 
+                    currentMethod++;
                     sm = new ClassicAlgo(a);
                     //sm.setArray(a);
                     sm.main();
-                    s[1] = sm.getSum(a);
-                    if (pp == sm.getSum(a)) m2++;
+                    s[currentMethod] = sm.getSum(a);
+                    time[currentMethod] += sm.getTime();
+                    if (pp == sm.getSum(a)) {
+                        m2++;
+                        countFlagg = true;
+                        for (int j = currentMethod; j < countMethod; j++) {
+                            countFlag[j] = true;
+                        }
+                    }
 
+                    currentMethod++;
                     w = new Work1Main(1);
                     w.setM0(a);
                     w.main();
-                    s[2] = w.getSum(a);
-                    if (pp == w.getSum(a)) m3++;
+                    s[currentMethod] = w.getSum(a);
+                    time[currentMethod] += w.getTime();
+                    if (pp == w.getSum(a)) {
+                        m3++;
+                        countFlagg = true;
+                        for (int j = currentMethod; j < countMethod; j++) {
+                            countFlag[j] = true;
+                        }
+                    }
 
+                    currentMethod++;
                     w2 = new Work1Main(2);
                     w2.setM0(a);
                     w2.main();
                     s[3] = w2.getSum(a);
-                    if (pp == w2.getSum(a)) m4++;
+                    time[3] += w2.getTime();
+                    if (pp == w2.getSum(a)) {
+                        m4++;
+                        countFlagg = true;
+                        for (int j = currentMethod; j < countMethod; j++) {
+                            countFlag[j] = true;
+                        }
+                    }
 
+                    currentMethod++;
                     na = new NearAlgoEveryDot(a);
                     //na.setM0(a);
                     na.go();
-                    s[4] = na.getSum(a);
-                    if (pp == na.getSum(a)) m5++;
+                    s[currentMethod] = na.getSum(a);
+                    time[currentMethod] += na.getTime();
+                    if (pp == na.getSum(a)) {
+                        m5++;
+                        countFlagg = true;
+                        for (int j = currentMethod; j < countMethod; j++) {
+                            countFlag[j] = true;
+                        }
+                    }
 
+                    currentMethod++;
                     try {
                         fa = new FarAlgo(a);
                         //fa.setM0(a);
                         fa.go();
-                        s[5] = fa.getSum(a);
-                        if (pp == fa.getSum(a)) m6++;
+                        s[currentMethod] = fa.getSum(a);
+                        time[currentMethod] += fa.getTime();
+                        if (pp == fa.getSum(a)) {
+                            m6++;
+                            countFlagg = true;
+                            for (int j = currentMethod; j < countMethod; j++) {
+                                countFlag[j] = true;
+                            }
+                        }
                     } catch (Exception e) {
                         kfa++;
                         //flag = true;
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
+
+                    /*currentMethod++;
+                    try {
+                        caa = new ClassicAlgoAnother(a);
+                        //clwb.setA(a);
+                        //clwb.setArray(a);
+                        caa.main();
+                        s[currentMethod] = caa.getSum(a);
+                        time[currentMethod] += caa.getTime();
+                        if (pp == caa.getSum(a)) {
+                            m7++;
+                            countFlagg = true;
+                            for (int j = currentMethod; j < countMethod; j++) {
+                                countFlag[j] = true;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("THIS IS HERE!!!!!!!!!!!!!!!!!!!!!");
+                        break;
+                    }*/
+
+                    for (int j = 0; j < countMethod; j++) {
+                        if (countFlag[j]) {
+                            countRigthMethod[j]++;
+                        }
+                        countFlag[j] = false;
+                    }
+                    if (countFlagg) {
+                        countRigth++;
+                    }
+                    countFlagg = false;
+                    currentMethod = 0;
                     //C.p(pp);
                     //C.p(Arrays.toString(s));
+                    if (s[2] == pp && s[0] != pp)
+                        flag = true;
                     break;
-                case "Дальнего соседа":
-                    try {
-                        fa = new FarAlgo(a);
-                        //fa.setM0(a);
-                        fa.go();
-                        s[5] = fa.getSum(a);
-                        if (pp == fa.getSum(a)) m6++;
-                    } catch (Exception e) {
-                        kfa++;
-                        //flag = true;
-                        e.printStackTrace();
-                    }
-                    break;
+                default:
+                    return;
             }
             if (flag) break;
         }
-        blder.append("МВиГ классический");
-        blder.append(":");
+        //String firstMessage = "\nОтдельное количество совпадений данного метода с ПП = \n";
+        //String secondMessage = "\nАбсолютное количество совпадений с ПП включая все вышестоящие методы = \n";
+        String firstMessage = "\nSum = ";
+        String secondMessage = ", Absolute sum = ";
+        String thirdMessage = ", Delta = ";
+        String fourthMessage = ", Time = ";
+
+        //currentMethod = 0;
+        currentMethod = 1;
+        blder.append("МВиГ классический:");
         //blder.append(kcl);
-        blder.append("\nSum = ");
+        blder.append(firstMessage);
         blder.append(m1);
+        blder.append(secondMessage);
+        blder.append(countRigthMethod[currentMethod]);
+        blder.append(thirdMessage);
+        blder.append(countRigthMethod[currentMethod] - countRigthMethod[currentMethod-1]);// todo del
+        blder.append(fourthMessage);
+        blder.append(time[currentMethod]);
 
-        blder.append("\n\nМВиГ классический(без возвратов)");
-        blder.append(":");
-        blder.append("\nSum = ");
+        currentMethod++;
+        blder.append("\n\nМВиГ классический(без возвратов):");
+        blder.append(firstMessage);
         blder.append(m2);
+        blder.append(secondMessage);
+        blder.append(countRigthMethod[currentMethod]);
+        blder.append(thirdMessage);
+        blder.append(countRigthMethod[currentMethod] - countRigthMethod[currentMethod-1]);
+        blder.append(fourthMessage);
+        blder.append(time[currentMethod]);
 
-        blder.append("\n\nМВиГ улучшенный(без разрывов)");
-        blder.append(":");
-        blder.append("\nSum = ");
+        currentMethod++;
+        blder.append("\n\nМВиГ улучшенный(без разрывов):");
+        blder.append(firstMessage);
         blder.append(m3);
+        blder.append(secondMessage);
+        blder.append(countRigthMethod[currentMethod]);
+        blder.append(thirdMessage);
+        blder.append(countRigthMethod[currentMethod] - countRigthMethod[currentMethod-1]);
+        blder.append(fourthMessage);
+        blder.append(time[currentMethod]);
 
-        blder.append("\n\nМВиГ улучшенный(с разрывами)");
-        blder.append(":");
-        blder.append("\nSum = ");
+        currentMethod++;
+        blder.append("\n\nМВиГ улучшенный(с разрывами):");
+        blder.append(firstMessage);
         blder.append(m4);
+        blder.append(secondMessage);
+        blder.append(countRigthMethod[currentMethod]);
+        blder.append(thirdMessage);
+        blder.append(countRigthMethod[currentMethod] - countRigthMethod[currentMethod-1]);
+        blder.append(fourthMessage);
+        blder.append(time[currentMethod]);
 
-        blder.append("\n\nБлижнего соседа");
-        blder.append(":");
-        blder.append("\nSum = ");
+        currentMethod++;
+        blder.append("\n\nБлижнего соседа:");
+        blder.append(firstMessage);
         blder.append(m5);
+        blder.append(secondMessage);
+        blder.append(countRigthMethod[currentMethod]);
+        blder.append(thirdMessage);
+        blder.append(countRigthMethod[currentMethod] - countRigthMethod[currentMethod-1]);
+        blder.append(fourthMessage);
+        blder.append(time[currentMethod]);
 
-        blder.append("\n\nДальнего соседа");
-        blder.append(":");
+        currentMethod++;
+        blder.append("\n\nДальнего соседа:");
         //blder.append(kfa);
-        blder.append("\nSum = ");
+        blder.append(firstMessage);
         blder.append(m6);
+        blder.append(secondMessage);
+        blder.append(countRigthMethod[currentMethod]);
+        blder.append(thirdMessage);
+        blder.append(countRigthMethod[currentMethod] - countRigthMethod[currentMethod-1]);
+        blder.append(fourthMessage);
+        blder.append(time[currentMethod]);//*n/(n-kfa)
+
+        //currentMethod++;
+        currentMethod = 0;
+        blder.append("\n\nМВиГ классический (переделанный)");
+        blder.append(firstMessage);
+        blder.append(m7);
+        blder.append(secondMessage);
+        blder.append(countRigthMethod[currentMethod]);
+        blder.append(thirdMessage);
+        blder.append(countRigthMethod[currentMethod]);// - countRigthMethod[currentMethod-1]); todo
+        blder.append(fourthMessage);
+        blder.append(time[currentMethod]);
+
+        blder.append("\n\nОбщее количество совпадений с ПП:\n");
+        blder.append(countRigth);
         setMessage(blder.toString());
 
 
