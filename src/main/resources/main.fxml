@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<?import com.sun.javafx.scene.control.skin.ProgressIndicatorSkin.IndeterminateSpinner?>-->
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.newjavafx.ControllerMain">
+    <fx:define>
+        <ToggleGroup fx:id="btnGroup" />
+        <ToggleGroup fx:id="checkBoxGroup" />
+    </fx:define>
+    <!-- Настройки -->
+    <right>
+        <VBox fx:id="vBoxForSettings" prefHeight="500.0" prefWidth="400.0" spacing="10" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="5.0" left="8.0" right="10.0" top="5.0" />
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Размерность" />
+            <TextField fx:id="matrixSize" />
+            <!--<IndeterminateSpinner/>-->
+            <RadioButton fx:id="RadioButtonRandom" selected="true" text="Random" toggleGroup="$btnGroup"/>
+            <HBox>
+                <RadioButton fx:id="RadioButtonConstant" text="Constant" toggleGroup="$btnGroup">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets top="4.0" />
+               </padding></RadioButton>
+                <TextField fx:id="constantValue" text="10" />
+            </HBox>
+            <Button fx:id="btnFill" onAction="#handleButtonAction" text="Заполнить" />
+            <VBox prefWidth="500" spacing="5">
+                <HBox>
+                    <Button fx:id="btnCheckAll" onAction="#handleButtonAction" text="Выделить все" />
+                    <Button fx:id="btnUncheckAll" onAction="#handleButtonAction" text="Снять выделение со всех" />
+                </HBox>
+                <HBox>
+                    <Button fx:id="btnMoveUp" onAction="#handleButtonAction" text="Переместить вверх" />
+                    <Button fx:id="btnMoveDown" onAction="#handleButtonAction" text="Переместить вниз" />
+                </HBox>
+                <HBox fx:id="hBoxForCheckBoxes" prefHeight="500" prefWidth="500.0" spacing="10" />
+            </VBox>
+            <Button fx:id="btnSolve" onAction="#handleButtonAction" text="Вычислить" />
+            <Button fx:id="btnMultiSolve" onAction="#handleButtonAction" text="Серия вычислений" />
+            <TextField fx:id="multiSolveCount" text="1" />
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+        </VBox>
+
+    </right>
+    <!-- Тестовая часть -->
+        <center>
+      <VBox>
+         <children>
+                  <TableView fx:id="table" VBox.vgrow="ALWAYS" />
+           <Label fx:id="label1" prefWidth="400" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+        </center>
+    <!-- Левая часть -->
+    <left>
+        <VBox>
+        <TextArea fx:id="outputText" prefHeight="376.0" prefWidth="450.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS" />
+        </VBox>
+        <!--<BorderPane BorderPane.alignment="CENTER">
+            &lt;!&ndash; Окно вывода &ndash;&gt;
+            <bottom>
+                <TextArea prefHeight="376.0" prefWidth="600.0" text="Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;Some text. &#10;" BorderPane.alignment="CENTER" />
+            </bottom>
+         <top>
+            <ScrollPane prefHeight="398.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <content>
+                      &lt;!&ndash;gridLinesVisible="true"&ndash;&gt;
+                      <GridPane fx:id="gridPane">&lt;!&ndash; prefHeight="398.0" prefWidth="600.0" &ndash;&gt;
+                    &lt;!&ndash;                    <columnConstraints>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                        </columnConstraints>
+                                        <rowConstraints>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        </rowConstraints>&ndash;&gt;
+                </GridPane>
+               </content>
+            </ScrollPane>
+         </top>
+        </BorderPane>-->
+    </left>
+    <!-- Меню -->
+    <top>
+        <!--<HBox BorderPane.alignment="CENTER">
+            <children>-->
+                <MenuBar prefHeight="25.0" prefWidth="710.0" HBox.hgrow="ALWAYS">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="Файл">
+                            <items>
+                                <MenuItem fx:id="btnLoad" mnemonicParsing="false" onAction="#handleButtonAction" text="Загрузить новую матрицу" />
+                                <MenuItem fx:id="btnSave" mnemonicParsing="false" onAction="#handleButtonAction" text="Сохранить текущую матрицу" />
+                            </items>
+                        </Menu>
+                        <Menu  mnemonicParsing="false" text="Запустить старую версию программы">
+                            <items>
+                                <MenuItem fx:id="btnOldProgramm" mnemonicParsing="false" onAction="#handleButtonAction" text="Запустить старую версию программы" />
+                            </items>
+                        </Menu>
+
+                        <Menu mnemonicParsing="false"  text="Выход">
+                        <items>
+                            <MenuItem fx:id="btnExit" mnemonicParsing="false" onAction="#handleButtonAction" text="Выход" />
+                        </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+        <!--><MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="Показать/Скрыть настройки">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </children>
+        </HBox>-->
+    </top>
+</BorderPane>
