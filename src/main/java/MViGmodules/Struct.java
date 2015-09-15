@@ -3,6 +3,7 @@ package MViGmodules;
 /**
  * Created by Admin on 19.12.14.
  */
+@SuppressWarnings("all")
 public class Struct {
     private int[] edge;
     private double HWith;

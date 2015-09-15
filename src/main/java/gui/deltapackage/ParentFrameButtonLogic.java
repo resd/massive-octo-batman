@@ -1,6 +1,8 @@
-package com.deltapackage;
+package gui.deltapackage;
 
+import MViGmodules.ChoseBranchClassic;
 import MViGmodules.ChoseBranchClassicForEachElement;
+import MViGmodules.ChoseBranchClassicForEachElementSum;
 import MViGmodules.ClassicAlgoModules;
 import common.BruteforceAlgo;
 import common.Work1Main;
@@ -22,13 +24,13 @@ public class ParentFrameButtonLogic {
         int countMethod = 8;
         int[] methodsOrder = new int[countMethod];
         methodsOrder[0] = 0;
-        methodsOrder[1] = 1;
-        methodsOrder[2] = 2;
-        methodsOrder[3] = 3;
-        methodsOrder[4] = 4;
-        methodsOrder[5] = 5;
-        methodsOrder[6] = 6;
-        methodsOrder[7] = -1;
+        methodsOrder[1] = -1;
+        methodsOrder[2] = -1;
+        methodsOrder[3] = -1;
+        methodsOrder[4] = -1;
+        methodsOrder[5] = -1;
+        methodsOrder[6] = -1;
+        methodsOrder[7] = 1;
         /*
         methodsOrder
         0 - Classic module
@@ -49,6 +51,9 @@ public class ParentFrameButtonLogic {
         NearAlgoEveryDot na;
         FarAlgo fa;
         ClassicAlgoModules classicAlgoModules;
+        // change this
+        ChoseBranchClassic choseBranchBefore = new ChoseBranchClassicForEachElement();
+        ChoseBranchClassic choseBranchAfter = new ChoseBranchClassicForEachElementSum();
         Work1Main w = new Work1Main(1);
         Work1Main w2 = new Work1Main(2);
         int[] m = new int[countMethod];
@@ -188,7 +193,7 @@ public class ParentFrameButtonLogic {
 
                     if (methodsOrder[0] != -1) {
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a);
+                            classicAlgoModules = new ClassicAlgoModules(a, choseBranchBefore);
                             classicAlgoModules.main();
                             s[methodsOrder[0]] = classicAlgoModules.getSum(a);
                             time[methodsOrder[0]] += classicAlgoModules.getTime();
@@ -207,7 +212,7 @@ public class ParentFrameButtonLogic {
 
                     if (methodsOrder[7] != -1) {
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElement());
+                            classicAlgoModules = new ClassicAlgoModules(a, choseBranchAfter);
                             classicAlgoModules.main();
                             s[methodsOrder[7]] = classicAlgoModules.getSum(a);
                             time[methodsOrder[7]] += classicAlgoModules.getTime();
@@ -361,11 +366,10 @@ public class ParentFrameButtonLogic {
         return blder.toString();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    String btnSolveActionPerformed(int n, String method, ParentFrame parentFrame) {//GEN-FIRST:event_btnSolveActionPerformed
+    String btnSolveActionPerformed(int n, String method, double[][] a) {//GEN-FIRST:event_btnSolveActionPerformed
         //setTablesSize(7);
         //fillValues();
 
-        double[][] a = parentFrame.getValuesFromTable();
         StringBuilder blder = new StringBuilder();
         //blder.append("\n\n");
         BruteforceAlgo bf = new BruteforceAlgo();

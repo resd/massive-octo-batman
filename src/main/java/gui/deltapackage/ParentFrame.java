@@ -1,13 +1,13 @@
-package com.deltapackage;/*
+package gui.deltapackage;/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
 
-import com.newpackage.table.CustomCellRenderer;
 import common.C;
 import common.Work1Main;
+import gui.newpackage.table.CustomCellRenderer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,6 +52,23 @@ public class ParentFrame extends JFrame {
             valueTable.setDefaultRenderer(columnClass, renderer);
         }
 
+    }
+
+    public ParentFrame(double[][] m) {
+        initComponents();
+        setNormalGrid(valueTable);
+        setTablesSize(m.length);
+        setTableValue(m);
+
+        CustomCellRenderer renderer = new CustomCellRenderer();
+        DefaultCellEditor singleclick = new DefaultCellEditor(new JTextField());
+        singleclick.setClickCountToStart(1);
+        //set the editor as default on every column
+        for (int i = 0; i < valueTable.getColumnCount(); i++) {
+            Class<?> columnClass = valueTable.getColumnClass(i);
+            valueTable.setDefaultEditor(columnClass, singleclick);
+            valueTable.setDefaultRenderer(columnClass, renderer);
+        }
     }
 
     private void setNormalGrid(JTable table) {
@@ -660,7 +677,7 @@ public class ParentFrame extends JFrame {
         messagesTextPane.setText(""); // todo del
         int n = (Integer) MatrixSizeSpinner.getValue();
         //JOptionPane.showMessageDialog(rootPane, method);
-        String strOut = buttonLogic.btnSolveActionPerformed(n, method, this);
+        String strOut = buttonLogic.btnSolveActionPerformed(n, method, getValuesFromTable());
         setMessage(strOut);
 
         // Example of using getters that get 3d matrix contents M1 matrix
@@ -1087,6 +1104,10 @@ public class ParentFrame extends JFrame {
 
         }
 
+    }
+
+    public static String getMethods() {
+        return new ParentFrame().methodsComboBox.getSelectedItem().toString();
     }
 
 }

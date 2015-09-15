@@ -20,9 +20,9 @@ public class C {
         for (int i = 0; i < M.length; i++) {
             for (int j = 0; j < M.length; j++) {
                 if (i == j) {
-                    System.out.print("0" + " ");
+                    System.out.print("-" + "  ");
                 } else {
-                    System.out.print(round(M[i][j]) + " ");
+                    System.out.print(round(M[i][j]) + "  ");
                     if (j == (M.length - 1)) {
                         System.out.println("");
                     }

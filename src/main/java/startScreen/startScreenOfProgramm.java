@@ -5,7 +5,7 @@
  */
 package startScreen;
 
-import com.deltapackage.ParentFrame;
+import gui.deltapackage.ParentFrame;
 
 /**
  *

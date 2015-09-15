@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.newpackage.table;
+package gui.newpackage.table;
 
 import javax.swing.table.TableColumn;
 

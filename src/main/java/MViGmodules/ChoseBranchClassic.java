@@ -10,8 +10,10 @@ import java.util.Map;
  */
 @SuppressWarnings({"unused", "all"})
 public class ChoseBranchClassic extends ChoseBranch{
-    protected double[][] arrayC;
-    protected double[][] M1;
+    private double[][] arrayC;
+    private double[][] M1;
+    private double[] sumOfEachRow;
+    private double[] sumOfEachCol;
 
     /*public ChoseBranchClassic(DA da) {
     this.da = da;
@@ -40,16 +42,11 @@ public class ChoseBranchClassic extends ChoseBranch{
 
     // Находим max суммы всех нулевых эл-тов по каждой СиС
     protected Map defineMapEdge(double[][] array) {
-
         Map map = new LinkedHashMap<Object, Object>();
-
         double t;
         for (int i = 0; i < array.length; i++) {
-
             for (int j = 0; j < array[i].length; j++) {
-
                 if (array[i][j] == 0) {
-
                     int[] indexes = new int[2];
                     indexes[0] = i;
                     indexes[1] = j;
@@ -57,19 +54,17 @@ public class ChoseBranchClassic extends ChoseBranch{
                     t = getMinInCollumn(j, i, array);
                     map.put(indexes, getMinInRow(i, j, array) + getMinInCollumn(j, i, array));
                     //array[i][j] = Double.POSITIVE_INFINITY;
-
                 }
             }
         }
+        return map;
         //map = sortByValue(map);
-
         /*Iterator<Map.Entry<Object, Double>> i = map.entrySet().iterator();
         while(i.hasNext()){
             int[] d = (int[]) i.next().getKey();
             System.err.println(Arrays.toString(d)+", "+map.get(d));
         }
         System.err.println("\n");*/
-        return map;
     }
 
     //получает минимальное значение в строке
@@ -353,4 +348,32 @@ public class ChoseBranchClassic extends ChoseBranch{
         return sa;
     }
 
+    protected void countSums(double[][] M) {//todo сразу считать minSum, правда если нужно.
+        sumOfEachRow = null;
+        sumOfEachCol = null;
+        sumOfEachRow = new double[M.length];
+        sumOfEachCol = new double[M.length];
+        for (int i = 0; i < M.length; i++) {
+            for (int j = 0; j < M.length; j++) {
+                if (M[i][j] != Double.POSITIVE_INFINITY) {
+                    sumOfEachRow[i] += M[i][j];
+                }
+            }
+        }
+        for (int i = 0; i < M.length; i++) {
+            for (int j = 0; j < M.length; j++) {
+                if (M[j][i] != Double.POSITIVE_INFINITY) {
+                    sumOfEachCol[i] += M[j][i];
+                }
+            }
+        }
+    }
+
+    protected double[] getSumOfEachRow() {
+        return sumOfEachRow;
+    }
+
+    protected double[] getSumOfEachCol() {
+        return sumOfEachCol;
+    }
 }
