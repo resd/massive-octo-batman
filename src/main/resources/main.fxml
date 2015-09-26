@@ -49,7 +49,9 @@
             </VBox>
             <Button fx:id="btnSolve" onAction="#handleButtonAction" text="Вычислить" />
             <Button fx:id="btnMultiSolve" onAction="#handleButtonAction" text="Серия вычислений" />
-            <TextField fx:id="multiSolveCount" text="1" />
+            <CheckBox fx:id="cbMultiSolveFromFile" onAction="#handleButtonAction" text="Взять данные из файла"/>
+            <TextField fx:id="multiSolveCount" text="4" />
+            <Label fx:id="multiSolveStr" text="" />
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -106,6 +108,8 @@
                             <items>
                                 <MenuItem fx:id="btnLoad" mnemonicParsing="false" onAction="#handleButtonAction" text="Загрузить новую матрицу" />
                                 <MenuItem fx:id="btnSave" mnemonicParsing="false" onAction="#handleButtonAction" text="Сохранить текущую матрицу" />
+                                <MenuItem fx:id="btnMultiLoad" mnemonicParsing="false" onAction="#handleButtonAction" text="Загрузить серию матриц и высичлить" />
+                                <MenuItem fx:id="btnMultiSave" mnemonicParsing="false" onAction="#handleButtonAction" text="Сохранить серию матрицу" />
                             </items>
                         </Menu>
                         <Menu  mnemonicParsing="false" text="Запустить старую версию программы">

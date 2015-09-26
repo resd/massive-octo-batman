@@ -11,13 +11,10 @@ import simpleMethod.NearAlgoEveryDot;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Admin on 23.08.15.
- */
 @SuppressWarnings("all")
 public class ButtonLogic {
 
-    String jButton2ActionPerformed(int n, List<String> methodsOrder, ControllerMain controllerMain) {//GEN-FIRST:event_jButton2ActionPerformed
+    String btnMultiSolveActionPerformed(int n, List<String> methodsOrder, ControllerMain controllerMain) {//GEN-FIRST:event_jButton2ActionPerformed
 
         int countMethod = methodsOrder.size();
         double[][] a;
@@ -35,6 +32,9 @@ public class ButtonLogic {
         ChoseBranchClassic choseBranchAfter = new ChoseBranchClassicForEachElementSum();
         Work1Main w = new Work1Main(1);
         Work1Main w2 = new Work1Main(2);
+
+        FileController fileController = controllerMain.getFileController();
+
         int[] m = new int[countMethod];
         double sum;
         long[] time = new long[countMethod];
@@ -61,8 +61,7 @@ public class ButtonLogic {
             //parentFrame.fillValues(); todo
             //a = parentFrame.getValuesFromTable(); todo
             a = null;
-            controllerMain.btnFill.fire();
-            a = controllerMain.getMatrix();
+            a = getMatrix(controllerMain, i);
             bf = new BruteforceAlgo();
             bf.main(a);
             pp = bf.getSum(a);
@@ -104,7 +103,7 @@ public class ButtonLogic {
                                 }
                             }
                         } catch (Exception e) {
-                            //parentFrame.saveInformationFromFormToTextFile(); // todo
+                            //fileController.autoSaveInformationFromFormToTextFile(a);
                             e.printStackTrace();
                         }
                         iteratorForMethods++;
@@ -133,6 +132,9 @@ public class ButtonLogic {
                         //sm.setArray(a);
                         sm.main();
                         s[iteratorForMethods] = sm.getSum(a);
+                        /*if (s[iteratorForMethods] < s[iteratorForMethods - 1]) {todo вернуть проверку на without > ...
+                            fileController.autoSaveInformationFromFormToTextFile(a);
+                        }*/
                         time[iteratorForMethods] += sm.getTime();
                         if (pp == sm.getSum(a)) {
                             m[iteratorForMethods]++;
@@ -156,6 +158,7 @@ public class ButtonLogic {
                                 countFlag[j] = true;
                             }
                         }
+                        iteratorForMethods++;
                         break;
                     case "МВиГ улучшенный (с разрывами)":
                         w2 = new Work1Main(2);
@@ -355,6 +358,11 @@ public class ButtonLogic {
 
         return blder.toString();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    protected double[][] getMatrix(ControllerMain controllerMain, int i) {
+        controllerMain.btnFill.fire();
+        return controllerMain.getMatrix();
+    }
 
     private StringBuilder getMessage(String method, int[] m, int iteratorForMethods, int[] countRigthMethod, long[] time) {
         String firstMessage = "\nSum = ";
@@ -600,4 +608,22 @@ public class ButtonLogic {
         return blder.toString();
     }//GEN-LAST:event_btnSolveActionPerformed
 
+    public static class ButtonLogicForMultiLoad extends ButtonLogic {
+        List<List<String>> list;
+
+        @Override
+        protected double[][] getMatrix(ControllerMain controllerMain, int i) {
+                return controllerMain.getFileController().parseStringFromFile(list.get(i + 1));
+        }
+
+        public void setList(List<List<String>> list) {
+            this.list = list;
+        }
+
+        public List<List<String>> getList() {
+            return list;
+        }
+    }
+
 }
+

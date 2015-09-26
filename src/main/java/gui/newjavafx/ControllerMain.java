@@ -35,7 +35,7 @@ public class ControllerMain implements Initializable {
     public TableView<TableViewController.DoubleData> table;
 
     private static final String[] taskNames = {
-            "Полный перебор",
+            /*"Полный перебор",*/
             "МВиГ классический (модульный)",
             "МВиГ классический",
             "МВиГ классический (без возвратов)",
@@ -64,6 +64,10 @@ public class ControllerMain implements Initializable {
     public TextField multiSolveCount;
     public MenuItem btnExit;
     public MenuItem btnOldProgramm;
+    public MenuItem btnMultiLoad;
+    public MenuItem btnMultiSave;
+    public CheckBox cbMultiSolveFromFile;
+    public Label multiSolveStr;
     //public ListView<Task> listViewForCheckBoxes;
     //checkList
 
@@ -78,6 +82,7 @@ public class ControllerMain implements Initializable {
     public Button btnMoveDown;
     private static TableViewController tableViewController;
     private FileController fileController;
+    private ButtonLogic.ButtonLogicForMultiLoad newBtnLogic;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -114,8 +119,12 @@ public class ControllerMain implements Initializable {
         fileController = new FileController();
         //btnSolve.fire();
         btnCheckAll.fire();
+        //tasks.get(1).setSelected(true);
+        //tasks.get(3).setSelected(true);
+        cbMultiSolveFromFile.fire();
         matrixSize.setText("10");
         btnFill.fire();
+        //btnMultiLoad.fire();
         //btnSolve.fire();
     }
 
@@ -188,16 +197,17 @@ public class ControllerMain implements Initializable {
         if (actionEvent.getSource() == btnSolve) {
             // Получение массива строк методов в заданном пользователем порядке
             ArrayList<String> methodsOrder = new ArrayList<String>();
+            if (tableViewController.getMatrixSize() < 13) {
+                methodsOrder.add("Полный перебор");
+            }
             for (Task task : tasks) {
-                if ( !( task.getName().equals("Полный перебор") && tableViewController.getDataObservableList().size() > 13) ) {
-                    if (task.isSelected()) {
-                        methodsOrder.add(task.getName());
-                    }
+                if (task.isSelected()) {
+                    methodsOrder.add(task.getName());
                 }
             }
             if (methodsOrder.size() == 0) {
                 // Тернарный оператор не работает
-                outputText.setText(( outputText.getText() != "" ? "\n\n" : "" ) + "Не выбранно ни одного метода."); // outputText.getText() +
+                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Не выбранно ни одного метода."); // outputText.getText() +
                 return;
             }
             // Считывание данных из TableView в массив matrix
@@ -212,24 +222,23 @@ public class ControllerMain implements Initializable {
         if (actionEvent.getSource() == btnMultiSolve) {
             String str = multiSolveCount.textProperty().getValue();
             int multiSolveCountInt = Integer.parseInt(str);
-
             // Получение массива строк методов в заданном пользователем порядке
-            ArrayList<String> methodsOrder = new ArrayList<String>();
-            for (Task task : tasks) {
-                if ( !( task.getName().equals("Полный перебор") && tableViewController.getDataObservableList().size() > 13) ) {
-                    if (task.isSelected()) {
-                        methodsOrder.add(task.getName());
-                    }
-                }
-            }
+            ArrayList<String> methodsOrder = getMethodOrder();
+
             if (methodsOrder.size() == 0) {
                 // Тернарный оператор не работает
-                outputText.setText(( outputText.getText() != "" ? "\n\n" : "" ) + "Не выбранно ни одного метода."); // outputText.getText() +
+                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Не выбранно ни одного метода."); // outputText.getText() +
                 return;
             }
 
             // Вывод результата выполнения вычислений
-            outputText.setText(new ButtonLogic().jButton2ActionPerformed(multiSolveCountInt, methodsOrder, this));
+            if (cbMultiSolveFromFile.isSelected()) {
+                //List<List<String>> list = newBtnLogic.getList();
+                multiSolveCountInt = Integer.parseInt(newBtnLogic.getList().get(0).get(0));
+                outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
+            } else {
+                outputText.setText(new ButtonLogic().btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
+            }
             return;
         }
 
@@ -242,7 +251,7 @@ public class ControllerMain implements Initializable {
         // Кнопка меню для загрузки новой матрицы в программу
         if (actionEvent.getSource() == btnLoad) {
             List<String> list = fileController.loadDataFromFile();
-            if (list.isEmpty()) return;
+            if (list == null || list.isEmpty()) return;
             double[][] newValues = fileController.parseStringFromFile(list);
             matrixSize.setText(newValues.length + "");
             //передать newValues в таблицу.......
@@ -263,24 +272,43 @@ public class ControllerMain implements Initializable {
             new ParentFrame(getMatrix()).setVisible(true);
             return;
         }
+
+        // Кнопка меню для записи текущей матрицы в файл
+        if (actionEvent.getSource() == btnMultiSave) {
+            fileController.saveMultiInformationFromFormToTextFile(this);
+            return;
+        }
+
+        // Кнопка меню для загрузки новой матрицы в программу
+        if (actionEvent.getSource() == btnMultiLoad) {
+            List<List<String>> list = fileController.loadMultiDataFromFile(this);
+            if (list == null || list.isEmpty()) return;
+            newBtnLogic = new ButtonLogic.ButtonLogicForMultiLoad();
+            newBtnLogic.setList(list);
+            multiSolveStr.setText("list = " + list.size() + ", countIteration = " + list.get(0).get(0));
+            //outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
+            return;
+        }
+        if (actionEvent.getSource() == cbMultiSolveFromFile) {
+
+        }
     }
 
     public double[][] getMatrix() {
-        ObservableList<TableViewController.DataColumn<TableViewController.DoubleData>> data = tableViewController.getDataObservableList();
-        int size = data.size();
-        double[][] matrix = new double[size][size];
-        for (int i = 0; i < size; i++) {
-            TableViewController.DataColumn<TableViewController.DoubleData> colData = data.get(i);
-            for (int j = 0; j < size; j++) {
-                if (i != j) {
-                    matrix[i][j] = (colData.getData(j).getValue());
-                } else {
-                    matrix[i][j] = Double.POSITIVE_INFINITY;;
-                }
+        return tableViewController.getMatrix();
+    }
 
+    ArrayList<String> getMethodOrder() {
+        // Получение массива строк методов в заданном пользователем порядке
+        ArrayList<String> methodsOrder = new ArrayList<String>();
+        for (Task task : tasks) {
+            if (!(task.getName().equals("Полный перебор") && tableViewController.getMatrixSize() > 13)) {
+                if (task.isSelected()) {
+                    methodsOrder.add(task.getName());
+                }
             }
         }
-        return matrix;
+        return methodsOrder;
     }
 
     public void updateDisplay(int matricSize) {
@@ -306,6 +334,10 @@ public class ControllerMain implements Initializable {
                 textField = null;
             }
         }
+    }
+
+    public FileController getFileController() {
+        return fileController;
     }
 
     public static class Task {
@@ -337,4 +369,11 @@ public class ControllerMain implements Initializable {
         }
     }
 
+    public ObservableList<Task> getTasks() {
+        return tasks;
+    }
+
+    public static TableViewController getTableViewController() {
+        return tableViewController;
+    }
 }
