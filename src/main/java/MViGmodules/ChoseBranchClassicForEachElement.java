@@ -4,13 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Admin on 04.08.15.
+ * @author Admin
  */
 public class ChoseBranchClassicForEachElement extends ChoseBranchClassic {
 
     @Override
     protected Map defineMapEdge(double[][] array) {
-        Map map = new LinkedHashMap<Object, Object>();
+        Map<int[], Double> map = new LinkedHashMap<>();
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
                 if (array[i][j] != Double.POSITIVE_INFINITY) {

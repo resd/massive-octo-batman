@@ -6,10 +6,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Admin on 14.07.15.
+ * @author Admin
+ * @since 14.07.15
  */
 @SuppressWarnings({"unused", "all"})
-public class ChoseBranchClassic extends ChoseBranch{
+public class ChoseBranchClassic {
     private double[][] arrayC;
     private double[][] M1;
     private double[] sumOfEachRow;
@@ -42,7 +43,7 @@ public class ChoseBranchClassic extends ChoseBranch{
 
     // Находим max суммы всех нулевых эл-тов по каждой СиС
     protected Map defineMapEdge(double[][] array) {
-        Map map = new LinkedHashMap<Object, Object>();
+        Map<int[], Double> map = new LinkedHashMap<>();
         double t;
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
@@ -169,9 +170,11 @@ public class ChoseBranchClassic extends ChoseBranch{
         changeJI(array, edge[0], edge[1]);
         M1 = setElementsM0toM(array, edge[1], edge[1]);
         for (int i = 0; i < M1.length; i++) {
-            if (M1[i][i] != Double.POSITIVE_INFINITY)
+            if (M1[i][i] != Double.POSITIVE_INFINITY) {
+                System.err.println("\n Error wiht array[" + i + "][" + i + "] != INFINITY");
+                //throw new RuntimeException();
                 //M1ch[i][i] = Double.POSITIVE_INFINITY;
-                System.err.println("\n Error wiht array["+i+"]["+i+"] != INFINITY");
+            }
         }
         Normalize.INSTANCE.normalize(M1);
         return M1;
@@ -252,10 +255,10 @@ public class ChoseBranchClassic extends ChoseBranch{
 
     public Struct chooseBoth(DA da, Path path, Var var) {
         Struct sa = new Struct();
-        ArrayList mins = new ArrayList();;
-        Map map = new HashMap<Object, Double>();
         // Если длина матрицы > 2
         if (var.getArrayLength() > 2) {
+            ArrayList mins = new ArrayList();;
+            Map map = new HashMap<Object, Double>();
             // Очистка матриц
             mins.clear();
             map.clear();
@@ -265,7 +268,7 @@ public class ChoseBranchClassic extends ChoseBranch{
             ArrayList edges = difineEdges(map);
             // Формирует объект Struct и помечает в нем большее из HWith и HWithout
             //try {
-                sa = chooseHone((int[])edges.get(0), (double) map.get((int[])edges.get(0)), da, path, var);
+            sa = chooseHone((int[])edges.get(0), (double) map.get((int[])edges.get(0)), da, path, var);
             /*} catch (Exception e) {
                 e.printStackTrace();
             }*/
@@ -302,7 +305,7 @@ public class ChoseBranchClassic extends ChoseBranch{
         Struct sa = new Struct();
 
         arrayC = Other.INSTANCE.cloneMatrix(var.getArray());
-        var.getArray()[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
+        var.getArray()[edge[1]][edge[0]] = Double.POSITIVE_INFINITY; //todo Is this right?
         var.setM1(getHWithout(edge, HWith, var.getArray()));
         HWithout = getSumOfDelta();
 
@@ -339,6 +342,7 @@ public class ChoseBranchClassic extends ChoseBranch{
             pC[path.getPathCount()][1] = mjC[y];
             miC[x] = miC[y];
 
+            var.setArray(arrayC);
             miC = path.remove(miC, y);
             mjC = path.remove(mjC, y);
             sa.setAdditional(Other.INSTANCE.cloneMatrix(pC), Other.INSTANCE.cloneMatrix(var.getM1()), miC.clone(), mjC.clone(), path.getPathCount() + 1);

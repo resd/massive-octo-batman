@@ -15,9 +15,12 @@ import java.util.List;
 @SuppressWarnings("all")
 public class FileController {
 
-    void saveInformationFromFormToTextFile(double[][] data) {
+    private String addToSaveFile = "";
 
-        int size = data.length;
+    /**
+     *  Save data function
+     */
+    void saveInformationFromFormToTextFile(double[][] data) {
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
@@ -27,14 +30,34 @@ public class FileController {
 
         //Show save file dialog
         File file = fileChooser.showSaveDialog(MainScreen.getStage());
+
+        saveInformationFromFormToTextFile(data, file);
+
+    }
+
+    void saveInformationFromFormToTextFile(double[][] data, String file) {
+
+        saveInformationFromFormToTextFile(data, new File(file));
+
+    }
+
+    void saveInformationFromFormToTextFile(double[][] data, boolean saveLastMatrix) {
+
+        if (saveLastMatrix)
+            saveInformationFromFormToTextFile(data, new File("C:/data/lastMatrix.txt"));
+        else saveInformationFromFormToTextFile(data);
+
+    }
+
+    private void saveInformationFromFormToTextFile(double[][] data, File file) {
+
         if (file == null) return;
+        int size = data.length;
 
         java.util.Date date = new java.util.Date(System.currentTimeMillis());
 
-
         StringBuilder builder = new StringBuilder();
         String delimeter = "==========================";
-
 
         builder.append(System.lineSeparator());
         builder.append(delimeter);
@@ -65,13 +88,13 @@ public class FileController {
         builder.append(delimeter);
         builder.append(System.lineSeparator());
 
-
-        if (file != null) {
-            SaveFile(builder.toString(), file);
-        }
+        SaveFile(builder.toString(), file);
 
     }
 
+    /**
+     *  Save multi data function
+     */
     void saveMultiInformationFromFormToTextFile(ControllerMain controllerMain) {
         // Получение массива строк методов в заданном пользователем порядке
         ArrayList<String> methodsOrder = controllerMain.getMethodOrder();
@@ -154,7 +177,7 @@ public class FileController {
         String localDateTime = localDate.toString() + " T " + localTimeString;
         File file = new File("C:/data/" + size);
         if (!file.exists()) file.mkdir();
-        file = new File(file, size + "  " + localDateTime + ".txt");
+        file = new File(file, size + "  " + localDateTime + getAddToSaveFile() + ".txt");
         System.out.println(file);
         if (file == null) return;
 
@@ -189,6 +212,10 @@ public class FileController {
         SaveFile(builder.toString(), file);
     }
 
+
+    /**
+     *  Load data from file
+     */
     List<String> loadDataFromFile() {
 
         FileChooser fileChooser = new FileChooser();
@@ -197,7 +224,7 @@ public class FileController {
         //Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialDirectory(new File("C:/data/"));
+        fileChooser.setInitialDirectory(new File("C:/data/5"));
 
         //Show save file dialog
 
@@ -207,6 +234,29 @@ public class FileController {
             return loadOneFile(file);
         }
         return null;
+    }
+
+    List<String> loadDataFromFile(String fileString) {
+        File file = new File(fileString);
+
+        if (file != null) {
+            return loadOneFile(file);
+        }
+        return null;
+    }
+
+    List<String> loadDataFromFile(boolean loadLastMatrix) {
+        if (loadLastMatrix) {
+            File file = new File("C:/data/lastMatrix.txt");
+
+            if (file != null) {
+                return loadOneFile(file);
+            }
+            return null;
+        } else {
+            return loadDataFromFile();
+        }
+
     }
 
     private List<String> loadOneFile(File file) {
@@ -245,6 +295,12 @@ public class FileController {
         }
     }
 
+
+
+
+    /**
+     *  Load multi data from file
+     */
     List<List<String>> loadMultiDataFromFile(ControllerMain controllerMain) {
 
         FileChooser fileChooser = new FileChooser();
@@ -296,6 +352,9 @@ public class FileController {
         }
     }
 
+    /**
+     *  Additional function
+     */
     double[][] parseStringFromFile(List<String> fileContent1) {
 
         String[] lines = fileContent1.toArray(new String[fileContent1.size()]);
@@ -331,5 +390,13 @@ public class FileController {
         return newValues;
     }
 
+    public void setAddToSaveFile(String addToSaveFile) {
+        this.addToSaveFile = addToSaveFile;
+    }
 
+    public String getAddToSaveFile() {
+        String returnString = addToSaveFile;
+        addToSaveFile = "";
+        return returnString;
+    }
 }

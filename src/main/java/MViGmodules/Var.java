@@ -1,7 +1,8 @@
 package MViGmodules;
 
 /**
- * Created by Admin on 14.07.15.
+ * @author Admin
+ * @since 14.07.15
  */
 public class Var {
     private double[][] array;
@@ -9,6 +10,7 @@ public class Var {
     private double[][] M1;
     private double H;
     private double min;
+
     private int originalSize;
 
     public Var(double[][] array, double[][] a, double h, double[][] m1) {

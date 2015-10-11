@@ -58,8 +58,6 @@ public class ButtonLogic {
         int iteratorForMethods = 0;
 
         for (int i = 0; i < n; i++) {
-            //parentFrame.fillValues(); todo
-            //a = parentFrame.getValuesFromTable(); todo
             a = null;
             a = getMatrix(controllerMain, i);
             bf = new BruteforceAlgo();
@@ -79,12 +77,17 @@ public class ButtonLogic {
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
                                     countFlag[j] = true;
                                 }
+                                if (s[iteratorForMethods] < s[iteratorForMethods-1])
+                                    throw new Exception("ALARM EPT!");
                             /*for (int j = 0; j < countMethod; j++) {
                                 countFlag[i] = true;
                             }*/
                             }
                         } catch (Exception e) {
                             kcl++;
+                            System.out.println("ALARM EPT!");
+                            fileController.autoSaveInformationFromFormToTextFile(a);
+                            break;
                             //e.printStackTrace();
                         }
                         iteratorForMethods++;
@@ -101,9 +104,14 @@ public class ButtonLogic {
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
                                     countFlag[j] = true;
                                 }
+                            } else {
+                                System.out.println("Don't match brutforce!");
+                                fileController.setAddToSaveFile(" Dont match brutforce");
+                                fileController.autoSaveInformationFromFormToTextFile(a);
                             }
+                        } catch (RuntimeException e) {
+                            fileController.autoSaveInformationFromFormToTextFile(a);
                         } catch (Exception e) {
-                            //fileController.autoSaveInformationFromFormToTextFile(a);
                             e.printStackTrace();
                         }
                         iteratorForMethods++;
@@ -278,6 +286,9 @@ public class ButtonLogic {
                                     countFlag[j] = true;
                                 }
                             }
+                        } catch (RuntimeException e) {
+                            //e.printStackTrace();
+                            //controllerMain.getFileController().autoSaveInformationFromFormToTextFile(a);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -448,7 +459,7 @@ public class ButtonLogic {
                         blder.append(",  Time: ");
                         blder.append(cam.getTime());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        e.printStackTrace(); //todo uncomment
                     }
                     blder.append("\n\n");
                     break;

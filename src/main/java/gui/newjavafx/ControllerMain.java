@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,14 +119,17 @@ public class ControllerMain implements Initializable {
         tableViewController = new TableViewController(table, label1);
         fileController = new FileController();
         //btnSolve.fire();
-        btnCheckAll.fire();
-        //tasks.get(1).setSelected(true);
-        //tasks.get(3).setSelected(true);
-        cbMultiSolveFromFile.fire();
-        matrixSize.setText("10");
-        btnFill.fire();
+//        btnCheckAll.fire();
+        tasks.get(0).setSelected(true);
+        tasks.get(1).setSelected(true);
+        //cbMultiSolveFromFile.fire();
+
+        if ( !loadData(fileController.loadDataFromFile( true ) ) ) {
+            matrixSize.setText("5");
+            btnFill.fire();
+        }
         //btnMultiLoad.fire();
-        //btnSolve.fire();
+        btnSolve.fire();
     }
 
     public void handleButtonAction(ActionEvent actionEvent) {
@@ -187,7 +191,7 @@ public class ControllerMain implements Initializable {
             String str2 = constantValue.textProperty().getValue();
             int matrixSizeInt = Integer.parseInt(str);
             int constantValueInt = Integer.parseInt(str2);
-            if (matrixSizeInt > 0) {// todo Запилить поле для константы и вставить значение сюда ->
+            if (matrixSizeInt > 0) {
                 tableViewController.setTableViewData(RadioButtonRandom.isSelected(), matrixSizeInt, constantValueInt);
             }
             return;
@@ -195,6 +199,14 @@ public class ControllerMain implements Initializable {
 
         // Кнопка для выполнения вычислений
         if (actionEvent.getSource() == btnSolve) {
+            //
+            //      Load data from file todo Load file ?
+            /*List<String> list = fileController.loadOneFile(new File("C:/data/4/4  2015-09-26 T 18-54-49-167000000.txt"));
+            double[][] newValues = fileController.parseStringFromFile(list);
+            tableViewController.setTableViewData(newValues);*/
+            //
+            //
+
             // Получение массива строк методов в заданном пользователем порядке
             ArrayList<String> methodsOrder = new ArrayList<String>();
             if (tableViewController.getMatrixSize() < 13) {
@@ -212,6 +224,9 @@ public class ControllerMain implements Initializable {
             }
             // Считывание данных из TableView в массив matrix
             double[][] matrix = getMatrix();
+
+            // Save last solved matrix
+            fileController.saveInformationFromFormToTextFile(getMatrix(), true);
 
             // Вывод результата выполнения вычислений
             outputText.setText(new ButtonLogic().btnSolveActionPerformed(matrix, methodsOrder));
@@ -251,11 +266,7 @@ public class ControllerMain implements Initializable {
         // Кнопка меню для загрузки новой матрицы в программу
         if (actionEvent.getSource() == btnLoad) {
             List<String> list = fileController.loadDataFromFile();
-            if (list == null || list.isEmpty()) return;
-            double[][] newValues = fileController.parseStringFromFile(list);
-            matrixSize.setText(newValues.length + "");
-            //передать newValues в таблицу.......
-            tableViewController.setTableViewData(newValues);
+            loadData(list);
             return;
         }
 
@@ -296,6 +307,15 @@ public class ControllerMain implements Initializable {
 
     public double[][] getMatrix() {
         return tableViewController.getMatrix();
+    }
+
+    private boolean loadData(List<String> list) {
+        if (list == null || list.isEmpty()) return false;
+        double[][] newValues = fileController.parseStringFromFile(list);
+        matrixSize.setText(newValues.length + "");
+        //передать newValues в таблицу.......
+        tableViewController.setTableViewData(newValues);
+        return true;
     }
 
     ArrayList<String> getMethodOrder() {

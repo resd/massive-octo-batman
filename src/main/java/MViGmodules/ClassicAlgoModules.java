@@ -11,22 +11,22 @@ public class ClassicAlgoModules {
      * Сделать вариант без возвратов.
      * Сделать вариант с возвратами.
      */
-    private int originalSize;
-    private String delimeter = "=======================================================================================";
-    private long sysTime;
-    private Struct minStruct;
-    private double minStructNum = -1;
-    private Path path;
-    private Var var;
-    private DA da;
+    protected int originalSize;
+    protected String delimeter = "=======================================================================================";
+    protected long sysTime;
+    protected Struct minStruct;
+    protected double minStructNum = -1;
+    protected Path path;
+    protected Var var;
+    protected DA da;
 
-    private int count;
-    private boolean minStructBoolean;
-    private double[][][] arrs;
-    private double[][] arrayC;
-    private ChoseBranchClassic cb;
-    private int[][] minP;
-    private double minSum;
+    protected int count;
+    protected boolean minStructBoolean;
+    protected double[][][] arrs;
+    protected double[][] arrayC;
+    protected ChoseBranchClassic cb;
+    protected int[][] minP;
+    protected double minSum;
 
     //конструктор
     public ClassicAlgoModules(double[][] array) {
@@ -44,12 +44,12 @@ public class ClassicAlgoModules {
         path = new Path(var);
         da = new DA();
         if (cb == null) {
-            cb = new ChoseBranchClassicForEachElement();
+            cb = new ChoseBranchClassic();
         }
     }
 
     //ищет сумму констант приведения
-    private double getSumOfDelta() {
+    protected double getSumOfDelta() {
         double sum = 0;
         double[] minArrI = Normalize.INSTANCE.getMinArrI();
         double[] minArrJ = Normalize.INSTANCE.getMinArrJ();
@@ -61,7 +61,7 @@ public class ClassicAlgoModules {
         return sum;
     }
 
-    private void solve() {
+    protected void solve() {
         // Нормализация
         Normalize.INSTANCE.normalize(var.getArray());
         // Задание начальное нижней оценки H
@@ -73,8 +73,13 @@ public class ClassicAlgoModules {
         //int countBackWith = 0;
         //int countHwith = 0;
         // Пока длина матрицы > 2
+//        C.out(var.getArray());
+//        C.p("");
         while(var.getArrayLength() > 2) {
             cb.choseLeftOnly(da, path, var);
+//            System.out.println(var.getH() + "");
+//            print(var.getArray());
+//            C.p("");
         }
         Struct struct = cb.choseLeftOnlyLast(path, var);
         //da.add(sa);
@@ -83,8 +88,10 @@ public class ClassicAlgoModules {
         da.checkDa(minSum);
         boolean bool = checkMin(struct);
         // Пока не переберутся все варианты
+        System.out.println(var.getH() + "");
         while(bool) { // checkMin(sa)
             Struct sa = cb.chooseBoth(da, path, var);
+            System.out.println(var.getH() + "");
 
             boolean exit;// = false
             if (sa.getHWithSum() > minSum && sa.getHWithoutSum() > minSum) {
@@ -106,17 +113,15 @@ public class ClassicAlgoModules {
 
             //sa = null;
             if (var.isArrayNull()) {
-                da.checkDa(minSum);
-                exit = checkMin(sa);
-                if (da.isEmpty() || !exit) {
-                    if (minSum < var.getMin()) {
-                        path.setP(Other.INSTANCE.cloneMatrix(minP));
-                    }
-                    break;
-                }
-                if (minSum < var.getMin()) {
+                if (minSum > var.getMin()) { // todo Перенести в choseBrance => ( > 2 ) {} ( else ) { here }
                     minSum = var.getMin();
                     minP = Other.INSTANCE.cloneMatrix(path.getP());
+                }
+                exit = checkMin(sa);
+                if (!exit) {
+                    break;
+                } else {
+                    da.checkDa(minSum);
                 }
             }
             count++;
@@ -126,7 +131,7 @@ public class ClassicAlgoModules {
         System.out.println("count = " + count);*/
     }
 
-    private boolean checkMin(Struct sa) {
+    protected boolean checkMin(Struct sa) {
         // Проверить нет ли решений меньше, чем уже полученное решение
         // Прыгнуть на то решение
         boolean stop = false;

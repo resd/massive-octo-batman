@@ -11,7 +11,7 @@ public class ChoseBranchClassicSum extends ChoseBranchClassic {
 
     @Override
     protected Map defineMapEdge(double[][] array) {
-        Map map = new LinkedHashMap<Object, Object>();
+        Map<int[], Double> map = new LinkedHashMap<>();
         countSums(array);
         double[] sumOfEachRow = getSumOfEachRow();
         double[] sumOfEachCol = getSumOfEachCol();

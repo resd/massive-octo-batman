@@ -314,9 +314,10 @@ public class ClassicAlgoWithBacktrack {
         changeJI(array, edge[0], edge[1]);
         M1 = setElementsM0toM(array, edge[1], edge[1]);
         for (int i = 0; i < M1.length; i++) {
-            if (M1[i][i] != Double.POSITIVE_INFINITY)
-            //M1ch[i][i] = Double.POSITIVE_INFINITY;
-            System.err.println("\n Error wiht array["+i+"]["+i+"] != INFINITY");
+            if (M1[i][i] != Double.POSITIVE_INFINITY) {
+                //M1ch[i][i] = Double.POSITIVE_INFINITY;
+//            System.err.println("\n Error wiht array["+i+"]["+i+"] != INFINITY");
+            }
         }
         normalize(M1);
         return M1;
@@ -483,7 +484,7 @@ public class ClassicAlgoWithBacktrack {
                     Sum += a[p[k][0]][p[k][1]];
                 }
                 HWithout = Sum - getH();
-                if (HWithout < 0) System.out.println("Error with Sum - H = " + HWithout);
+                //if (HWithout < 0) System.out.println("Error with Sum - H = " + HWithout);
                 setH(getH() + HWithout);
                 min = getH();
                 HWith = Double.POSITIVE_INFINITY;

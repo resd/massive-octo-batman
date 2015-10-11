@@ -4,13 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Admin on 06.08.15.
+ * @author Admin
  */
 public class ChoseBranchClassicForEachElementSum extends ChoseBranchClassic {
 
     @Override
     protected Map defineMapEdge(double[][] array) {
-        Map map = new LinkedHashMap<Object, Object>();
+        Map<int[], Double> map = new LinkedHashMap<>();
         countSums(array);
         double[] sumOfEachRow = getSumOfEachRow();
         double[] sumOfEachCol = getSumOfEachCol();

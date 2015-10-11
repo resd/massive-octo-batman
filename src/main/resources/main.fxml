@@ -23,6 +23,7 @@
             </padding>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Размерность" />
             <TextField fx:id="matrixSize" />
+            <!--<Spinner editable="true" />-->
             <!--<IndeterminateSpinner/>-->
             <RadioButton fx:id="RadioButtonRandom" selected="true" text="Random" toggleGroup="$btnGroup"/>
             <HBox>
@@ -45,12 +46,12 @@
                     <Button fx:id="btnMoveUp" onAction="#handleButtonAction" text="Переместить вверх" />
                     <Button fx:id="btnMoveDown" onAction="#handleButtonAction" text="Переместить вниз" />
                 </HBox>
-                <HBox fx:id="hBoxForCheckBoxes" prefHeight="500" prefWidth="500.0" spacing="10" />
+                <HBox fx:id="hBoxForCheckBoxes" prefHeight="400" prefWidth="500.0" spacing="10" />
             </VBox>
             <Button fx:id="btnSolve" onAction="#handleButtonAction" text="Вычислить" />
             <Button fx:id="btnMultiSolve" onAction="#handleButtonAction" text="Серия вычислений" />
-            <CheckBox fx:id="cbMultiSolveFromFile" onAction="#handleButtonAction" text="Взять данные из файла"/>
-            <TextField fx:id="multiSolveCount" text="4" />
+            <TextField fx:id="multiSolveCount" text="100" />
+            <CheckBox fx:id="cbMultiSolveFromFile" onAction="#handleButtonAction" text="Взять данные из файла" visible="true"/>
             <Label fx:id="multiSolveStr" text="" />
          <BorderPane.margin>
             <Insets />
