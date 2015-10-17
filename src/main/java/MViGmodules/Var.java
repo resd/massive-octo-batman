@@ -10,6 +10,7 @@ public class Var {
     private double[][] M1;
     private double H;
     private double min;
+    private double minInAlgo;
 
     private int originalSize;
 
@@ -75,5 +76,13 @@ public class Var {
 
     public boolean isArrayNull() {
         return array == null;
+    }
+
+    public double getMinInAlgo() {
+        return minInAlgo;
+    }
+
+    public void setMinInAlgo(double minInAlgo) {
+        this.minInAlgo = minInAlgo;
     }
 }

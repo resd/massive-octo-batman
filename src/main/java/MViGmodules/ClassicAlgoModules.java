@@ -76,22 +76,25 @@ public class ClassicAlgoModules {
 //        C.out(var.getArray());
 //        C.p("");
         while(var.getArrayLength() > 2) {
-            cb.choseLeftOnly(da, path, var);
+            Struct sa = cb.choseLeftOnly(da, path, var);
 //            System.out.println(var.getH() + "");
+            System.out.println(sa);
 //            print(var.getArray());
 //            C.p("");
         }
         Struct struct = cb.choseLeftOnlyLast(path, var);
         //da.add(sa);
         minSum = var.getMin();
+        var.setMinInAlgo(minSum);
         minP = Other.INSTANCE.cloneMatrix(path.getP());
         da.checkDa(minSum);
+        System.out.println(struct);
         boolean bool = checkMin(struct);
         // Пока не переберутся все варианты
-        System.out.println(var.getH() + "");
+        System.out.println("H = " + var.getH());
         while(bool) { // checkMin(sa)
             Struct sa = cb.chooseBoth(da, path, var);
-            System.out.println(var.getH() + "");
+            System.out.println(sa);
 
             boolean exit;// = false
             if (sa.getHWithSum() > minSum && sa.getHWithoutSum() > minSum) {

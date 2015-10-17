@@ -20,7 +20,7 @@ public class ChoseBranchClassic {
     this.da = da;
     }*/
 
-    public void choseLeftOnly(DA da, Path path, Var var) {
+    public Struct choseLeftOnly(DA da, Path path, Var var) {
         Struct sa;
         ArrayList mins = new ArrayList();;
         Map map = new HashMap<Object, Double>();
@@ -37,7 +37,7 @@ public class ChoseBranchClassic {
             sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(M1), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
         }
         da.add(sa);
-        sa = null;
+        return sa;
         //count++;
     }
 
@@ -268,6 +268,10 @@ public class ChoseBranchClassic {
             ArrayList edges = difineEdges(map);
             // Формирует объект Struct и помечает в нем большее из HWith и HWithout
             //try {
+            if (map.size() == 0) {
+                sa.newNullStruct(-1, -1);
+                return sa;
+            }
             sa = chooseHone((int[])edges.get(0), (double) map.get((int[])edges.get(0)), da, path, var);
             /*} catch (Exception e) {
                 e.printStackTrace();

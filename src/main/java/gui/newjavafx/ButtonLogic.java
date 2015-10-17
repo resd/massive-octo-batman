@@ -78,14 +78,15 @@ public class ButtonLogic {
                                     countFlag[j] = true;
                                 }
                                 if (s[iteratorForMethods] < s[iteratorForMethods-1])
-                                    throw new Exception("ALARM EPT!");
+                                    throw new Exception("Classic smaller than Module!");
                             /*for (int j = 0; j < countMethod; j++) {
                                 countFlag[i] = true;
                             }*/
                             }
                         } catch (Exception e) {
                             kcl++;
-                            System.out.println("ALARM EPT!");
+                            System.out.println("Classic smaller than Module!");
+                            fileController.setAddToSaveFile(" Classic smaller than Module");
                             fileController.autoSaveInformationFromFormToTextFile(a);
                             break;
                             //e.printStackTrace();

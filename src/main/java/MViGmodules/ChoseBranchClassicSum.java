@@ -4,7 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Admin on 06.08.15.
+ * @author Admin
+ * @since 06.08.15
+ * "ћ¬и√ классический (с суммой)"
  */
 @SuppressWarnings("all")
 public class ChoseBranchClassicSum extends ChoseBranchClassic {

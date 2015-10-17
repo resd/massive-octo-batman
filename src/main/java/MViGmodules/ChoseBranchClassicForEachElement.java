@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * @author Admin
+ * @since 06.08.15
+ * "МВиГ классический (по каждому элементу)"
  */
 public class ChoseBranchClassicForEachElement extends ChoseBranchClassic {
 

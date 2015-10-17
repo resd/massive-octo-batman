@@ -45,8 +45,8 @@ public class ControllerMain implements Initializable {
             "Ближнего соседа",
             "Дальнего соседа",
             "МВиГ классический (с суммой)",
-            "МВиГ классический (по каждому элементу)",
-            /*"МВиГ классический (по каждому элементу с суммой)",*/
+            /*"МВиГ классический (по каждому элементу)",*/ // За повторением результата модульного метода
+            "МВиГ классический (по каждому элементу с суммой)",
             "МВиГ классический (по каждому элементу со смежными)",
             "МВиГ классический (по каждому элементу со смежными с суммой)"
     };
@@ -121,7 +121,8 @@ public class ControllerMain implements Initializable {
         //btnSolve.fire();
 //        btnCheckAll.fire();
         tasks.get(0).setSelected(true);
-        tasks.get(1).setSelected(true);
+//        tasks.get(1).setSelected(true);
+//        tasks.get(8).setSelected(true);
         //cbMultiSolveFromFile.fire();
 
         if ( !loadData(fileController.loadDataFromFile( true ) ) ) {
@@ -129,7 +130,7 @@ public class ControllerMain implements Initializable {
             btnFill.fire();
         }
         //btnMultiLoad.fire();
-        btnSolve.fire();
+//        btnSolve.fire();
     }
 
     public void handleButtonAction(ActionEvent actionEvent) {

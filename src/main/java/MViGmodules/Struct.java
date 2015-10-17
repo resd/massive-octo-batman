@@ -1,24 +1,63 @@
 package MViGmodules;
 
 /**
- * Created by Admin on 19.12.14.
+ * @author Admin
+ * @since 19.12.14
  */
 @SuppressWarnings("all")
 public class Struct {
+    private StructHW structHW;
+    private StructHWout structHWout;
+    private GeneralStruct generalStruct;
+
+    public Struct() {
+    }
+
+    public Struct(StructHW structHW) {
+        this.structHW = structHW;
+    }
+
+    public Struct(StructHWout structHWout) {
+        this.structHWout = structHWout;
+    }
+
+    public Struct(GeneralStruct generalStruct) {
+        this.generalStruct = generalStruct;
+    }
+
+    public Struct(StructHW structHW, StructHWout structHWout) {
+        this.structHW = structHW;
+        this.structHWout = structHWout;
+    }
+
+    public Struct(GeneralStruct generalStruct, StructHWout structHWout) {
+        this.generalStruct = generalStruct;
+        this.structHWout = structHWout;
+    }
+
+    public Struct(GeneralStruct generalStruct, StructHW structHW) {
+        this.generalStruct = generalStruct;
+        this.structHW = structHW;
+    }
+
     private int[] edge;
-    private double HWith;
-    private double HWithout;
     private double H;
-    private int pathCount;
-    private int[][] p;
-    private int[][] pNew;
+    private double HWithoutSum;
+    private double HWithSum;
+    private boolean activatehwo;
+    private boolean activatehw;
     private double[][] array;
     private double[][] M1;
-    private double HWithSum;
-    private double HWithoutSum;
+    private double HWith;
+    private double HWithout;
+    private int[][] p;
+    private int pathCount;
     private int[] miOld;
     private int[] mjOld;
+    private int[][] pNew;
     private int pathCountNew;
+    private int[] mi;
+    private int[] mj;
 
     public int getPathCountNew() {
         return pathCountNew;
@@ -39,12 +78,6 @@ public class Struct {
     public void setActivatehwo(boolean activatehwo) {
         this.activatehwo = activatehwo;
     }
-
-    private boolean activatehw;
-    private boolean activatehwo;
-    private int[] mi;
-    private int[] mj;
-
 
     public void setAll(int id, int[] edge, double HWith, double HWithout, double[][] array, double H,
                        int[][] p, int[] mi, int[] mj) {
@@ -135,6 +168,7 @@ public class Struct {
 
     public void newStruct(int[] edge, double HWith, double HWithout, double H,
                   int[][] p, int pathCount) {
+//        Struct struct = new Struct();
         this.edge = edge;
         this.HWith = HWith;
         this.HWithout = HWithout;
@@ -143,10 +177,23 @@ public class Struct {
         this.HWithSum = HWith + H;
         this.HWithoutSum = HWithout + H;
         this.p = p;
+//        return struct;
+    }
+
+    public void newNullStruct(double HWith, double HWithout) {
+        this.HWith = HWith;
+        this.HWithout = HWithout;
+        this.activatehw = true;
+        this.activatehwo = true;
     }
 
     public void addMiMj(int[] miOld, int[] mjOld) {
         this.miOld = miOld;
         this.mjOld = mjOld;
+    }
+
+    @Override
+    public String toString() {
+        return "H = " + H + ", HWout = " + HWithoutSum + (activatehwo == true ? " +" : "") + ", HW = " + HWithSum + (activatehw == true ? " +" : "");
     }
 }
