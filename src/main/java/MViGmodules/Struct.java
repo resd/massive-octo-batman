@@ -117,7 +117,7 @@ public class Struct {
     public GeneralStruct getGeneralStruct() {
         return generalStruct;
     }
-
+//
     public void setGeneralStruct(GeneralStruct generalStruct) {
         this.generalStruct = generalStruct;
     }

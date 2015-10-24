@@ -34,7 +34,7 @@ public class ControllerMain implements Initializable {
     public VBox vBoxForSettings;
     public Button btnFill;
     public TableView<TableViewController.DoubleData> table;
-
+//
     private static final String[] taskNames = {
             /*"Полный перебор",*/
             "МВиГ классический (модульный)",

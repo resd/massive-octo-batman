@@ -259,7 +259,7 @@ public class ChoseBranchClassic {
 //        sa.setActivatehwo(true);
         return new Struct(generalStruct);
     }
-
+//
     public Struct chooseBoth(DA da, Path path, Var var) {
         Struct sa;
 

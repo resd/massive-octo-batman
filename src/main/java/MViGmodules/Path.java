@@ -78,7 +78,7 @@ public class Path {
         }
         array[di][x] = Double.POSITIVE_INFINITY;
     }
-
+//
     public void computeLastElement(Var var) {
         int originalSize = var.getOriginalSize();
         p[originalSize - 2][0] = mi[0];

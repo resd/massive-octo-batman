@@ -88,7 +88,7 @@ public class Var {
         if (this.minLowerBound > minLowerBound)
             this.minLowerBound = minLowerBound;
     }
-
+//
     public double getMinLeftBound() {
         return minLeftBound;
     }

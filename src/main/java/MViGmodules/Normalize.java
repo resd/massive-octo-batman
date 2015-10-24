@@ -63,7 +63,7 @@ public class Normalize {
     double[] getMinArrI() {
         return minArrI;
     }
-
+//
     double[] getMinArrJ() {
         return minArrJ;
     }

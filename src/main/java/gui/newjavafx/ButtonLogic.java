@@ -13,7 +13,7 @@ import java.util.List;
 
 @SuppressWarnings("all")
 public class ButtonLogic {
-
+//
     String btnMultiSolveActionPerformed(int n, List<String> methodsOrder, ControllerMain controllerMain) {//GEN-FIRST:event_jButton2ActionPerformed
 
         int countMethod = methodsOrder.size();
