@@ -77,19 +77,16 @@ public class ButtonLogic {
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
                                     countFlag[j] = true;
                                 }
-                                if (s[iteratorForMethods] < s[iteratorForMethods-1])
-                                    throw new Exception("Classic smaller than Module!");
-                            /*for (int j = 0; j < countMethod; j++) {
-                                countFlag[i] = true;
-                            }*/
+//                                if (s[iteratorForMethods] < s[iteratorForMethods-1]) //   uncomment
+//                                    throw new Exception("Classic smaller than Module!"); //   uncomment
                             }
                         } catch (Exception e) {
                             kcl++;
-                            System.out.println("Classic smaller than Module!");
-                            fileController.setAddToSaveFile(" Classic smaller than Module");
-                            fileController.autoSaveInformationFromFormToTextFile(a);
-                            break;
-                            //e.printStackTrace();
+//                            System.out.println("Classic smaller than Module!"); //   uncomment
+//                            fileController.setAddToSaveFile(" Classic smaller than Module"); //   uncomment
+//                            fileController.autoSaveInformationFromFormToTextFile(a); //   uncomment
+                            e.printStackTrace();
+//                            break;
                         }
                         iteratorForMethods++;
                         break;
@@ -111,7 +108,7 @@ public class ButtonLogic {
                                 fileController.autoSaveInformationFromFormToTextFile(a);
                             }
                         } catch (RuntimeException e) {
-                            fileController.autoSaveInformationFromFormToTextFile(a);
+//                            fileController.autoSaveInformationFromFormToTextFile(a);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -412,6 +409,7 @@ public class ButtonLogic {
         FarAlgo fa = new FarAlgo(a);
         Work1Main w = new Work1Main(1);
         Work1Main w2 = new Work1Main(2);
+        double ppsum = -Double.MAX_VALUE;
         double sum;
 
         //blder.append("\n\n");
@@ -425,6 +423,7 @@ public class ButtonLogic {
                     blder.append("\nPath: ");
                     blder.append(bf.getPath());
                     blder.append("\nSum = ");
+                    ppsum = bf.getSum(a);
                     blder.append(bf.getSum(a));
                     blder.append(",  Time: ");
                     blder.append(bf.getTime());
@@ -457,6 +456,12 @@ public class ButtonLogic {
                         blder.append(cam.getPath());
                         blder.append("\nSum = ");
                         blder.append(cam.getSum(a));
+                        if (ppsum != -Double.MAX_VALUE && ppsum != cam.getSum(a)) {
+                            System.out.println("Don't match brutforce!");
+                            FileController fileController = new FileController();
+                            fileController.setAddToSaveFile(" Dont match brutforce");
+                            fileController.autoSaveInformationFromFormToTextFile(a);
+                        }
                         blder.append(",  Time: ");
                         blder.append(cam.getTime());
                     } catch (Exception e) {

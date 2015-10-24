@@ -1,7 +1,8 @@
 package MViGmodules;
 
 /**
- * Created by Admin on 13.07.15.
+ * @author Admin
+ * @since 13.07.15
  */
 public class Normalize {
     private double[] minArrI;

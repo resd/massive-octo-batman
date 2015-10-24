@@ -33,9 +33,9 @@ public class ChoseBranchClassic {
         ArrayList edges = difineEdges(map);
         // Формирует объект Struct только из эл-тов HWithout
         sa = chooseHoneLeftOnly((int[]) edges.get(0), (double) map.get((int[]) edges.get(0)), path, var);
-        if (sa.getM1() == null) {
-            sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(M1), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
-        }
+//        if (sa.getM1() == null) {
+//            sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(M1), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
+//        }
         da.add(sa);
         return sa;
         //count++;
@@ -136,18 +136,22 @@ public class ChoseBranchClassic {
     // Формирует объект Struct только из эл-тов HWithout
     protected Struct chooseHoneLeftOnly(int[] edge, double HWith, Path path, Var var) {
         double HWithout;
-        Struct sa = new Struct();
+        StructHW hw;
+        GeneralStruct generalStruct;
 
         arrayC = Other.INSTANCE.cloneMatrix(var.getArray());
         var.getArray()[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
         M1 = getHWithout(edge, HWith, var.getArray());
         HWithout = getSumOfDelta();
 
+        generalStruct = new GeneralStruct(edge, var.getH(), HWithout, HWith);
+
         arrayC[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
         Normalize.INSTANCE.normalize(arrayC);
-        sa.setArray(Other.INSTANCE.cloneMatrix(arrayC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
-        sa.newStruct(edge.clone(), HWith, HWithout, var.getH(), Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount());
-        sa.addMiMj(path.getMi().clone(), path.getMj().clone());
+//        sa.setArray(Other.INSTANCE.cloneMatrix(arrayC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
+        hw = new StructHW(var.getH(), HWith, Other.INSTANCE.cloneMatrix(arrayC), Other.INSTANCE.cloneMatrix(path.getP()),
+                path.getPathCount(), path.getMi().clone(), path.getMj().clone());
+//        sa.addMiMj(path.getMi().clone(), path.getMj().clone());
 
         //todo System.out.println((H + HWithout) + ",  " + (H + HWith) + "     (" + (mi[edge[0]] + 1) + ", " + (mj[edge[1]] + 1) + ")");
         //System.out.println("");display(var.getArray());System.out.println("");
@@ -155,11 +159,11 @@ public class ChoseBranchClassic {
         path.getPath(edge);
         var.setH(var.getH() + HWithout);
         var.setArray(Other.INSTANCE.cloneMatrix(M1));
-        sa.setActivatehwo(true);
+//        sa.setActivatehwo(true);
         var.setMin(var.getH());
         //da.add(sa);
         //System.out.println("");display(var.getArray());System.out.println("");
-        return sa;
+        return new Struct(generalStruct, hw);
     }
 
     protected double[][] getHWithout(int[] edge, double sum, double[][] array) {
@@ -229,7 +233,7 @@ public class ChoseBranchClassic {
     }
 
     public Struct choseLeftOnlyLast(Path path, Var var) {
-        Struct sa = new Struct();
+//        Struct sa = new Struct(new StructHW());
         double HWith;
         double HWithout;
         var.setArray(null);
@@ -247,14 +251,21 @@ public class ChoseBranchClassic {
         var.setH(var.getH() + HWithout);
         var.setMin(var.getH());
         HWith = Double.POSITIVE_INFINITY;
-        sa.newStruct(null, HWith, HWithout, var.getH(), Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount());
-        sa.setActivatehw(true);
-        sa.setActivatehwo(true);
-        return sa;
+        GeneralStruct generalStruct = new GeneralStruct(var.getH(), HWithout, HWith, true, Other.INSTANCE.cloneMatrix(path.getP()));
+        var.setMinLowerBound(var.getH());
+
+//        sa.newStruct(null, HWith, HWithout, var.getH(), Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount());
+//        sa.setActivatehw(true);
+//        sa.setActivatehwo(true);
+        return new Struct(generalStruct);
     }
 
     public Struct chooseBoth(DA da, Path path, Var var) {
-        Struct sa = new Struct();
+        Struct sa;
+
+        GeneralStruct generalStruct;
+        StructHW structHW;
+
         // Если длина матрицы > 2
         if (var.getArrayLength() > 2) {
             ArrayList mins = new ArrayList();;
@@ -269,8 +280,7 @@ public class ChoseBranchClassic {
             // Формирует объект Struct и помечает в нем большее из HWith и HWithout
             //try {
             if (map.size() == 0) {
-                sa.newNullStruct(-1, -1);
-                return sa;
+                return new Struct(true);
             }
             sa = chooseHone((int[])edges.get(0), (double) map.get((int[])edges.get(0)), da, path, var);
             /*} catch (Exception e) {
@@ -294,49 +304,68 @@ public class ChoseBranchClassic {
             var.setH(var.getH() + HWithout);
             var.setMin(var.getH());
             HWith = Double.POSITIVE_INFINITY;
-            sa.newStruct(null, HWith, HWithout, var.getH(), Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount());
-            sa.setActivatehw(true);
+            generalStruct = new GeneralStruct(var.getH(), HWithout, HWith, true, Other.INSTANCE.cloneMatrix(path.getP()));
+            var.setMinLowerBound(var.getH());
+            structHW = new StructHW(var.getH(), HWith, null, Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount(),
+                    path.getMi().clone(), path.getMj().clone());
+            sa = new Struct(generalStruct, structHW);
+//            sa.setActivatehw(true);
         }
-        if (sa.getM1() == null) {
-            sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(var.getM1()), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
-        }
+//        if (sa.getM1() == null) {
+//            sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(var.getM1()), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
+//        }
         return sa;
     }
 
     // Формирует объект Struct и помечает в нем большее из HWith и HWithout
     protected Struct chooseHone(int[] edge, double HWith, DA da, Path path, Var var) {
+        Struct sa;
+        GeneralStruct generalStruct;
+        StructHW structHW;
+        StructHWout structHWout;
+
         double HWithout;
-        Struct sa = new Struct();
 
         arrayC = Other.INSTANCE.cloneMatrix(var.getArray());
-        var.getArray()[edge[1]][edge[0]] = Double.POSITIVE_INFINITY; //todo Is this right?
+        var.getArray()[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
         var.setM1(getHWithout(edge, HWith, var.getArray()));
         HWithout = getSumOfDelta();
 
         arrayC[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
         Normalize.INSTANCE.normalize(arrayC);
-        sa.setArray(Other.INSTANCE.cloneMatrix(arrayC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
-        sa.newStruct(edge.clone(), HWith, HWithout, var.getH(), Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount());
-        sa.addMiMj(path.getMi().clone(), path.getMj().clone());
+//        sa.setArray(Other.INSTANCE.cloneMatrix(arrayC));// если поднять повыше на 2 строчки, то рез-тат меняется на много ответов.
+//        sa.newStruct(edge.clone(), HWith, HWithout, var.getH(), Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount());
+//        sa.addMiMj(path.getMi().clone(), path.getMj().clone());
 
+        generalStruct = new GeneralStruct(edge, var.getH(), HWithout, HWith);
 
         //todo System.out.println((H + HWithout) + ",  " + (H + HWith) + "     (" + (mi[edge[0]] + 1) + ", " + (mj[edge[1]] + 1) + ")");
         //System.out.println("");display(array);System.out.println("");
 
         if (HWithout <= HWith) {
+            structHW = new StructHW(var.getH(), HWith, Other.INSTANCE.cloneMatrix(arrayC), Other.INSTANCE.cloneMatrix(path.getP()),
+                    path.getPathCount(), path.getMi().clone(), path.getMj().clone());
+
+
             path.getPath(edge);
+
+            structHWout = new StructHWout(var.getH(), HWithout, Other.INSTANCE.cloneMatrix(var.getM1()),
+                    Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount(), path.getMi().clone(), path.getMj().clone());
+            sa = new Struct(generalStruct, structHWout, structHW);
             var.setH(var.getH() + HWithout);
             var.setArray(Other.INSTANCE.cloneMatrix(var.getM1()));
-            sa.setActivatehwo(true);
             var.setMin(var.getH());
+
         } else {
             //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
             //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
             //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
             //countHwith++;
-            sa.setActivatehw(true);
-            var.setH(var.getH() + HWith);
-            var.setMin(var.getH());
+//            sa.setActivatehw(true);
+
+            structHW = new StructHW(var.getH(), HWith, Other.INSTANCE.cloneMatrix(arrayC), Other.INSTANCE.cloneMatrix(path.getP()),
+                    path.getPathCount(), path.getMi().clone(), path.getMj().clone());
+
             int x = edge[0];
             int y = edge[1];
             int[][] pC = Other.INSTANCE.cloneMatrix(path.getP());
@@ -345,11 +374,16 @@ public class ChoseBranchClassic {
             pC[path.getPathCount()][0] = miC[x];
             pC[path.getPathCount()][1] = mjC[y];
             miC[x] = miC[y];
-
-            var.setArray(arrayC);
             miC = path.remove(miC, y);
             mjC = path.remove(mjC, y);
-            sa.setAdditional(Other.INSTANCE.cloneMatrix(pC), Other.INSTANCE.cloneMatrix(var.getM1()), miC.clone(), mjC.clone(), path.getPathCount() + 1);
+            structHWout = new StructHWout(var.getH(), HWithout, Other.INSTANCE.cloneMatrix(var.getM1()), Other.INSTANCE.cloneMatrix(pC),
+                    path.getPathCount() + 1, miC.clone(), mjC.clone());
+
+            var.setH(var.getH() + HWith);
+            var.setMin(var.getH());
+            var.setArray(arrayC);
+//            sa.setAdditional(Other.INSTANCE.cloneMatrix(pC), Other.INSTANCE.cloneMatrix(var.getM1()), miC.clone(), mjC.clone(), path.getPathCount() + 1);
+            sa = new Struct(generalStruct, structHWout, structHW);
         }
         //da.add(sa);
         //System.out.println("");display(array);System.out.println("");

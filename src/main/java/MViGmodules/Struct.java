@@ -6,11 +6,20 @@ package MViGmodules;
  */
 @SuppressWarnings("all")
 public class Struct {
-    private StructHW structHW;
+
+    // Fields
+
     private StructHWout structHWout;
+    private StructHW structHW;
     private GeneralStruct generalStruct;
 
-    public Struct() {
+    // Constructors
+
+    private Struct() {
+    }
+
+    public Struct(boolean isNull) {
+        generalStruct = new GeneralStruct(-1, -1, -1);
     }
 
     public Struct(StructHW structHW) {
@@ -40,160 +49,76 @@ public class Struct {
         this.structHW = structHW;
     }
 
-    private int[] edge;
-    private double H;
-    private double HWithoutSum;
-    private double HWithSum;
-    private boolean activatehwo;
-    private boolean activatehw;
-    private double[][] array;
-    private double[][] M1;
-    private double HWith;
-    private double HWithout;
-    private int[][] p;
-    private int pathCount;
-    private int[] miOld;
-    private int[] mjOld;
-    private int[][] pNew;
-    private int pathCountNew;
-    private int[] mi;
-    private int[] mj;
-
-    public int getPathCountNew() {
-        return pathCountNew;
+    public Struct(GeneralStruct generalStruct, StructHWout structHWout, StructHW structHW) {
+        this.generalStruct = generalStruct;
+        this.structHWout = structHWout;
+        this.structHW = structHW;
     }
 
-    public boolean isActivatehw() {
-        return activatehw;
+    // Methods
+
+    public boolean hasStructHW() {
+        return structHW != null;
     }
 
-    public void setActivatehw(boolean activatehw) {
-        this.activatehw = activatehw;
+    public boolean hasStructHWout() {
+        return structHWout != null;
+    }
+    public boolean hasGeneralStruct() {
+        return generalStruct != null;
     }
 
-    public boolean isActivatehwo() {
-        return activatehwo;
-    }
 
-    public void setActivatehwo(boolean activatehwo) {
-        this.activatehwo = activatehwo;
-    }
-
-    public void setAll(int id, int[] edge, double HWith, double HWithout, double[][] array, double H,
-                       int[][] p, int[] mi, int[] mj) {
-        /*this.id = id;
-        this.edge = edge;
-        this.HWith = HWith;
-        this.HWithout = HWithout;
-        this.array = array;
-        this.H = H;
-        this.HWithSum = HWith + H;
-        this.HWithoutSum = HWithout + H;
-        this.p = p;
-        this.mi = mi;
-        this.mj = mj;*/
-    }
-
-    public void setAdditional(int[][] pNew, double[][] M1, int[] mi, int[] mj, int pathCountNew) {
-        this.M1 = M1;
-        this.pNew = pNew;
-        this.mi = mi;
-        this.mj = mj;
-        this.pathCountNew = pathCountNew;
-    }
-
-    public double getH() {
-        return H;
-    }
-
-    public int[] getEdge() {
-        return edge;
-    }
-
-    public double getHWith() {
-        return HWith;
-    }
-
-    public double getHWithout() {
-        return HWithout;
-    }
-
-    public int[][] getP() {
-        return p;
-    }
-
-    public double[][] getArray() {
-        return array;
-    }
-
-    public double getHWithSum() {
-        return HWithSum;
-    }
-
-    public double getHWithoutSum() {
-        return HWithoutSum;
-    }
-
-    public int[][] getpNew() {
-        return pNew;
-    }
-
-    public double[][] getM1() {
-        return M1;
-    }
-
-    public int[] getMi() {
-        return mi;
-    }
-
-    public int[] getMj() {
-        return mj;
-    }
-
-    public int getPathCount() {
-        return pathCount;
-    }
-
-    public int[] getMiOld() {
-        return miOld;
-    }
-
-    public int[] getMjOld() {
-        return mjOld;
-    }
-
-    public void setArray(double[][] array) {
-        this.array = array;
-    }
-
-    public void newStruct(int[] edge, double HWith, double HWithout, double H,
-                  int[][] p, int pathCount) {
-//        Struct struct = new Struct();
-        this.edge = edge;
-        this.HWith = HWith;
-        this.HWithout = HWithout;
-        this.H = H;
-        this.pathCount = pathCount;
-        this.HWithSum = HWith + H;
-        this.HWithoutSum = HWithout + H;
-        this.p = p;
-//        return struct;
-    }
-
-    public void newNullStruct(double HWith, double HWithout) {
-        this.HWith = HWith;
-        this.HWithout = HWithout;
-        this.activatehw = true;
-        this.activatehwo = true;
-    }
-
-    public void addMiMj(int[] miOld, int[] mjOld) {
-        this.miOld = miOld;
-        this.mjOld = mjOld;
-    }
 
     @Override
     public String toString() {
-        return "H = " + H + ", HWout = " + HWithoutSum + (activatehwo == true ? " +" : "") + ", HW = " + HWithSum + (activatehw == true ? " +" : "");
+        StringBuilder builder = new StringBuilder();
+        if (generalStruct.isLowerBound()) {
+            builder.append("H = ");
+            builder.append(generalStruct.getH());
+            builder.append(" LB");
+        }
+//        if (structHWout != null) {
+//            builder.append(", HWout = ");
+//            builder.append(structHWout.get);
+//        }
+        if (hasStructHWout()) {
+            builder.append(builder.length() != 0 ? ", " : "");
+            builder.append("HWout = ");
+            builder.append(generalStruct.getHWithoutSum());
+        }
+        if (hasStructHW()) {
+            builder.append(builder.length() != 0 ? ", " : "");
+            builder.append("HW = ");
+            builder.append(generalStruct.getHWithSum());
+        }
+//        return  + (activatehwo == true ? " +" : "") + ", HW = " + HWithSum + (activatehw == true ? " +" : "");
+        return builder.toString();
+    }
+
+    // Getters & Setters
+
+       public StructHW getStructHW() {
+        return structHW;
+    }
+
+    public void setStructHW(StructHW structHW) {
+        this.structHW = structHW;
+    }
+
+    public StructHWout getStructHWout() {
+        return structHWout;
+    }
+
+    public void setStructHWout(StructHWout structHWout) {
+        this.structHWout = structHWout;
+    }
+
+    public GeneralStruct getGeneralStruct() {
+        return generalStruct;
+    }
+
+    public void setGeneralStruct(GeneralStruct generalStruct) {
+        this.generalStruct = generalStruct;
     }
 }

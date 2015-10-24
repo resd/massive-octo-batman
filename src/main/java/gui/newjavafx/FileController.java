@@ -224,7 +224,7 @@ public class FileController {
         //Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialDirectory(new File("C:/data/5"));
+        fileChooser.setInitialDirectory(new File("C:/data//"));
 
         //Show save file dialog
 

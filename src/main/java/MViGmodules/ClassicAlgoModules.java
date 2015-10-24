@@ -14,19 +14,15 @@ public class ClassicAlgoModules {
     protected int originalSize;
     protected String delimeter = "=======================================================================================";
     protected long sysTime;
-    protected Struct minStruct;
-    protected double minStructNum = -1;
     protected Path path;
     protected Var var;
     protected DA da;
 
     protected int count;
-    protected boolean minStructBoolean;
     protected double[][][] arrs;
     protected double[][] arrayC;
     protected ChoseBranchClassic cb;
     protected int[][] minP;
-    protected double minSum;
 
     //конструктор
     public ClassicAlgoModules(double[][] array) {
@@ -78,115 +74,151 @@ public class ClassicAlgoModules {
         while(var.getArrayLength() > 2) {
             Struct sa = cb.choseLeftOnly(da, path, var);
 //            System.out.println(var.getH() + "");
-            System.out.println(sa);
+//            System.out.println(sa); //      comment
 //            print(var.getArray());
 //            C.p("");
         }
         Struct struct = cb.choseLeftOnlyLast(path, var);
         //da.add(sa);
-        minSum = var.getMin();
-        var.setMinInAlgo(minSum);
         minP = Other.INSTANCE.cloneMatrix(path.getP());
-        da.checkDa(minSum);
-        System.out.println(struct);
-        boolean bool = checkMin(struct);
+        var.setMinLeftBound(var.getMinLowerBound());
+        da.add(struct);
+        da.checkDa(var.getMinLowerBound());
+//        System.out.println(sa); //      comment
+        boolean bool = checkMin();
         // Пока не переберутся все варианты
-        System.out.println("H = " + var.getH());
+        //System.out.println("H = " + var.getH());
         while(bool) { // checkMin(sa)
             Struct sa = cb.chooseBoth(da, path, var);
-            System.out.println(sa);
+//            System.out.println(sa);
 
-            boolean exit;// = false
-            if (sa.getHWithSum() > minSum && sa.getHWithoutSum() > minSum) {
+            boolean existNext;// = false
+            sa = da.checkSa(sa, var.getMinLowerBound());
+//            System.out.println(sa); //      comment
+//            if (sa != null) {
+//                if (sa.hasStructHW() && sa.getStructHW().getHWithSum() > var.getMinLowerBound() ||
+//                        sa.hasStructHWout() && sa.getStructHWout().getHWithoutSum() > var.getMinLowerBound()) {
+//                }
+//                if (da.isEmpty()) {
+//                    if (var.getMinLowerBound() < var.getMin()) {
+//                        path.setP(Other.INSTANCE.cloneMatrix(minP));
+//                    }
+//                    break;
+//                } else {
+//                    existNext = checkMin();
 
-                da.checkDa(minSum);
-                if (da.isEmpty()) {
-                    if (minSum < var.getMin()) {
-                        path.setP(Other.INSTANCE.cloneMatrix(minP));
-                    }
+//                }
+//            } else {
+//                existNext = checkMin();
+//            }
+
+            existNext = checkMin();
+            if (sa != null) {
+                if (!existNext && !sa.getGeneralStruct().isLowerBound()) {
+                    if (sa.hasStructHWout() && sa.hasStructHW()) { // Если есть и HW и HWo
+                        if (sa.getStructHWout().getHWithoutSum() <= sa.getStructHW().getHWithSum()) {
+                            sa.setStructHWout(null);
+                        } else {
+                            sa.setStructHW(null);
+                        }
+                    } else
+                        sa = null;
+                }
+            } else {
+                if (!existNext) {
+                    searchForLowestBound();
                     break;
                 }
-                exit = checkMin(sa);
-            } else {
-                da.add(sa);
-                checkMin(sa);
             }
 
-            minStructBoolean = false;
+            if (sa != null)
+                da.add(sa);
 
             //sa = null;
             if (var.isArrayNull()) {
-                if (minSum > var.getMin()) { // todo Перенести в choseBrance => ( > 2 ) {} ( else ) { here }
-                    minSum = var.getMin();
+                //da.checkLowerBound(sa, var.getMinLowerBound());
+                searchForLowestBound();
+                if (var.getMinLeftBound() > var.getMin()) { // todo Перенести в choseBrance => ( > 2 ) {} ( else ) { here }
+                    var.setMinLeftBound(var.getMin());
                     minP = Other.INSTANCE.cloneMatrix(path.getP());
                 }
-                exit = checkMin(sa);
-                if (!exit) {
+                existNext = checkMin();
+                if (!existNext) {
                     break;
                 } else {
-                    da.checkDa(minSum);
+                    da.checkDa(var.getMinLeftBound());
                 }
             }
             count++;
+            sa = null;
         }
         /*System.out.println("countBackWith = " + countBackWith);todo
         System.out.println("countHwith = " + countHwith);
         System.out.println("count = " + count);*/
     }
 
-    protected boolean checkMin(Struct sa) {
+    protected boolean checkMin() {
         // Проверить нет ли решений меньше, чем уже полученное решение
         // Прыгнуть на то решение
-        boolean stop = false;
-        for (int i = 0; i < da.getSize(); i++) {
-            Struct temp = da.get(i);
-            if (!temp.isActivatehw() && temp.getHWithSum() < var.getMin()) {
-                if (!minStructBoolean) {
-                    minStruct = sa;
-                    minStructNum = var.getMin();
-                } else {
-                    minStructNum = var.getMin();
-                }
-                ((Struct) da.get(i)).setActivatehwo(true);
-                ((Struct) da.get(i)).setActivatehw(true);
-                path.setP(temp.getP().clone());
-                var.setH(temp.getHWithSum());
-                path.setMi(temp.getMiOld().clone());
-                path.setMj(temp.getMjOld().clone());
-                path.setPathCount(temp.getPathCount());
-                var.setArray(Other.INSTANCE.cloneMatrix(temp.getArray()));
-                //((Struct) dh[i].get(j)).setActivatehw(true);// i0 j0
-                //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
-                //array[edge[0]][edge[0]] = Double.POSITIVE_INFINITY;
-                //array[edge[1]][edge[1]] = Double.POSITIVE_INFINITY;
+        Struct temp = null;
+        boolean stopHW = false;
+        boolean stopHWO = false;
+        int i;
+        for (i = 0; i < da.getSize(); i++) {
+            temp = da.get(i);
+            if (temp.hasStructHW() && temp.getStructHW().getHWithSum() < var.getMin()) {
+                StructHW structHW = temp.getStructHW();
+                ((Struct) da.get(i)).getStructHW().setActivatehw(true);
+                path.setP(structHW.getP().clone());
+                var.setH(structHW.getHWithSum());
+                path.setMi(structHW.getMiOld().clone());
+                path.setMj(structHW.getMjOld().clone());
+                path.setPathCount(structHW.getPathCount());
+                var.setArray(Other.INSTANCE.cloneMatrix(structHW.getArray()));
                 Normalize.INSTANCE.normalize(var.getArray());
-                da.remove(temp);
-                stop = true;
+                stopHW = true;
                 break;
-            } else if (!temp.isActivatehwo() && temp.getHWithoutSum() < var.getMin()) {
-                if (!minStructBoolean) {
-                    minStruct = sa;
-                    minStructNum = var.getMin();
-                } else {
-                    minStructNum = var.getMin();
-                }
+            } else if (temp.hasStructHWout() && temp.getStructHWout().getHWithoutSum() < var.getMin()) {
                 //countBackWith++;
-                ((Struct) da.get(i)).setActivatehwo(true);
-                ((Struct) da.get(i)).setActivatehw(true);
-                path.setP(temp.getpNew().clone());
-                var.setH(temp.getHWithoutSum());
-                path.setMi(temp.getMi().clone());
-                path.setMj(temp.getMj().clone());
-                path.setPathCount(temp.getPathCountNew());
-                var.setArray(Other.INSTANCE.cloneMatrix(temp.getM1()));
-                da.remove(temp);
-                stop = true;
+                StructHWout structHWout = temp.getStructHWout();
+                ((Struct) da.get(i)).getStructHWout().setActivatehwo(true);
+                path.setP(structHWout.getpNew().clone());
+                var.setH(structHWout.getHWithoutSum());
+                path.setMi(structHWout.getMi().clone());
+                path.setMj(structHWout.getMj().clone());
+                path.setPathCount(structHWout.getPathCountNew());
+                var.setArray(Other.INSTANCE.cloneMatrix(structHWout.getM1()));
+                stopHWO = true;
                 break;
             }
-            temp = null;
         }
-        return stop;
+        if (stopHWO || stopHW) {
+            if (temp.hasStructHWout() && temp.hasStructHW()) {
+                if (stopHW) {
+                    da.get(i).setStructHW(null);
+                } else {
+                    da.get(i).setStructHWout(null);
+                }
+            } else {
+                da.remove(temp);
+            }
+        }
+        return stopHWO || stopHW;
     }
+
+    public void searchForLowestBound() {
+        for (int i = 0; i < da.getSize(); i++) {
+            if (da.get(i).hasGeneralStruct()) {
+                GeneralStruct temp = da.get(i).getGeneralStruct();
+                if (temp.isLowerBound() && temp.getH() <= var.getMinLeftBound()) {
+                    var.setMinLeftBound(temp.getH());
+                    path.setP(temp.getMinP());
+                }
+            }
+
+        }
+    }
+
     public void main() {
         sysTime = System.currentTimeMillis();
         initialize();

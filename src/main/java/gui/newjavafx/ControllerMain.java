@@ -39,7 +39,7 @@ public class ControllerMain implements Initializable {
             /*"Полный перебор",*/
             "МВиГ классический (модульный)",
             "МВиГ классический",
-            "МВиГ классический (без возвратов)",
+            /*"МВиГ классический (без возвратов)",*/  // За повторением результата модульного метода
             "МВиГ улучшенный (без разрывов)",
             "МВиГ улучшенный (с разрывами)",
             "Ближнего соседа",
@@ -63,7 +63,6 @@ public class ControllerMain implements Initializable {
     public MenuItem btnLoad;
     public TextField constantValue;
     public TextField multiSolveCount;
-    public MenuItem btnExit;
     public MenuItem btnOldProgramm;
     public MenuItem btnMultiLoad;
     public MenuItem btnMultiSave;
@@ -119,14 +118,14 @@ public class ControllerMain implements Initializable {
         tableViewController = new TableViewController(table, label1);
         fileController = new FileController();
         //btnSolve.fire();
-//        btnCheckAll.fire();
-        tasks.get(0).setSelected(true);
+        btnCheckAll.fire();
+//        tasks.get(0).setSelected(true);
 //        tasks.get(1).setSelected(true);
 //        tasks.get(8).setSelected(true);
         //cbMultiSolveFromFile.fire();
 
         if ( !loadData(fileController.loadDataFromFile( true ) ) ) {
-            matrixSize.setText("5");
+            matrixSize.setText("10");
             btnFill.fire();
         }
         //btnMultiLoad.fire();
@@ -247,6 +246,18 @@ public class ControllerMain implements Initializable {
                 return;
             }
 
+            String strTemp = matrixSize.textProperty().getValue();
+            int matrixSizeInt = Integer.parseInt(strTemp);
+            boolean isConstant = RadioButtonConstant.isSelected();
+            if (matrixSizeInt > 12) {
+                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Размерность матриц задана больше 12. Полный перебор не будет выполнен за адекватное время.");
+                return;
+            }
+            if (isConstant) {
+                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Методом заполнения выбрана константа, что делает серию решений бессмысленной.");
+                return;
+            }
+
             // Вывод результата выполнения вычислений
             if (cbMultiSolveFromFile.isSelected()) {
                 //List<List<String>> list = newBtnLogic.getList();
@@ -268,12 +279,6 @@ public class ControllerMain implements Initializable {
         if (actionEvent.getSource() == btnLoad) {
             List<String> list = fileController.loadDataFromFile();
             loadData(list);
-            return;
-        }
-
-        // Кнопка меню для выхода из программы
-        if (actionEvent.getSource() == btnExit) {
-            MainScreen.getStage().close();
             return;
         }
 

@@ -51,7 +51,7 @@
             <Button fx:id="btnSolve" onAction="#handleButtonAction" text="Вычислить" />
             <Button fx:id="btnMultiSolve" onAction="#handleButtonAction" text="Серия вычислений" />
             <TextField fx:id="multiSolveCount" text="100" />
-            <CheckBox fx:id="cbMultiSolveFromFile" onAction="#handleButtonAction" text="Взять данные из файла" visible="true"/>
+            <CheckBox fx:id="cbMultiSolveFromFile" onAction="#handleButtonAction" text="Взять данные из файла" visible="false"/>
             <Label fx:id="multiSolveStr" text="" />
          <BorderPane.margin>
             <Insets />
@@ -119,11 +119,11 @@
                             </items>
                         </Menu>
 
-                        <Menu mnemonicParsing="false"  text="Выход">
+                        <!--<Menu mnemonicParsing="false"  text="Выход">
                         <items>
                             <MenuItem fx:id="btnExit" mnemonicParsing="false" onAction="#handleButtonAction" text="Выход" />
                         </items>
-                        </Menu>
+                        </Menu>-->
                     </menus>
                 </MenuBar>
         <!--><MenuBar>

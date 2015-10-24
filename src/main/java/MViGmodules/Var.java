@@ -10,7 +10,8 @@ public class Var {
     private double[][] M1;
     private double H;
     private double min;
-    private double minInAlgo;
+    private double minLowerBound;
+    private double minLeftBound;
 
     private int originalSize;
 
@@ -24,6 +25,7 @@ public class Var {
         for (int i = 0; i < originalSize; i++) {
             array[i][i] = M;
         }
+        minLowerBound = Double.MAX_VALUE;
     }
 
     public double[][] getArray() {
@@ -78,11 +80,20 @@ public class Var {
         return array == null;
     }
 
-    public double getMinInAlgo() {
-        return minInAlgo;
+    public double getMinLowerBound() {
+        return minLowerBound;
     }
 
-    public void setMinInAlgo(double minInAlgo) {
-        this.minInAlgo = minInAlgo;
+    public void setMinLowerBound(double minLowerBound) {
+        if (this.minLowerBound > minLowerBound)
+            this.minLowerBound = minLowerBound;
+    }
+
+    public double getMinLeftBound() {
+        return minLeftBound;
+    }
+
+    public void setMinLeftBound(double minLeftBound) {
+        this.minLeftBound = minLeftBound;
     }
 }
