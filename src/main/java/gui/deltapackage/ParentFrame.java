@@ -5,9 +5,9 @@ package gui.deltapackage;/*
  */
 
 
-import common.C;
-import common.Work1Main;
-import gui.newpackage.table.CustomCellRenderer;
+import util.C;
+import algorithm.bastrikov.Work1Main;
+import gui.deltapackage.table.CustomCellRenderer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

@@ -34,10 +34,10 @@ public class ControllerMain implements Initializable {
     public VBox vBoxForSettings;
     public Button btnFill;
     public TableView<TableViewController.DoubleData> table;
-//
     private static final String[] taskNames = {
             /*"Полный перебор",*/
-            "МВиГ классический (модульный)",
+            "МВиГ классический (начиная по левым ветвям)",
+            "МВиГ классический (с учетом потерянных ветвей)",
             "МВиГ классический",
             /*"МВиГ классический (без возвратов)",*/  // За повторением результата модульного метода
             "МВиГ улучшенный (без разрывов)",
@@ -120,6 +120,7 @@ public class ControllerMain implements Initializable {
         //btnSolve.fire();
         btnCheckAll.fire();
 //        tasks.get(0).setSelected(true);
+//        tasks.get(2).setSelected(true);
 //        tasks.get(1).setSelected(true);
 //        tasks.get(8).setSelected(true);
         //cbMultiSolveFromFile.fire();
@@ -228,8 +229,18 @@ public class ControllerMain implements Initializable {
             // Save last solved matrix
             fileController.saveInformationFromFormToTextFile(getMatrix(), true);
 
+            boolean correctOutput = false;
             // Вывод результата выполнения вычислений
-            outputText.setText(new ButtonLogic().btnSolveActionPerformed(matrix, methodsOrder));
+            try {
+                outputText.setText(new ButtonLogic().btnSolveActionPerformed(matrix, methodsOrder));
+                correctOutput = true;
+            } catch (Exception e) {
+                outputText.setText(e.getLocalizedMessage());
+                e.printStackTrace();
+            } catch (Error e) {
+                outputText.setText("Недостаточно памяти виртуальной машины Java для выполнения вычисления.");
+                e.printStackTrace();
+            }
             return;
         }
 

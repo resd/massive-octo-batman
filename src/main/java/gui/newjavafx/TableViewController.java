@@ -29,7 +29,7 @@ public class TableViewController {
             @Override
             public void updateItem(DoubleData num, boolean empty) {
                 super.updateItem(num, empty);
-                label1.setText("Рядок = " + ( table.getFocusModel().getFocusedCell().getRow() + 1 ) + ", Столбец = " + ( table.getFocusModel().getFocusedCell().getColumn() + 1 ));
+                label1.setText("Рядок = " + (table.getFocusModel().getFocusedCell().getRow() + 1) + ", Столбец = " + (table.getFocusModel().getFocusedCell().getColumn() + 1));
             }
         });
         //hBoxForCheckBoxes.setPadding(new Insets(10));
@@ -105,7 +105,7 @@ public class TableViewController {
 
         // Заполнение таблицы данными
         for (int i = 0; i < size; i++) {
-            TableColumn<DoubleData, String> col = new TableColumn<>("" + ( i + 1 ));
+            TableColumn<DoubleData, String> col = new TableColumn<>("" + (i + 1));
 
             col.setCellFactory(cellFactorySecond);
 
@@ -128,7 +128,7 @@ public class TableViewController {
                     else
                         matrix[i][j] = 0d;
                 }
-                
+
             }
 
         } else {
@@ -137,7 +137,7 @@ public class TableViewController {
                 for (int j = 0; j < size; j++) {
                     if (i != j) {
                         Random r = new Random();
-                        matrix[i][j] = (double) r.nextInt(99);
+                        matrix[i][j] = (double) r.nextInt(200);
                     } else
                         matrix[i][j] = 0d;
                 }

@@ -18,7 +18,7 @@ public class FileController {
     private String addToSaveFile = "";
 
     /**
-     *  Save data function
+     * Save data function
      */
     void saveInformationFromFormToTextFile(double[][] data) {
         FileChooser fileChooser = new FileChooser();
@@ -93,7 +93,7 @@ public class FileController {
     }
 
     /**
-     *  Save multi data function
+     * Save multi data function
      */
     void saveMultiInformationFromFormToTextFile(ControllerMain controllerMain) {
         // Получение массива строк методов в заданном пользователем порядке
@@ -214,7 +214,7 @@ public class FileController {
 
 
     /**
-     *  Load data from file
+     * Load data from file
      */
     List<String> loadDataFromFile() {
 
@@ -235,7 +235,8 @@ public class FileController {
         }
         return null;
     }
-//
+
+    //
     List<String> loadDataFromFile(String fileString) {
         File file = new File(fileString);
 
@@ -296,10 +297,8 @@ public class FileController {
     }
 
 
-
-
     /**
-     *  Load multi data from file
+     * Load multi data from file
      */
     List<List<String>> loadMultiDataFromFile(ControllerMain controllerMain) {
 
@@ -353,7 +352,7 @@ public class FileController {
     }
 
     /**
-     *  Additional function
+     * Additional function
      */
     double[][] parseStringFromFile(List<String> fileContent1) {
 

@@ -21,6 +21,7 @@ public class MainScreen extends Application {
 
     private static Stage stage;
     private Button btn;
+
     @Override
     public void start(Stage stage) throws Exception {
         String mainFxml = "/main.fxml";
@@ -34,7 +35,7 @@ public class MainScreen extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource(mainFxml));
         stage.setTitle("Hello World");
-        stage.setScene(new Scene(root, 1900/2, 1000));
+        stage.setScene(new Scene(root, 1900 / 2, 1000));
         stage.setMaximized(true);
         this.stage = stage;
         stage.show();

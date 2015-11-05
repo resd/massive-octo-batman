@@ -1,12 +1,14 @@
 package gui.newjavafx;
 
-import MViGmodules.*;
-import common.BruteforceAlgo;
-import common.Work1Main;
-import simpleMethod.ClassicAlgo;
-import simpleMethod.ClassicAlgoWithBacktrack;
-import simpleMethod.FarAlgo;
-import simpleMethod.NearAlgoEveryDot;
+import algorithm.bab.classic.BaBClassicAlgorithm;
+import algorithm.bab.classic.BaBClassicAlgorithmWithFirstLeftBounds;
+import algorithm.bab.classic.branch.*;
+import algorithm.bruteforce.BruteforceAlgo;
+import algorithm.bastrikov.Work1Main;
+import algorithm.bab.classic_old.ClassicAlgo;
+import algorithm.bab.classic_old.ClassicAlgoWithBacktrack;
+import algorithm.far.FarAlgo;
+import algorithm.near.NearAlgoEveryDot;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +28,8 @@ public class ButtonLogic {
         ClassicAlgoWithBacktrack clwb;
         NearAlgoEveryDot na;
         FarAlgo fa;
-        ClassicAlgoModules classicAlgoModules;
+        BaBClassicAlgorithmWithFirstLeftBounds baBClassicAlgorithmWithFirstLeftBounds;
+        BaBClassicAlgorithm baBClassicAlgorithm;
         // change this
         ChoseBranchClassic choseBranchBefore = new ChoseBranchClassicForEachElement();
         ChoseBranchClassic choseBranchAfter = new ChoseBranchClassicForEachElementSum();
@@ -90,21 +93,52 @@ public class ButtonLogic {
                         }
                         iteratorForMethods++;
                         break;
-                    case "МВиГ классический (модульный)":
+                    case "МВиГ классический (с учетом потерянных ветвей)":
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a);
-                            classicAlgoModules.main();
-                            s[iteratorForMethods] = classicAlgoModules.getSum(a);
-                            time[iteratorForMethods] += classicAlgoModules.getTime();
-                            if (pp == classicAlgoModules.getSum(a)) {
+                            baBClassicAlgorithm = new BaBClassicAlgorithm(a);
+                            baBClassicAlgorithm.main();
+                            s[iteratorForMethods] = baBClassicAlgorithm.getSum(a);
+                            time[iteratorForMethods] += baBClassicAlgorithm.getTime();
+                            if (pp == baBClassicAlgorithm.getSum(a)) {
+                                m[iteratorForMethods]++;
+                                countFlagg = true;
+                                for (int j = iteratorForMethods; j < countMethod; j++) {
+                                    countFlag[j] = true;
+                                }
+//                                if (s[iteratorForMethods] < s[iteratorForMethods-1]) //   uncomment
+//                                    throw new Exception("Classic smaller than Module!"); //   uncomment
+                            } else {
+                                System.out.println("bab Don't match brutforce!");
+                                fileController.setAddToSaveFile(" bab Dont match brutforce");
+                                fileController.autoSaveInformationFromFormToTextFile(a);
+                            }
+                        } catch (Exception e) {
+                            fileController.setAddToSaveFile(" bab Dont match brutforce");
+                            fileController.autoSaveInformationFromFormToTextFile(a);
+//                            kcl++;
+//                            System.out.println("Classic smaller than Module!"); //   uncomment
+//                            fileController.setAddToSaveFile(" Classic smaller than Module"); //   uncomment
+//                            fileController.autoSaveInformationFromFormToTextFile(a); //   uncomment
+//                            e.printStackTrace();
+//                            break;
+                        }
+                        iteratorForMethods++;
+                        break;
+                    case "МВиГ классический (начиная по левым ветвям)":
+                        try {
+                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a);
+                            baBClassicAlgorithmWithFirstLeftBounds.main();
+                            s[iteratorForMethods] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
+                            time[iteratorForMethods] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
+                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
                                 m[iteratorForMethods]++;
                                 countFlagg = true;
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
                                     countFlag[j] = true;
                                 }
                             } else {
-                                System.out.println("Don't match brutforce!");
-                                fileController.setAddToSaveFile(" Dont match brutforce");
+                                System.out.println("mod Don't match brutforce!");
+                                fileController.setAddToSaveFile(" mod Dont match brutforce");
                                 fileController.autoSaveInformationFromFormToTextFile(a);
                             }
                         } catch (RuntimeException e) {
@@ -116,11 +150,11 @@ public class ButtonLogic {
                         break;
                     case "МВиГ классический (по каждому элементу)":
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a, choseBranchBefore);
-                            classicAlgoModules.main();
-                            s[iteratorForMethods] = classicAlgoModules.getSum(a);
-                            time[iteratorForMethods] += classicAlgoModules.getTime();
-                            if (pp == classicAlgoModules.getSum(a)) {
+                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a, choseBranchBefore);
+                            baBClassicAlgorithmWithFirstLeftBounds.main();
+                            s[iteratorForMethods] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
+                            time[iteratorForMethods] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
+                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
                                 m[iteratorForMethods]++;
                                 countFlagg = true;
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
@@ -219,11 +253,11 @@ public class ButtonLogic {
                         break;
                     case "МВиГ классический (с суммой)":
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a, new ChoseBranchClassicSum());
-                            classicAlgoModules.main();
-                            s[iteratorForMethods] = classicAlgoModules.getSum(a);
-                            time[iteratorForMethods] += classicAlgoModules.getTime();
-                            if (pp == classicAlgoModules.getSum(a)) {
+                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicSum());
+                            baBClassicAlgorithmWithFirstLeftBounds.main();
+                            s[iteratorForMethods] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
+                            time[iteratorForMethods] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
+                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
                                 m[iteratorForMethods]++;
                                 countFlagg = true;
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
@@ -237,11 +271,11 @@ public class ButtonLogic {
                         break;
                     case "МВиГ классический (по каждому элементу с суммой)":
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElementSum());
-                            classicAlgoModules.main();
-                            s[iteratorForMethods] = classicAlgoModules.getSum(a);
-                            time[iteratorForMethods] += classicAlgoModules.getTime();
-                            if (pp == classicAlgoModules.getSum(a)) {
+                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicForEachElementSum());
+                            baBClassicAlgorithmWithFirstLeftBounds.main();
+                            s[iteratorForMethods] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
+                            time[iteratorForMethods] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
+                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
                                 m[iteratorForMethods]++;
                                 countFlagg = true;
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
@@ -255,11 +289,11 @@ public class ButtonLogic {
                         break;
                     case "МВиГ классический (по каждому элементу со смежными)":
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElementWithRelated());
-                            classicAlgoModules.main();
-                            s[iteratorForMethods] = classicAlgoModules.getSum(a);
-                            time[iteratorForMethods] += classicAlgoModules.getTime();
-                            if (pp == classicAlgoModules.getSum(a)) {
+                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicForEachElementWithRelated());
+                            baBClassicAlgorithmWithFirstLeftBounds.main();
+                            s[iteratorForMethods] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
+                            time[iteratorForMethods] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
+                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
                                 m[iteratorForMethods]++;
                                 countFlagg = true;
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
@@ -273,11 +307,11 @@ public class ButtonLogic {
                         break;
                     case "МВиГ классический (по каждому элементу со смежными с суммой)":
                         try {
-                            classicAlgoModules = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElementWithRelatedSum());
-                            classicAlgoModules.main();
-                            s[iteratorForMethods] = classicAlgoModules.getSum(a);
-                            time[iteratorForMethods] += classicAlgoModules.getTime();
-                            if (pp == classicAlgoModules.getSum(a)) {
+                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicForEachElementWithRelatedSum());
+                            baBClassicAlgorithmWithFirstLeftBounds.main();
+                            s[iteratorForMethods] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
+                            time[iteratorForMethods] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
+                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
                                 m[iteratorForMethods]++;
                                 countFlagg = true;
                                 for (int j = iteratorForMethods; j < countMethod; j++) {
@@ -315,7 +349,11 @@ public class ButtonLogic {
                     //blder.append(kcl);
                     iteratorForMethods++;
                     break;
-                case "МВиГ классический (модульный)":
+                case "МВиГ классический (с учетом потерянных ветвей)":
+                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    iteratorForMethods++;
+                    break;
+                case "МВиГ классический (начиная по левым ветвям)":
                     blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
                     iteratorForMethods++;
                     break;
@@ -398,14 +436,15 @@ public class ButtonLogic {
         //blder.append("\n\n");
         BruteforceAlgo bf = new BruteforceAlgo();
         ClassicAlgo sm = new ClassicAlgo(a);
+        BaBClassicAlgorithm baBClassicAlgorithm = new BaBClassicAlgorithm(a);
         ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
         NearAlgoEveryDot na = new NearAlgoEveryDot(a);
-        ClassicAlgoModules cam = new ClassicAlgoModules(a);
-        ClassicAlgoModules camp = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElement());
-        ClassicAlgoModules classicSum = new ClassicAlgoModules(a, new ChoseBranchClassicSum());
-        ClassicAlgoModules classicForEachElementSum = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElementSum());
-        ClassicAlgoModules classicForEachRelatedElement = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElementWithRelated());
-        ClassicAlgoModules classicForEachRelatedElementSum = new ClassicAlgoModules(a, new ChoseBranchClassicForEachElementWithRelatedSum());
+        BaBClassicAlgorithmWithFirstLeftBounds cam = new BaBClassicAlgorithmWithFirstLeftBounds(a);
+        BaBClassicAlgorithmWithFirstLeftBounds camp = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicForEachElement());
+        BaBClassicAlgorithmWithFirstLeftBounds classicSum = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicSum());
+        BaBClassicAlgorithmWithFirstLeftBounds classicForEachElementSum = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicForEachElementSum());
+        BaBClassicAlgorithmWithFirstLeftBounds classicForEachRelatedElement = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicForEachElementWithRelated());
+        BaBClassicAlgorithmWithFirstLeftBounds classicForEachRelatedElementSum = new BaBClassicAlgorithmWithFirstLeftBounds(a, new ChoseBranchClassicForEachElementWithRelatedSum());
         FarAlgo fa = new FarAlgo(a);
         Work1Main w = new Work1Main(1);
         Work1Main w2 = new Work1Main(2);
@@ -447,7 +486,23 @@ public class ButtonLogic {
                     }
                     blder.append("\n\n");
                     break;
-                case "МВиГ классический (модульный)":
+                case "МВиГ классический (с учетом потерянных ветвей)":
+                    try {
+                        baBClassicAlgorithm.main();
+                        blder.append(method);
+                        blder.append(":");
+                        blder.append("\nPath: ");
+                        blder.append(baBClassicAlgorithm.getPath());
+                        blder.append("\nSum = ");
+                        blder.append(baBClassicAlgorithm.getSum(a));
+                        blder.append(",  Time: ");
+                        blder.append(baBClassicAlgorithm.getTime());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    blder.append("\n\n");
+                    break;
+                case "МВиГ классический (начиная по левым ветвям)":
                     try {
                         cam.main();
                         blder.append(method);
