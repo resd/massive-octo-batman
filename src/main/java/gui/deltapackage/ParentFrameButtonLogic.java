@@ -3,7 +3,7 @@ package gui.deltapackage;
 import algorithm.bab.classic.branch.ChoseBranchClassic;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElement;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElementSum;
-import algorithm.bab.classic.BaBClassicAlgorithmWithFirstLeftBounds;
+import algorithm.bab.classic.BaBClassicAlgorithm;
 import algorithm.bruteforce.BruteforceAlgo;
 import algorithm.bastrikov.Work1Main;
 import algorithm.bab.classic_old.ClassicAlgo;
@@ -50,7 +50,7 @@ public class ParentFrameButtonLogic {
         ClassicAlgoWithBacktrack clwb;
         NearAlgoEveryDot na;
         FarAlgo fa;
-        BaBClassicAlgorithmWithFirstLeftBounds baBClassicAlgorithmWithFirstLeftBounds;
+        BaBClassicAlgorithm baBClassicAlgorithm;
         // change this
         ChoseBranchClassic choseBranchBefore = new ChoseBranchClassicForEachElement();
         ChoseBranchClassic choseBranchAfter = new ChoseBranchClassicForEachElementSum();
@@ -193,11 +193,11 @@ public class ParentFrameButtonLogic {
 
                     if (methodsOrder[0] != -1) {
                         try {
-                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a, choseBranchBefore);
-                            baBClassicAlgorithmWithFirstLeftBounds.main();
-                            s[methodsOrder[0]] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
-                            time[methodsOrder[0]] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
-                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
+                            baBClassicAlgorithm = new BaBClassicAlgorithm(a, choseBranchBefore);
+                            baBClassicAlgorithm.main();
+                            s[methodsOrder[0]] = baBClassicAlgorithm.getSum(a);
+                            time[methodsOrder[0]] += baBClassicAlgorithm.getTime();
+                            if (pp == baBClassicAlgorithm.getSum(a)) {
                                 m[methodsOrder[0]]++;
                                 countFlagg = true;
                                 for (int j = methodsOrder[0]; j < countMethod; j++) {
@@ -212,11 +212,11 @@ public class ParentFrameButtonLogic {
 
                     if (methodsOrder[7] != -1) {
                         try {
-                            baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a, choseBranchAfter);
-                            baBClassicAlgorithmWithFirstLeftBounds.main();
-                            s[methodsOrder[7]] = baBClassicAlgorithmWithFirstLeftBounds.getSum(a);
-                            time[methodsOrder[7]] += baBClassicAlgorithmWithFirstLeftBounds.getTime();
-                            if (pp == baBClassicAlgorithmWithFirstLeftBounds.getSum(a)) {
+                            baBClassicAlgorithm = new BaBClassicAlgorithm(a, choseBranchAfter);
+                            baBClassicAlgorithm.main();
+                            s[methodsOrder[7]] = baBClassicAlgorithm.getSum(a);
+                            time[methodsOrder[7]] += baBClassicAlgorithm.getTime();
+                            if (pp == baBClassicAlgorithm.getSum(a)) {
                                 m[methodsOrder[7]]++;
                                 countFlagg = true;
                                 for (int j = methodsOrder[7]; j < countMethod; j++) {
@@ -376,7 +376,7 @@ public class ParentFrameButtonLogic {
         ClassicAlgo sm = new ClassicAlgo(a);
         ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
         NearAlgoEveryDot na = new NearAlgoEveryDot(a);
-        BaBClassicAlgorithmWithFirstLeftBounds cam = new BaBClassicAlgorithmWithFirstLeftBounds(a);
+        BaBClassicAlgorithm cam = new BaBClassicAlgorithm(a);
         FarAlgo fa = new FarAlgo(a);
         Work1Main w = new Work1Main(1);
         Work1Main w2 = new Work1Main(2);

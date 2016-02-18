@@ -393,7 +393,7 @@ public class FileController {
         this.addToSaveFile = addToSaveFile;
     }
 
-    public String getAddToSaveFile() {
+    private String getAddToSaveFile() {
         String returnString = addToSaveFile;
         addToSaveFile = "";
         return returnString;

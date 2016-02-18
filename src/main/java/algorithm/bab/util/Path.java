@@ -24,6 +24,13 @@ public class Path {
         }
     }
 
+    public Path(Path path) {
+        p = Other.INSTANCE.cloneMatrix(path.p);
+        mi = path.mi.clone();
+        mj = path.mj.clone();
+        pathCount = path.pathCount;
+    }
+
     public void getPath(int[] d) {
         int x = d[0];
         int y = d[1];

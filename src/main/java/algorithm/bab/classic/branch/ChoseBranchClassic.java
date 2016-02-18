@@ -37,7 +37,7 @@ public class ChoseBranchClassic {
     }
 
     // Находим max суммы всех нулевых эл-тов по каждой СиС
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         double t;
         for (int i = 0; i < array.length; i++) {
@@ -96,9 +96,9 @@ public class ChoseBranchClassic {
     }
 
     // Находим эл-т соотв-щий max сумме из карты map
-    protected ArrayList difineEdges(Map map) {
+    protected ArrayList<int[]> difineEdges(Map map) {
         double comparator = -Double.MAX_VALUE;
-        int[] edge = new int[2];
+        int[] edge = null;
         ArrayList<int[]> edges = new ArrayList<>();
 //        int count = 1;
 
@@ -114,7 +114,8 @@ public class ChoseBranchClassic {
             }
         }
         // Добавляем найденный эл-т в edges
-        edges.add(edge);
+        if (edge != null) edges.add(edge);
+
         // Проверяем, есть ли в map эл-ты с таким же max значением
         for (Object entrySet : map.entrySet()) {
             Map.Entry entry = (Map.Entry) entrySet;

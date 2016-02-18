@@ -38,12 +38,29 @@ public class ControllerMain implements Initializable {
             /*"Полный перебор",*/
             "МВиГ классический (начиная по левым ветвям)",
             "МВиГ классический (с учетом потерянных ветвей)",
-            "МВиГ классический",
+//            "МВиГ классический",
+            "МВиГ параллельный (с возвратом)",
+            "МВиГ параллельный",
             /*"МВиГ классический (без возвратов)",*/  // За повторением результата модульного метода
             "МВиГ улучшенный (без разрывов)",
             "МВиГ улучшенный (с разрывами)",
             "Ближнего соседа",
             "Дальнего соседа",
+            "МВиГ классический (с суммой)",
+            /*"МВиГ классический (по каждому элементу)",*/ // За повторением результата модульного метода
+            "МВиГ классический (по каждому элементу с суммой)",
+            "МВиГ классический (по каждому элементу со смежными)",
+            "МВиГ классический (по каждому элементу со смежными с суммой)"
+    };
+
+    private static final String[] methodsForParallelNames = {
+            "МВиГ классический (с учетом потерянных ветвей)",
+//            "МВиГ классический",
+            /*"МВиГ классический (без возвратов)",*/  // За повторением результата модульного метода
+//            "МВиГ улучшенный (без разрывов)",
+//            "МВиГ улучшенный (с разрывами)",
+//            "Ближнего соседа",
+//            "Дальнего соседа",
             "МВиГ классический (с суммой)",
             /*"МВиГ классический (по каждому элементу)",*/ // За повторением результата модульного метода
             "МВиГ классический (по каждому элементу с суммой)",
@@ -68,11 +85,14 @@ public class ControllerMain implements Initializable {
     public MenuItem btnMultiSave;
     public CheckBox cbMultiSolveFromFile;
     public Label multiSolveStr;
+    public HBox hBoxForCheckBoxesForParallel;
     //public ListView<Task> listViewForCheckBoxes;
     //checkList
 
     private ObservableList<Task> tasks;
+    private ObservableList<Task> tasksParallel;
     public ListView<Task> listViewForCheckBoxes;
+    public ListView<Task> listViewForCheckBoxesParallel;
 
     public HBox hBoxForCheckBoxes;
     public VBox vBoxForButtonBeforeCheckBoxes;
@@ -83,6 +103,7 @@ public class ControllerMain implements Initializable {
     private static TableViewController tableViewController;
     private FileController fileController;
     private ButtonLogic.ButtonLogicForMultiLoad newBtnLogic;
+    private boolean fireBtnFillBeforeBtnSolve;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -90,8 +111,13 @@ public class ControllerMain implements Initializable {
         for (String name : taskNames) {
             tasks.add(new Task(name));
         }
+        tasksParallel = FXCollections.observableArrayList();
+        for (String name : methodsForParallelNames) {
+            tasksParallel.add(new Task(name));
+        }
 
         listViewForCheckBoxes = new ListView<>(tasks);
+        listViewForCheckBoxesParallel = new ListView<>(tasksParallel);
 
         Callback<Task, ObservableValue<Boolean>> callback = new Callback<Task, ObservableValue<Boolean>>() {
             @Override
@@ -112,16 +138,19 @@ public class ControllerMain implements Initializable {
             }
         };
         listViewForCheckBoxes.setCellFactory(CheckBoxListCell.forListView(callback, stringConverter));
+        listViewForCheckBoxesParallel.setCellFactory(CheckBoxListCell.forListView(callback, stringConverter));
         hBoxForCheckBoxes.getChildren().add(listViewForCheckBoxes);
+        hBoxForCheckBoxesForParallel.getChildren().add(listViewForCheckBoxesParallel);
         label1.setText("");
         outputText.setWrapText(true);
         tableViewController = new TableViewController(table, label1);
         fileController = new FileController();
-        //btnSolve.fire();
-        btnCheckAll.fire();
+//        btnCheckAll.fire();
 //        tasks.get(0).setSelected(true);
 //        tasks.get(2).setSelected(true);
-//        tasks.get(1).setSelected(true);
+        tasks.get(2).setSelected(true);
+        tasksParallel.get(0).setSelected(true);
+        tasksParallel.get(1).setSelected(true);
 //        tasks.get(8).setSelected(true);
         //cbMultiSolveFromFile.fire();
 
@@ -130,7 +159,10 @@ public class ControllerMain implements Initializable {
             btnFill.fire();
         }
         //btnMultiLoad.fire();
-//        btnSolve.fire();
+//        matrixSize.setText("5");
+//        btnFill.fire();
+        //btnSolve.fire();
+        //fireBtnFillBeforeBtnSolve = true;
     }
 
     public void handleButtonAction(ActionEvent actionEvent) {
@@ -200,6 +232,7 @@ public class ControllerMain implements Initializable {
 
         // Кнопка для выполнения вычислений
         if (actionEvent.getSource() == btnSolve) {
+            if (fireBtnFillBeforeBtnSolve) btnFill.fire();
             //
             //      Load data from file todo Load file ?
             /*List<String> list = fileController.loadOneFile(new File("C:/data/4/4  2015-09-26 T 18-54-49-167000000.txt"));
@@ -210,6 +243,7 @@ public class ControllerMain implements Initializable {
 
             // Получение массива строк методов в заданном пользователем порядке
             ArrayList<String> methodsOrder = new ArrayList<String>();
+            ArrayList<String> methodsOrderParallel = new ArrayList<String>();
             if (tableViewController.getMatrixSize() < 13) {
                 methodsOrder.add("Полный перебор");
             }
@@ -218,6 +252,13 @@ public class ControllerMain implements Initializable {
                     methodsOrder.add(task.getName());
                 }
             }
+
+            for (Task task : tasksParallel) {
+                if (task.isSelected()) {
+                    methodsOrderParallel.add(task.getName());
+                }
+            }
+
             if (methodsOrder.size() == 0) {
                 // Тернарный оператор не работает
                 outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Не выбранно ни одного метода."); // outputText.getText() +
@@ -232,7 +273,7 @@ public class ControllerMain implements Initializable {
             boolean correctOutput = false;
             // Вывод результата выполнения вычислений
             try {
-                outputText.setText(new ButtonLogic().btnSolveActionPerformed(matrix, methodsOrder));
+                outputText.setText(new ButtonLogic().btnSolveActionPerformed(matrix, methodsOrder, methodsOrderParallel));
                 correctOutput = true;
             } catch (Exception e) {
                 outputText.setText(e.getLocalizedMessage());
@@ -250,6 +291,7 @@ public class ControllerMain implements Initializable {
             int multiSolveCountInt = Integer.parseInt(str);
             // Получение массива строк методов в заданном пользователем порядке
             ArrayList<String> methodsOrder = getMethodOrder();
+            ArrayList<String> methodsOrderParallel = new ArrayList<>();
 
             if (methodsOrder.size() == 0) {
                 // Тернарный оператор не работает
@@ -257,25 +299,43 @@ public class ControllerMain implements Initializable {
                 return;
             }
 
+            for (Task task : tasksParallel) {
+                if (task.isSelected()) {
+                    methodsOrderParallel.add(task.getName());
+                }
+            }
+
             String strTemp = matrixSize.textProperty().getValue();
             int matrixSizeInt = Integer.parseInt(strTemp);
             boolean isConstant = RadioButtonConstant.isSelected();
-            if (matrixSizeInt > 12) {
-                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Размерность матриц задана больше 12. Полный перебор не будет выполнен за адекватное время.");
-                return;
-            }
+//            if (matrixSizeInt > 12) {
+//                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Размерность матриц задана больше 12. Полный перебор не будет выполнен за адекватное время.");
+//                return;
+//            }
             if (isConstant) {
                 outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Методом заполнения выбрана константа, что делает серию решений бессмысленной.");
                 return;
             }
 
             // Вывод результата выполнения вычислений
-            if (cbMultiSolveFromFile.isSelected()) {
-                //List<List<String>> list = newBtnLogic.getList();
-                multiSolveCountInt = Integer.parseInt(newBtnLogic.getList().get(0).get(0));
-                outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
+            if (matrixSizeInt < 13) {
+                if (cbMultiSolveFromFile.isSelected()) {
+                    multiSolveCountInt = Integer.parseInt(newBtnLogic.getList().get(0).get(0));
+                    outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt,
+                            methodsOrder, methodsOrderParallel, this));
+                } else {
+                    outputText.setText(new ButtonLogic().btnMultiSolveActionPerformed(multiSolveCountInt,
+                            methodsOrder, methodsOrderParallel, this));
+                }
             } else {
-                outputText.setText(new ButtonLogic().btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
+                if (cbMultiSolveFromFile.isSelected()) {
+                    multiSolveCountInt = Integer.parseInt(newBtnLogic.getList().get(0).get(0));
+                    outputText.setText(newBtnLogic.btnMultiSolveActionPerformedForMoreThan12(multiSolveCountInt,
+                            methodsOrder, methodsOrderParallel, this));
+                } else {
+                    outputText.setText(new ButtonLogic().btnMultiSolveActionPerformedForMoreThan12(multiSolveCountInt,
+                            methodsOrder, methodsOrderParallel, this));
+                }
             }
             return;
         }
@@ -316,9 +376,6 @@ public class ControllerMain implements Initializable {
             multiSolveStr.setText("list = " + list.size() + ", countIteration = " + list.get(0).get(0));
             //outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
             return;
-        }
-        if (actionEvent.getSource() == cbMultiSolveFromFile) {
-
         }
     }
 

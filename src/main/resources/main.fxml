@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.newjavafx.ControllerMain">
+<BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.newjavafx.ControllerMain">
     <fx:define>
         <ToggleGroup fx:id="btnGroup" />
         <ToggleGroup fx:id="checkBoxGroup" />
     </fx:define>
     <!-- Настройки -->
     <right>
-        <VBox fx:id="vBoxForSettings" prefHeight="500.0" prefWidth="400.0" spacing="10" BorderPane.alignment="CENTER">
+        <VBox fx:id="vBoxForSettings" prefHeight="800.0" prefWidth="400.0" spacing="10" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="5.0" left="8.0" right="10.0" top="5.0" />
             </padding>
@@ -25,9 +25,9 @@
             <TextField fx:id="matrixSize" />
             <!--<Spinner editable="true" />-->
             <!--<IndeterminateSpinner/>-->
-            <RadioButton fx:id="RadioButtonRandom" selected="true" text="Random" toggleGroup="$btnGroup"/>
+            <RadioButton fx:id="RadioButtonRandom" selected="true" text="Случайные данные" toggleGroup="$btnGroup"/>
             <HBox>
-                <RadioButton fx:id="RadioButtonConstant" text="Constant" toggleGroup="$btnGroup">
+                <RadioButton fx:id="RadioButtonConstant" text="Константа" toggleGroup="$btnGroup">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
@@ -46,7 +46,8 @@
                     <Button fx:id="btnMoveUp" onAction="#handleButtonAction" text="Переместить вверх" />
                     <Button fx:id="btnMoveDown" onAction="#handleButtonAction" text="Переместить вниз" />
                 </HBox>
-                <HBox fx:id="hBoxForCheckBoxes" prefHeight="400" prefWidth="500.0" spacing="10" />
+                <HBox fx:id="hBoxForCheckBoxes" prefHeight="305" prefWidth="800.0" spacing="10" />
+                <HBox fx:id="hBoxForCheckBoxesForParallel" prefHeight="145" prefWidth="800.0" spacing="10" />
             </VBox>
             <Button fx:id="btnSolve" onAction="#handleButtonAction" text="Вычислить" />
             <Button fx:id="btnMultiSolve" onAction="#handleButtonAction" text="Серия вычислений" />

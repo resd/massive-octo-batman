@@ -12,6 +12,7 @@ public class Var {
     private double min;
     private double minLowerBound;
     private double minLeftBound;
+    private double minParallel;
 
     private int originalSize;
 
@@ -27,6 +28,20 @@ public class Var {
         }
         minLowerBound = Double.MAX_VALUE;
         minLeftBound = Double.MAX_VALUE;
+        minParallel = Double.MAX_VALUE;
+        min = Double.MAX_VALUE;
+    }
+
+    public Var(Var var) {
+        array = Other.INSTANCE.cloneMatrix(var.array);
+        H = var.H;
+        M1 = Other.INSTANCE.cloneMatrix(var.M1);
+        a = Other.INSTANCE.cloneMatrix(var.a);
+        originalSize = var.originalSize;
+        min = var.min;
+        minLowerBound = var.minLowerBound;
+        minLeftBound = var.minLeftBound;
+        minParallel = var.minParallel;
     }
 
     public double[][] getArray() {
@@ -96,5 +111,13 @@ public class Var {
 
     public void setMinLeftBound(double minLeftBound) {
         this.minLeftBound = minLeftBound;
+    }
+
+    public double getMinParallel() {
+        return minParallel;
+    }
+
+    public void setMinParallel(double minParallel) {
+        this.minParallel = minParallel;
     }
 }

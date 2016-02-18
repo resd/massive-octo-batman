@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * @author Admin
  * @since 14.07.15
  */
+@SuppressWarnings("all")
 public class DA {
     private ArrayList<Struct> da;
 
@@ -40,6 +41,18 @@ public class DA {
 
     public void remove(Struct struct) {
         da.remove(struct);
+    }
+
+    public void remove(int index) {
+        da.remove(index);
+    }
+
+    public void clear() {
+        da.clear();
+    }
+
+    public void get(Struct struct) {
+        da.indexOf(struct);
     }
 
     public void checkDa(double minSum) {
@@ -79,8 +92,8 @@ public class DA {
     }
 
     public boolean checkMin(Path path, Var var) {
-        // Проверить нет ли решений меньше, чем уже полученное решение
-        // Прыгнуть на то решение
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         Struct temp = null;
         boolean stopHW = false;
         boolean stopHWO = false;
@@ -135,6 +148,30 @@ public class DA {
                 }
             }
 
+        }
+    }
+
+    public void clearRestOfGeneralStructWithBiggerLowerBound(Var var) {
+        double valueOfMinLeftBound = var.getMinLeftBound();
+        int indexOfDa = 0;
+        int daSize = da.size();
+        boolean checked = false;
+        for (int i = 0; i < daSize; i++) {
+            if (da.get(indexOfDa).hasGeneralStruct()) {
+                GeneralStruct temp = da.get(indexOfDa).getGeneralStruct();
+                if (!checked && temp.isLowerBound() && temp.getH() == valueOfMinLeftBound) {
+                    checked = true;
+                    indexOfDa++; // todo check
+                    continue;
+                }
+                if (temp.isLowerBound() && temp.getH() >= valueOfMinLeftBound && checked) {
+                    da.remove(indexOfDa);
+                } else {
+                    indexOfDa++;
+                }
+            } else {
+                indexOfDa++;
+            }
         }
     }
 }
