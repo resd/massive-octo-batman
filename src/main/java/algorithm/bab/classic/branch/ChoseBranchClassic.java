@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Admin
  * @since 14.07.15
  */
-@SuppressWarnings({"all"})
+//@SuppressWarnings({"all"})
 public class ChoseBranchClassic {
     //private double[][] arrayC;
     private double[] sumOfEachRow;
@@ -19,7 +19,7 @@ public class ChoseBranchClassic {
 
     public Struct choseLeftOnly(DA da, Path path, Var var) {
         Struct sa;
-        Map map = new HashMap<int[], Double>();
+        Map <int[], Double> map = new HashMap<int[], Double>();
         // Очистка матриц
         map.clear();
         // Находим max суммы всех нулевых эл-тов по каждой СиС
@@ -27,7 +27,7 @@ public class ChoseBranchClassic {
         // Находим эл-т соотв-щий max сумме из карты map
         ArrayList edges = difineEdges(map);
         // Формирует объект Struct только из эл-тов HWithout
-        sa = chooseHoneLeftOnly((int[]) edges.get(0), (double) map.get(edges.get(0)), path, var);
+        sa = chooseHoneLeftOnly((int[]) edges.get(0), map.get(edges.get(0)), path, var);
 //        if (sa.getM1() == null) {
 //            sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(M1), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
 //        }
@@ -96,7 +96,7 @@ public class ChoseBranchClassic {
     }
 
     // Находим эл-т соотв-щий max сумме из карты map
-    protected ArrayList<int[]> difineEdges(Map map) {
+    protected ArrayList<int[]> difineEdges(Map <int[], Double> map) {
         double comparator = -Double.MAX_VALUE;
         int[] edge = null;
         ArrayList<int[]> edges = new ArrayList<>();
@@ -229,19 +229,19 @@ public class ChoseBranchClassic {
         return sum;
     }
 
-    public Struct choseLeftOnlyLast(Path path, Var var) {
+    public Struct choseLeftOnlyLast(Path path, Var var, ArrayClass arrayClass) {
 //        Struct sa = new Struct(new StructHW());
         double HWith;
         double HWithout;
         var.setArray(null);
         var.setM1(null);
-        path.getP()[var.getOriginalSize() - 2][0] = path.getMi()[0];
-        path.getP()[var.getOriginalSize() - 2][1] = path.getMj()[1];
-        path.getP()[var.getOriginalSize() - 1][0] = path.getMi()[1];
-        path.getP()[var.getOriginalSize() - 1][1] = path.getMj()[0];
+        path.getP()[arrayClass.getOriginalSize() - 2][0] = path.getMi()[0];
+        path.getP()[arrayClass.getOriginalSize() - 2][1] = path.getMj()[1];
+        path.getP()[arrayClass.getOriginalSize() - 1][0] = path.getMi()[1];
+        path.getP()[arrayClass.getOriginalSize() - 1][1] = path.getMj()[0];
         double Sum = 0;
-        for (int k = 0; k < var.getOriginalSize(); k++) {
-            Sum += var.getA()[path.getP()[k][0]][path.getP()[k][1]];
+        for (int k = 0; k < arrayClass.getOriginalSize(); k++) {
+            Sum += arrayClass.getA()[path.getP()[k][0]][path.getP()[k][1]];
         }
         HWithout = Sum - var.getH();
         if (HWithout < 0) System.out.println("Error with Sum - H = " + HWithout);
@@ -257,14 +257,14 @@ public class ChoseBranchClassic {
         return new Struct(generalStruct);
     }
 
-    public Struct chooseBoth(Path path, Var var) {
+    public Struct chooseBoth(Path path, Var var, ArrayClass arrayClass) {
         Struct sa;
 
         GeneralStruct generalStruct;
 
         // Если длина матрицы > 2
         if (var.getArrayLength() > 2) {
-            Map map;// = new HashMap<Object, Double>();
+            Map <int[], Double> map;// = new HashMap<Object, Double>();
             // Находим max суммы всех нулевых эл-тов по каждой СиС
             map = defineMapEdge(var.getArray());
             // Находим эл-т соотв-щий max сумме из карты map
@@ -274,7 +274,7 @@ public class ChoseBranchClassic {
             if (map.size() == 0) {
                 return new Struct(true);
             }
-            sa = chooseHone((int[])edges.get(0), (double) map.get(edges.get(0)), path, var);
+            sa = chooseHone((int[])edges.get(0), map.get(edges.get(0)), path, var);
             /*} catch (Exception e) {
                 e.printStackTrace();
             }*/
@@ -284,12 +284,12 @@ public class ChoseBranchClassic {
             double Sum = 0;
             var.setArray(null);
             var.setM1(null);
-            path.getP()[var.getOriginalSize() - 2][0] = path.getMi()[0];
-            path.getP()[var.getOriginalSize() - 2][1] = path.getMj()[1];
-            path.getP()[var.getOriginalSize() - 1][0] = path.getMi()[1];
-            path.getP()[var.getOriginalSize() - 1][1] = path.getMj()[0];
-            for (int k = 0; k < var.getOriginalSize(); k++) {
-                Sum += var.getA()[path.getP()[k][0]][path.getP()[k][1]];
+            path.getP()[arrayClass.getOriginalSize() - 2][0] = path.getMi()[0];
+            path.getP()[arrayClass.getOriginalSize() - 2][1] = path.getMj()[1];
+            path.getP()[arrayClass.getOriginalSize() - 1][0] = path.getMi()[1];
+            path.getP()[arrayClass.getOriginalSize() - 1][1] = path.getMj()[0];
+            for (int k = 0; k < arrayClass.getOriginalSize(); k++) {
+                Sum += arrayClass.getA()[path.getP()[k][0]][path.getP()[k][1]];
             }
             HWithout = Sum - var.getH();
             if (HWithout < 0) System.out.println("Error with Sum - H = " + HWithout);

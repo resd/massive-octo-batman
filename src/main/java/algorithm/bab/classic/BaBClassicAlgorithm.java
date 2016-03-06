@@ -4,12 +4,14 @@ import algorithm.bab.classic.branch.ChoseBranchClassic;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElement;
 import algorithm.bab.util.*;
 import algorithm.bruteforce.BruteforceAlgo;
+import algorithm.util.MethodAction;
 
 /**
  * @author zabr1
  */
-@SuppressWarnings({"all"})
-public class BaBClassicAlgorithm {
+//@SuppressWarnings({"all"})
+//@SuppressWarnings({"unused", "Duplicates"})
+public class BaBClassicAlgorithm implements MethodAction {
     /**
      * Сделать вариант без возвратов.
      * Сделать вариант с возвратами.
@@ -18,6 +20,7 @@ public class BaBClassicAlgorithm {
     protected long sysTime;
     protected Path path;
     protected Var var;
+    protected ArrayClass arrayClass;
     protected DA da;
 
     protected int count;
@@ -28,12 +31,14 @@ public class BaBClassicAlgorithm {
     // Конструктор
 
     public BaBClassicAlgorithm(double[][] array) {
-        var = new Var(Other.INSTANCE.cloneMatrix(array), Other.INSTANCE.cloneMatrix(array));
+        var = new Var(Other.INSTANCE.cloneMatrix(array));
+        arrayClass = new ArrayClass(array);
         originalSize = array.length;
     }
 
     public BaBClassicAlgorithm(double[][] array, ChoseBranchClassic cb) {
-        var = new Var(Other.INSTANCE.cloneMatrix(array), Other.INSTANCE.cloneMatrix(array));
+        var = new Var(Other.INSTANCE.cloneMatrix(array));
+        arrayClass = new ArrayClass(array);
         originalSize = array.length;
         this.cb = cb;
     }
@@ -41,7 +46,7 @@ public class BaBClassicAlgorithm {
     protected void initialize() {
         // Объявление переменных
 
-        path = new Path(var);
+        path = new Path(arrayClass);
         da = new DA();
         if (cb == null) {
             cb = new ChoseBranchClassic();
@@ -67,7 +72,7 @@ public class BaBClassicAlgorithm {
         // Пока не переберутся все варианты
 
         while(true) { // checkMin(sa)
-            Struct sa = cb.chooseBoth(path, var);
+            Struct sa = cb.chooseBoth(path, var, arrayClass);
 //            System.out.println(sa);
 
 
@@ -137,6 +142,7 @@ public class BaBClassicAlgorithm {
         System.out.println("count = " + count);*/
     }
 
+    @Override
     public void main() {
         sysTime = System.currentTimeMillis();
         initialize();
@@ -167,7 +173,7 @@ public class BaBClassicAlgorithm {
 
         // Вычисление последней границы
 
-        Struct struct = cb.choseLeftOnlyLast(path, var);
+        Struct struct = cb.choseLeftOnlyLast(path, var, arrayClass);
         minP = Other.INSTANCE.cloneMatrix(path.getP());
         var.setMinLeftBound(var.getMinLowerBound());
         da.add(struct);
@@ -206,6 +212,7 @@ public class BaBClassicAlgorithm {
         return str.toString();
     }
 
+    @Override
     public double getSum(double[][] a) {
         double sum = 0;
         int[][] p = path.getP();
@@ -215,6 +222,7 @@ public class BaBClassicAlgorithm {
         return sum;
     }
 
+    @Override
     public long getTime() {
         return System.currentTimeMillis() - sysTime;
     }

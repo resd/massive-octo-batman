@@ -33,6 +33,7 @@ public class Work2OldStableVersion implements Methods{
         originalsize = M0.length;
     }
 
+    @Override
     public void initialize() {
         p = new int[originalsize][2];
         mi = new int[originalsize];
@@ -54,6 +55,7 @@ public class Work2OldStableVersion implements Methods{
         count = 0;
     }
 
+    @Override
     public void normalize(double[][] M) {
         double min = Double.MAX_VALUE;
 
@@ -96,6 +98,7 @@ public class Work2OldStableVersion implements Methods{
         }
     }
 
+    @Override
     public double[][] solve(double[][] M0) {
         double[][] M1;
         double[][] M2;
@@ -187,6 +190,7 @@ public class Work2OldStableVersion implements Methods{
         return dpaij;
     }
 
+    @Override
     public int[] getD(double[][] DD, int i) {
         /**
          * Цикл
@@ -222,6 +226,7 @@ public class Work2OldStableVersion implements Methods{
         return new int[]{di, dj};
     }
 
+    @Override
     public void getPath(int[] d, int i) {
         int x = d[0];
         int y = d[1];
@@ -242,6 +247,7 @@ public class Work2OldStableVersion implements Methods{
         return tmp;
     }
 
+    @Override
     public double[][] doM0(double[][] M0, int di, int dj) {
         M0[dj][di] = 0;
 
@@ -287,6 +293,7 @@ public class Work2OldStableVersion implements Methods{
         return M1;
     }
 
+    @Override
     public void computeLastElement() {
         p[originalsize - 2][0] = mi[0];
         p[originalsize - 2][1] = mj[1];
@@ -298,6 +305,7 @@ public class Work2OldStableVersion implements Methods{
         this.originalsize = originalsize;
     }*/
 
+    @Override
     public int[][] getP() {
         return p;
     }

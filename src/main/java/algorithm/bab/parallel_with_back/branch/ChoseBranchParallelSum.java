@@ -8,11 +8,11 @@ import java.util.Map;
  * @since 06.08.15
  * "���� ������������ (� ������)"
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ChoseBranchParallelSum extends ChoseBranchParallel {
 
     @Override
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         countSums(array);
         double[] sumOfEachRow = getSumOfEachRow();

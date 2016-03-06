@@ -1,11 +1,12 @@
 package algorithm.far;
 
+import algorithm.util.MethodAction;
 import util.C;
 
 /**
  * Created by Admin on 29.03.15.
  */
-public class FarAlgo {
+public class FarAlgo implements MethodAction {
 
     /*private double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
@@ -166,7 +167,8 @@ public class FarAlgo {
         }
     }
 
-    public void go() throws NullPointerException{
+    @Override
+    public void main() throws NullPointerException{
         sysTime = System.currentTimeMillis();
         double[][] M;
         int d[];
@@ -401,7 +403,7 @@ public class FarAlgo {
 
     public static void main(String[] args) {
         FarAlgo fa = new FarAlgo(M00);
-        fa.go();
+        fa.main();
         C.p("\nPath: " + fa.getPath() + "\nSum = " + fa.getSum(M00) + ",  Time: " + fa.getTime());
     }
 
@@ -441,6 +443,7 @@ public class FarAlgo {
         return str.toString();
     }
 
+    @Override
     public double getSum(double[][] a) {
         double Sum = 0;
         for (int k = 0; k < originalsize; k++) {
@@ -449,6 +452,7 @@ public class FarAlgo {
         return Sum;
     }
 
+    @Override
     public long getTime() {
         return System.currentTimeMillis() - sysTime;
     }

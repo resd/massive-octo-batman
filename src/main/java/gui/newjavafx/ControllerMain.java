@@ -1,6 +1,7 @@
 package gui.newjavafx;
 
 import gui.deltapackage.ParentFrame;
+import gui.newjavafx.buttonlogic.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -19,16 +20,16 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Admin on 11.08.15.
+ * Created by Admin on 11.08.15
+ * lastModify on 29.02.16
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ControllerMain implements Initializable {
     @FXML
     public VBox vBoxForSettings;
@@ -86,6 +87,7 @@ public class ControllerMain implements Initializable {
     public CheckBox cbMultiSolveFromFile;
     public Label multiSolveStr;
     public HBox hBoxForCheckBoxesForParallel;
+    public CheckBox cbMultiSolveProcent;
     //public ListView<Task> listViewForCheckBoxes;
     //checkList
 
@@ -102,8 +104,9 @@ public class ControllerMain implements Initializable {
     public Button btnMoveDown;
     private static TableViewController tableViewController;
     private FileController fileController;
-    private ButtonLogic.ButtonLogicForMultiLoad newBtnLogic;
     private boolean fireBtnFillBeforeBtnSolve;
+    private ButtonMultiSolveActionPerformedForMoreThan12 newBtnLogicMore12;
+    private ButtonMultiSolveActionPerformed newBtnLogicLess12;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -148,12 +151,15 @@ public class ControllerMain implements Initializable {
 //        btnCheckAll.fire();
 //        tasks.get(0).setSelected(true);
 //        tasks.get(2).setSelected(true);
-        tasks.get(2).setSelected(true);
+//        tasks.get(2).setSelected(true);
         tasksParallel.get(0).setSelected(true);
         tasksParallel.get(1).setSelected(true);
+        //tasksParallel.get(3).setSelected(true);
+        //tasksParallel.get(4).setSelected(true);
 //        tasks.get(8).setSelected(true);
         //cbMultiSolveFromFile.fire();
 
+        btnCheckAll.fire();
         if ( !loadData(fileController.loadDataFromFile( true ) ) ) {
             matrixSize.setText("10");
             btnFill.fire();
@@ -161,7 +167,7 @@ public class ControllerMain implements Initializable {
         //btnMultiLoad.fire();
 //        matrixSize.setText("5");
 //        btnFill.fire();
-        //btnSolve.fire();
+//        btnSolve.fire();
         //fireBtnFillBeforeBtnSolve = true;
     }
 
@@ -225,7 +231,8 @@ public class ControllerMain implements Initializable {
             int matrixSizeInt = Integer.parseInt(str);
             int constantValueInt = Integer.parseInt(str2);
             if (matrixSizeInt > 0) {
-                tableViewController.setTableViewData(RadioButtonRandom.isSelected(), matrixSizeInt, constantValueInt);
+                tableViewController.setTableViewData(
+                        RadioButtonRandom.isSelected(), matrixSizeInt, constantValueInt);
             }
             return;
         }
@@ -235,7 +242,8 @@ public class ControllerMain implements Initializable {
             if (fireBtnFillBeforeBtnSolve) btnFill.fire();
             //
             //      Load data from file todo Load file ?
-            /*List<String> list = fileController.loadOneFile(new File("C:/data/4/4  2015-09-26 T 18-54-49-167000000.txt"));
+            /*List<String> list = fileController.loadOneFile(new File("C:/data/4/4
+            2015-09-26 T 18-54-49-167000000.txt"));
             double[][] newValues = fileController.parseStringFromFile(list);
             tableViewController.setTableViewData(newValues);*/
             //
@@ -261,7 +269,8 @@ public class ControllerMain implements Initializable {
 
             if (methodsOrder.size() == 0) {
                 // Тернарный оператор не работает
-                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Не выбранно ни одного метода."); // outputText.getText() +
+                outputText.setText((outputText.getText() != "" ? "\n\n" : "") +
+                        "Не выбранно ни одного метода."); // outputText.getText() +
                 return;
             }
             // Считывание данных из TableView в массив matrix
@@ -273,7 +282,8 @@ public class ControllerMain implements Initializable {
             boolean correctOutput = false;
             // Вывод результата выполнения вычислений
             try {
-                outputText.setText(new ButtonLogic().btnSolveActionPerformed(matrix, methodsOrder, methodsOrderParallel));
+                outputText.setText(new ButtonSolveActionPerformed().btnSolveActionPerformed(
+                        matrix, methodsOrder, methodsOrderParallel));
                 correctOutput = true;
             } catch (Exception e) {
                 outputText.setText(e.getLocalizedMessage());
@@ -313,28 +323,39 @@ public class ControllerMain implements Initializable {
 //                return;
 //            }
             if (isConstant) {
-                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Методом заполнения выбрана константа, что делает серию решений бессмысленной.");
+                outputText.setText((outputText.getText() != "" ? "\n\n" : "") +
+                        "Методом заполнения выбрана константа, что делает серию решений бессмысленной.");
                 return;
             }
 
             // Вывод результата выполнения вычислений
             if (matrixSizeInt < 13) {
                 if (cbMultiSolveFromFile.isSelected()) {
-                    multiSolveCountInt = Integer.parseInt(newBtnLogic.getList().get(0).get(0));
-                    outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt,
-                            methodsOrder, methodsOrderParallel, this));
+                    multiSolveCountInt = Integer.parseInt(newBtnLogicLess12.getButtonLogic().
+                            getList().get(0).get(0));
+                    outputText.setText(newBtnLogicLess12.btnMultiSolveActionPerformed(
+                            multiSolveCountInt, methodsOrder, methodsOrderParallel, this));
                 } else {
-                    outputText.setText(new ButtonLogic().btnMultiSolveActionPerformed(multiSolveCountInt,
-                            methodsOrder, methodsOrderParallel, this));
+                    outputText.setText(new ButtonMultiSolveActionPerformed(
+                            new ButtonLogic()).btnMultiSolveActionPerformed(
+                            multiSolveCountInt, methodsOrder, methodsOrderParallel, this));
                 }
             } else {
                 if (cbMultiSolveFromFile.isSelected()) {
-                    multiSolveCountInt = Integer.parseInt(newBtnLogic.getList().get(0).get(0));
-                    outputText.setText(newBtnLogic.btnMultiSolveActionPerformedForMoreThan12(multiSolveCountInt,
-                            methodsOrder, methodsOrderParallel, this));
+                    multiSolveCountInt = Integer.parseInt(newBtnLogicMore12.getButtonLogic().
+                            getList().get(0).get(0));
+                    outputText.setText(newBtnLogicMore12.btnMultiSolveActionPerformedForMoreThan12(
+                            multiSolveCountInt, methodsOrder, methodsOrderParallel, this));
                 } else {
-                    outputText.setText(new ButtonLogic().btnMultiSolveActionPerformedForMoreThan12(multiSolveCountInt,
-                            methodsOrder, methodsOrderParallel, this));
+                    if (cbMultiSolveProcent.isSelected()) {
+                        outputText.setText(new ButtonMultiSolveActionPerformedForMoreThan12InProcent(
+                                new ButtonLogic()).btnMultiSolveActionPerformedForMoreThan12(
+                                multiSolveCountInt, methodsOrder, methodsOrderParallel, this));
+                    } else {
+                        outputText.setText(new ButtonMultiSolveActionPerformedForMoreThan12(
+                                new ButtonLogic()).btnMultiSolveActionPerformedForMoreThan12(
+                                multiSolveCountInt, methodsOrder, methodsOrderParallel, this));
+                    }
                 }
             }
             return;
@@ -371,8 +392,11 @@ public class ControllerMain implements Initializable {
         if (actionEvent.getSource() == btnMultiLoad) {
             List<List<String>> list = fileController.loadMultiDataFromFile(this);
             if (list == null || list.isEmpty()) return;
-            newBtnLogic = new ButtonLogic.ButtonLogicForMultiLoad();
-            newBtnLogic.setList(list);
+
+            newBtnLogicLess12 = new ButtonMultiSolveActionPerformed(new ButtonLogicForMultiLoad());
+            newBtnLogicMore12 = new ButtonMultiSolveActionPerformedForMoreThan12(new ButtonLogicForMultiLoad());
+            newBtnLogicLess12.getButtonLogic().setList(list);
+            newBtnLogicMore12.getButtonLogic().setList(list);
             multiSolveStr.setText("list = " + list.size() + ", countIteration = " + list.get(0).get(0));
             //outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
             return;
@@ -392,7 +416,7 @@ public class ControllerMain implements Initializable {
         return true;
     }
 
-    ArrayList<String> getMethodOrder() {
+    public ArrayList<String> getMethodOrder() {
         // Получение массива строк методов в заданном пользователем порядке
         ArrayList<String> methodsOrder = new ArrayList<String>();
         for (Task task : tasks) {

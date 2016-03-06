@@ -11,7 +11,7 @@ import java.util.Map;
 public class ChoseBranchParallelForEachElementWithRelated extends ChoseBranchParallel {
 
     @Override
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {

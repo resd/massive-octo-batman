@@ -10,8 +10,8 @@ public class GeneralStruct {
 
     protected int[] edge;
     protected double H;
-    protected double HWithoutSum;
-    protected double HWithSum;
+//    protected double HWithoutSum;
+//    protected double HWithSum;
     private boolean lowerBound;
     private int[][] minP;
 
@@ -25,20 +25,20 @@ public class GeneralStruct {
     public GeneralStruct(int[] edge, double H, double HWithout, double HWith) {
         this.edge = edge;
         this.H = H;
-        this.HWithoutSum = H + HWithout;
-        this.HWithSum = H + HWith;
+//        this.HWithoutSum = H + HWithout;
+//        this.HWithSum = H + HWith;
     }
 
     public GeneralStruct(double H, double HWithout, double HWith) {
         this.H = H;
-        this.HWithoutSum = H + HWithout;
-        this.HWithSum = H + HWith;
+//        this.HWithoutSum = H + HWithout;
+//        this.HWithSum = H + HWith;
     }
 
     public GeneralStruct(double H, double HWithout, double HWith, boolean lowerBound, int[][] minP) {
         this.H = H;
-        this.HWithoutSum = H + HWithout;
-        this.HWithSum = H + HWith;
+//        this.HWithoutSum = H + HWithout;
+//        this.HWithSum = H + HWith;
         this.lowerBound = lowerBound;
         this.minP = minP;
     }
@@ -67,13 +67,13 @@ public class GeneralStruct {
         return H;
     }
 
-    public double getHWithoutSum() {
+    /*public double getHWithoutSum() {
         return HWithoutSum;
     }
 
     public double getHWithSum() {
         return HWithSum;
-    }
+    }*/
 
     public boolean isLowerBound() {
         return lowerBound;

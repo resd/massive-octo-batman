@@ -10,8 +10,8 @@ public class Path {
     private int[] mj;
     private int pathCount;
 
-    public Path(Var var) {
-        int originalSize = var.getOriginalSize();
+    public Path(ArrayClass arrayClass) {
+        int originalSize = arrayClass.getOriginalSize();
         pathCount = 0;
         mi = new int[originalSize];
         mj = new int[originalSize];
@@ -86,8 +86,8 @@ public class Path {
         array[di][x] = Double.POSITIVE_INFINITY;
     }
 //
-    public void computeLastElement(Var var) {
-        int originalSize = var.getOriginalSize();
+    public void computeLastElement(ArrayClass arrayClass) {
+        int originalSize = arrayClass.getOriginalSize();
         p[originalSize - 2][0] = mi[0];
         p[originalSize - 2][1] = mj[1];
         p[originalSize - 1][0] = mi[1];

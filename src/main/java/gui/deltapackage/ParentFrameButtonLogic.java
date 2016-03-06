@@ -16,7 +16,7 @@ import java.util.Arrays;
 /**
  * Created by Admin on 21.07.15.
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ParentFrameButtonLogic {
 
     String jButton2ActionPerformed(int n, String method, ParentFrame parentFrame) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -158,7 +158,7 @@ public class ParentFrameButtonLogic {
                     if (methodsOrder[5] != -1) {
                         na = new NearAlgoEveryDot(a);
                         //na.setM0(a);
-                        na.go();
+                        na.main();
                         s[methodsOrder[5]] = na.getSum(a);
                         time[methodsOrder[5]] += na.getTime();
                         if (pp == na.getSum(a)) {
@@ -174,7 +174,7 @@ public class ParentFrameButtonLogic {
                         try {
                             fa = new FarAlgo(a);
                             //fa.setM0(a);
-                            fa.go();
+                            fa.main();
                             s[methodsOrder[6]] = fa.getSum(a);
                             time[methodsOrder[6]] += fa.getTime();
                             if (pp == fa.getSum(a)) {
@@ -466,7 +466,7 @@ public class ParentFrameButtonLogic {
                 blder.append(",  Time: ");
                 blder.append(w2.getTime());
 
-                na.go();
+                na.main();
                 sum = na.getSum(a);
                 blder.append("\n\nБлижнего соседа");
                 blder.append(":");
@@ -478,7 +478,7 @@ public class ParentFrameButtonLogic {
                 blder.append(na.getTime());
 
                 try {
-                    fa.go();
+                    fa.main();
                     blder.append("\n\nДальнего соседа");
                     blder.append(":");
                     blder.append("\nPath: ");
@@ -567,7 +567,7 @@ public class ParentFrameButtonLogic {
                 //w.mainNewMethod();
                 break;
             case "Ближнего соседа":
-                na.go();
+                na.main();
                 sum = na.getSum(a);
                 blder.append("\n\nБлижнего соседа");
                 blder.append(":");
@@ -579,7 +579,7 @@ public class ParentFrameButtonLogic {
                 blder.append(na.getTime());
                 break;
             case "Дальнего соседа":
-                fa.go();
+                fa.main();
                 blder.append("\n\nДальнего соседа");
                 blder.append(":");
                 blder.append("\nPath: ");

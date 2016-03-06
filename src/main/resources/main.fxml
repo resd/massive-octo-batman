@@ -52,6 +52,7 @@
             <Button fx:id="btnSolve" onAction="#handleButtonAction" text="Вычислить" />
             <Button fx:id="btnMultiSolve" onAction="#handleButtonAction" text="Серия вычислений" />
             <TextField fx:id="multiSolveCount" text="100" />
+            <CheckBox fx:id="cbMultiSolveProcent" onAction="#handleButtonAction" text="Вычислить результат в процентах относительно классическго метода"/>
             <CheckBox fx:id="cbMultiSolveFromFile" onAction="#handleButtonAction" text="Взять данные из файла" visible="false"/>
             <Label fx:id="multiSolveStr" text="" />
          <BorderPane.margin>

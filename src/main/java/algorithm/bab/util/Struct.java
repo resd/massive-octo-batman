@@ -4,7 +4,7 @@ package algorithm.bab.util;
  * @author Admin
  * @since 19.12.14
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class Struct {
 
     // Fields
@@ -85,12 +85,12 @@ public class Struct {
         if (hasStructHWout()) {
             builder.append(builder.length() != 0 ? ", " : "");
             builder.append("HWout = ");
-            builder.append(generalStruct.getHWithoutSum());
+            builder.append(structHWout.getHWithoutSum());
         }
         if (hasStructHW()) {
             builder.append(builder.length() != 0 ? ", " : "");
             builder.append("HW = ");
-            builder.append(generalStruct.getHWithSum());
+            builder.append(structHW.getHWithSum());
         }
 //        return  + (activatehwo == true ? " +" : "") + ", HW = " + HWithSum + (activatehw == true ? " +" : "");
         return builder.toString();

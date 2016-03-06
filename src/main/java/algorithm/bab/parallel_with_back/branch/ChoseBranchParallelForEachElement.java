@@ -8,11 +8,11 @@ import java.util.Map;
  * @since 06.08.15
  * "���� ������������ (�� ������� ��������)"
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ChoseBranchParallelForEachElement extends ChoseBranchParallel {
 
     @Override
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {

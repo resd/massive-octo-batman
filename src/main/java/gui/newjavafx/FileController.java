@@ -12,7 +12,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("all")
+/**
+ * lastModify on 29.02.16
+ * */
+//@SuppressWarnings({"all"})
 public class FileController {
 
     private String addToSaveFile = "";
@@ -20,7 +23,7 @@ public class FileController {
     /**
      * Save data function
      */
-    void saveInformationFromFormToTextFile(double[][] data) {
+    public void saveInformationFromFormToTextFile(double[][] data) {
         FileChooser fileChooser = new FileChooser();
 
         //Set extension filter
@@ -35,13 +38,13 @@ public class FileController {
 
     }
 
-    void saveInformationFromFormToTextFile(double[][] data, String file) {
+    public void saveInformationFromFormToTextFile(double[][] data, String file) {
 
         saveInformationFromFormToTextFile(data, new File(file));
 
     }
 
-    void saveInformationFromFormToTextFile(double[][] data, boolean saveLastMatrix) {
+    public void saveInformationFromFormToTextFile(double[][] data, boolean saveLastMatrix) {
 
         if (saveLastMatrix)
             saveInformationFromFormToTextFile(data, new File("C:/data/lastMatrix.txt"));
@@ -95,7 +98,7 @@ public class FileController {
     /**
      * Save multi data function
      */
-    void saveMultiInformationFromFormToTextFile(ControllerMain controllerMain) {
+    public void saveMultiInformationFromFormToTextFile(ControllerMain controllerMain) {
         // Получение массива строк методов в заданном пользователем порядке
         ArrayList<String> methodsOrder = controllerMain.getMethodOrder();
         if (methodsOrder.size() == 0) {
@@ -122,7 +125,7 @@ public class FileController {
         builder.append(multiSolveCountInt);
         builder.append(System.lineSeparator());
 
-        int size = controllerMain.getTableViewController().getMatrixSize();
+        int size = ControllerMain.getTableViewController().getMatrixSize();
         for (int tempI = 0; tempI < multiSolveCountInt; tempI++) {
             controllerMain.btnFill.fire();
             double[][] data = controllerMain.getMatrix();
@@ -166,7 +169,7 @@ public class FileController {
         }
     }
 
-    void autoSaveInformationFromFormToTextFile(double[][] data) {
+    public void autoSaveInformationFromFormToTextFile(double[][] data) {
         int size = data.length;
 
         //Show save file dialog
@@ -216,7 +219,7 @@ public class FileController {
     /**
      * Load data from file
      */
-    List<String> loadDataFromFile() {
+    public List<String> loadDataFromFile() {
 
         FileChooser fileChooser = new FileChooser();
         String delimeter = "==========================";
@@ -237,7 +240,7 @@ public class FileController {
     }
 
     //
-    List<String> loadDataFromFile(String fileString) {
+    public List<String> loadDataFromFile(String fileString) {
         File file = new File(fileString);
 
         if (file != null) {
@@ -246,7 +249,7 @@ public class FileController {
         return null;
     }
 
-    List<String> loadDataFromFile(boolean loadLastMatrix) {
+    public List<String> loadDataFromFile(boolean loadLastMatrix) {
         if (loadLastMatrix) {
             File file = new File("C:/data/lastMatrix.txt");
 
@@ -300,7 +303,7 @@ public class FileController {
     /**
      * Load multi data from file
      */
-    List<List<String>> loadMultiDataFromFile(ControllerMain controllerMain) {
+    public List<List<String>> loadMultiDataFromFile(ControllerMain controllerMain) {
 
         FileChooser fileChooser = new FileChooser();
         String delimeter = "==========================";
@@ -354,7 +357,7 @@ public class FileController {
     /**
      * Additional function
      */
-    double[][] parseStringFromFile(List<String> fileContent1) {
+    public double[][] parseStringFromFile(List<String> fileContent1) {
 
         String[] lines = fileContent1.toArray(new String[fileContent1.size()]);
 

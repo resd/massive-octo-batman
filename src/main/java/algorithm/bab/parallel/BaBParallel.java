@@ -5,13 +5,15 @@ import algorithm.bab.parallel.branch.*;
 import algorithm.bab.util.DA;
 import algorithm.bab.util.Path;
 import algorithm.bab.util.Var;
+import algorithm.util.MethodAction;
 
 /**
  * @author Admin
  * @since 26.10.2015
  */
-@SuppressWarnings("all")
-public class BaBParallel extends BaBClassicAlgorithm {
+//@SuppressWarnings("all")
+//@SuppressWarnings({"unused", "Duplicates"})
+public class BaBParallel extends BaBClassicAlgorithm implements MethodAction {
 
     protected ChoseBranchParallelSum cbSum;
     protected ChoseBranchParallelForEachElement cbForEachElement;
@@ -24,10 +26,11 @@ public class BaBParallel extends BaBClassicAlgorithm {
         super(array);
     }
 
+    @Override
     protected void initialize() {
         // ���������� ����������
 
-        path = new Path(var);
+        path = new Path(arrayClass);
         da = new DA();
         cbp = new ChoseBranchParallel();
         cbSum = new ChoseBranchParallelSum();
@@ -38,6 +41,7 @@ public class BaBParallel extends BaBClassicAlgorithm {
         minP = new int[originalSize][2];
     }
 
+    @Override
     protected void solve() {
         int cBSize = 6;
         Var[] varCopy = new Var[cBSize];
@@ -51,22 +55,22 @@ public class BaBParallel extends BaBClassicAlgorithm {
                 varCopy[i] = new Var(var);
                 pathCopy[i] = new Path(path);
             }
-            cbp.                            chooseBoth(pathCopy[0], varCopy[0], var);
+            cbp.                            chooseBoth(pathCopy[0], varCopy[0], var, arrayClass);
 //            varCopy = new Var(var);
 //            pathCopy = new Path(path);
-            cbSum.                          chooseBoth(pathCopy[1], varCopy[1], var);
+            cbSum.                          chooseBoth(pathCopy[1], varCopy[1], var, arrayClass);
 //            varCopy = new Var(var);
 //            pathCopy = new Path(path);
-            cbForEachElement.               chooseBoth(pathCopy[2], varCopy[2], var);
+            cbForEachElement.               chooseBoth(pathCopy[2], varCopy[2], var, arrayClass);
 //            varCopy = new Var(var);
 //            pathCopy = new Path(path);
-            cbForEachElementSum.            chooseBoth(pathCopy[3], varCopy[3], var);
+            cbForEachElementSum.            chooseBoth(pathCopy[3], varCopy[3], var, arrayClass);
 //            varCopy = new Var(var);
 //            pathCopy = new Path(path);
-            cbForEachElementWithRelated.    chooseBoth(pathCopy[4], varCopy[4], var);
+            cbForEachElementWithRelated.    chooseBoth(pathCopy[4], varCopy[4], var, arrayClass);
 //            varCopy = new Var(var);
 //            pathCopy = new Path(path);
-            cbForEachElementWithRelatedSum. chooseBoth(pathCopy[5], varCopy[5], var);
+            cbForEachElementWithRelatedSum. chooseBoth(pathCopy[5], varCopy[5], var, arrayClass);
 
             double minCB = Double.MAX_VALUE;
             int minCI = 0;
@@ -83,7 +87,7 @@ public class BaBParallel extends BaBClassicAlgorithm {
         double minSum = Double.MAX_VALUE;
         double tempSum;
         for (int i = 0; i < cBSize; i++) {
-            tempSum = getSum(var.getA(), pathCopy[i]);
+            tempSum = getSum(arrayClass.getA(), pathCopy[i]);
             if (tempSum < minSum) {
                 minSum = tempSum;
                 path = pathCopy[i];

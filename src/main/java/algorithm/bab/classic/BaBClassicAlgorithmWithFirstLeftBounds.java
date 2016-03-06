@@ -1,12 +1,13 @@
 package algorithm.bab.classic;
 
 import algorithm.bab.classic.branch.ChoseBranchClassic;
+import algorithm.util.MethodAction;
 
 /**
  * @author Admin
  * @since 24.10.2015
  */
-public class BaBClassicAlgorithmWithFirstLeftBounds extends BaBClassicAlgorithm {
+public class BaBClassicAlgorithmWithFirstLeftBounds extends BaBClassicAlgorithm implements MethodAction {
 
     // Конструктор
 

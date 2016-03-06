@@ -6,13 +6,13 @@ import java.util.Map;
 /**
  * @author Admin
  * @since 06.08.15
- * "МВиГ классический (с суммой)"
+ * "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)"
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ChoseBranchClassicSum extends ChoseBranchClassic {
 
     @Override
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         countSums(array);
         double[] sumOfEachRow = getSumOfEachRow();

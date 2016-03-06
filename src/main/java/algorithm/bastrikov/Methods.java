@@ -6,17 +6,17 @@ package algorithm.bastrikov;
 public interface Methods {
     void initialize();
 
-    public void normalize(double[][] M);
+    void normalize(double[][] M);
 
-    public double[][] solve(double[][] M0);
+    double[][] solve(double[][] M0);
 
-    public int[] getD(double[][] DD, int i);
+    int[] getD(double[][] DD, int i);
 
     void getPath(int[] d, int i);
 
-    public double[][] doM0(double[][] M0, int di, int dj);
+    double[][] doM0(double[][] M0, int di, int dj);
 
-    public int[][] getP();
+    int[][] getP();
 
-    public void computeLastElement();
+    void computeLastElement();
 }

@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Created by Admin on 28.08.15
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class TableViewController {
 
     private TableView<DoubleData> table;
@@ -74,6 +74,7 @@ public class TableViewController {
 
         Callback<TableColumn<DoubleData, String>, TableCell<DoubleData, String>> cellFactorySecond =
                 new Callback<TableColumn<DoubleData, String>, TableCell<DoubleData, String>>() {
+                    @Override
                     public TextFieldTableCell<DoubleData, String> call(TableColumn<DoubleData, String> p) {
                         TextFieldTableCell<DoubleData, String> cell = new TextFieldTableCell<DoubleData, String>() {
                             @Override

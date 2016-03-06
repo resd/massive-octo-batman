@@ -4,7 +4,7 @@ package algorithm.bab.util;
  * @author Admin
  * @since 11.10.2015
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class StructHW {
 
     // Fields

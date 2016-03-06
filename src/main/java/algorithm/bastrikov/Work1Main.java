@@ -1,10 +1,13 @@
 
 package algorithm.bastrikov;
 
+import algorithm.util.MethodAction;
+
 /**
- * Created by Admin on 07.09.14.
+ * @author Admin
+ * @since 07.09.14
  */
-public class Work1Main {
+public class Work1Main implements MethodAction {
 
     double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
@@ -16,6 +19,7 @@ public class Work1Main {
             {18, 0, 0, 0, 58, 13, 0}
     };
 
+    @SuppressWarnings("unused")
     public Work1Main(double[][] a, int idMethod) {
         setM0(a);
         this.idMethod = idMethod;
@@ -36,6 +40,7 @@ public class Work1Main {
     /**
      * Основной метод программы
      */
+    @Override
     public void main() {
         sysTime = System.currentTimeMillis();
         double[][] M;
@@ -113,13 +118,14 @@ public class Work1Main {
     }
 */
     public String getPath() {
-        StringBuffer str = new StringBuffer("");
+        StringBuilder str = new StringBuilder("");
         for (int i = 0; i < originalsize; i++) {
             str.append("(").append(p[i][0] + 1).append("-").append(p[i][1] + 1).append(") ");
         }
         return str.toString();
     }
 
+    @Override
     public double getSum(double[][] a) {
         double Sum = 0;
         for (int k = 0; k < originalsize; k++) {
@@ -128,6 +134,7 @@ public class Work1Main {
         return Sum;
     }
 
+    @Override
     public long getTime() {
         return System.currentTimeMillis() - sysTime;
     }

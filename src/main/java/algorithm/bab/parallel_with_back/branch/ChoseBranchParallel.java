@@ -12,10 +12,10 @@ import java.util.Map;
  * @author Admin
  * @since 11.11.2015
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ChoseBranchParallel extends ChoseBranchClassic {
 
-    public Struct chooseBoth(Path path, Var var, BaBParallelWithBack parallel) {
+    public Struct chooseBoth(Path path, Var var, BaBParallelWithBack parallel, ArrayClass arrayClass) {
         Struct sa;
 
         GeneralStruct generalStruct;
@@ -42,7 +42,7 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
                     parallel.addEdge(edges.get(0));
                 }
             }
-            sa = chooseHone((int[]) edges.get(0), (double) map.get(edges.get(0)), path, var);
+            sa = chooseHone(edges.get(0), map.get(edges.get(0)), path, var);
             /*} catch (Exception e) {
                 e.printStackTrace();
             }*/
@@ -52,12 +52,12 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
             double Sum = 0;
             var.setArray(null);
             var.setM1(null);
-            path.getP()[var.getOriginalSize() - 2][0] = path.getMi()[0];
-            path.getP()[var.getOriginalSize() - 2][1] = path.getMj()[1];
-            path.getP()[var.getOriginalSize() - 1][0] = path.getMi()[1];
-            path.getP()[var.getOriginalSize() - 1][1] = path.getMj()[0];
-            for (int k = 0; k < var.getOriginalSize(); k++) {
-                Sum += var.getA()[path.getP()[k][0]][path.getP()[k][1]];
+            path.getP()[arrayClass.getOriginalSize() - 2][0] = path.getMi()[0];
+            path.getP()[arrayClass.getOriginalSize() - 2][1] = path.getMj()[1];
+            path.getP()[arrayClass.getOriginalSize() - 1][0] = path.getMi()[1];
+            path.getP()[arrayClass.getOriginalSize() - 1][1] = path.getMj()[0];
+            for (int k = 0; k < arrayClass.getOriginalSize(); k++) {
+                Sum += arrayClass.getA()[path.getP()[k][0]][path.getP()[k][1]];
             }
             HWithout = Sum - var.getH();
             if (HWithout < 0) System.out.println("Error with (Sum - H) = " + HWithout);
@@ -80,7 +80,7 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
     @Override
     public Struct choseLeftOnly(DA da, Path path, Var var) {
         Struct sa;
-        Map map = new HashMap<int[], Double>();
+        Map <int[], Double> map = new HashMap<>();
         // Очистка матриц
         map.clear();
         // Находим max суммы всех нулевых эл-тов по каждой СиС
@@ -88,7 +88,7 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
         // Находим эл-т соотв-щий max сумме из карты map
         ArrayList edges = difineEdges(map);
         // Формирует объект Struct только из эл-тов HWithout
-        sa = chooseHoneLeftOnly((int[]) edges.get(0), (double) map.get(edges.get(0)), path, var);
+        sa = chooseHoneLeftOnly((int[]) edges.get(0), map.get(edges.get(0)), path, var);
 //        if (sa.getM1() == null) {
 //            sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(M1), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
 //        }

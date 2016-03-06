@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  *
  * @author Евгений
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ParentFrame extends JFrame {
 
     public void setMessage(String msg) {
@@ -233,6 +233,7 @@ public class ParentFrame extends JFrame {
                 java.lang.Integer.class
             };
 
+            @Override
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
@@ -275,11 +276,13 @@ public class ParentFrame extends JFrame {
         valueTable.setTableHeader(null);
         valueTable.setUpdateSelectionOnSort(false);
         valueTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 valueTableMouseClicked(evt);
             }
         });
         valueTable.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            @Override
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 valueTableMouseMoved(evt);
             }
@@ -290,6 +293,7 @@ public class ParentFrame extends JFrame {
 
         btnSolve.setText("Вычислить");
         btnSolve.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSolveActionPerformed(evt);
             }
@@ -298,6 +302,7 @@ public class ParentFrame extends JFrame {
         chkbxRandomValues.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         chkbxRandomValues.setText("Заполнять случайными значениями");
         chkbxRandomValues.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 chkbxRandomValuesMousePressed(evt);
             }
@@ -309,6 +314,7 @@ public class ParentFrame extends JFrame {
         checkBoxConstants.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         checkBoxConstants.setText("Заполнять константами");
         checkBoxConstants.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 checkBoxConstantsMouseClicked(evt);
             }
@@ -323,6 +329,7 @@ public class ParentFrame extends JFrame {
 
         FillBtn.setText("Заполнить");
         FillBtn.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FillBtnActionPerformed(evt);
             }
@@ -343,6 +350,7 @@ public class ParentFrame extends JFrame {
         elementsGroup.add(jRadioButton6);
         jRadioButton6.setText("M1");
         jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton6ActionPerformed(evt);
             }
@@ -353,6 +361,7 @@ public class ParentFrame extends JFrame {
 
         jButton1.setText("Очистить");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
@@ -360,6 +369,7 @@ public class ParentFrame extends JFrame {
 
         jButton2.setText("Показать");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
@@ -412,7 +422,7 @@ public class ParentFrame extends JFrame {
                 .addGap(41, 41, 41))
         );
 
-        optionsPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
+        optionsPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7);
 
         optionsPanelLayout.setVerticalGroup(
             optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -453,10 +463,11 @@ public class ParentFrame extends JFrame {
                 .addContainerGap())
         );
 
-        optionsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7});
+        optionsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, jRadioButton1, jRadioButton2, jRadioButton3, jRadioButton5, jRadioButton6, jRadioButton7);
 
         saveBtn.setText("Сохранить");
         saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBtnActionPerformed(evt);
             }
@@ -464,6 +475,7 @@ public class ParentFrame extends JFrame {
 
         loadBtn.setText("Загрузить");
         loadBtn.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadBtnActionPerformed(evt);
             }
@@ -471,6 +483,7 @@ public class ParentFrame extends JFrame {
 
         jButton5.setText("Настройки");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
@@ -478,6 +491,7 @@ public class ParentFrame extends JFrame {
 
         jButton6.setText("Выход");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
             }
@@ -554,7 +568,7 @@ public class ParentFrame extends JFrame {
     private void FillBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FillBtnActionPerformed
 
         //устанавливаем размер матрицы
-        JSpinner size = (JSpinner) MatrixSizeSpinner;
+        JSpinner size = MatrixSizeSpinner;
         int matrixSize = Integer.valueOf(size.getValue().toString());
         setTablesSize(matrixSize);
 
@@ -717,7 +731,7 @@ public class ParentFrame extends JFrame {
 
         //prepareMessage();
         messagesTextPane.setText("");
-        int matrixSize = ((Integer) ((JSpinner) MatrixSizeSpinner).getValue());//10;todo
+        int matrixSize = ((Integer) MatrixSizeSpinner.getValue());//10;todo
         setTablesSize(matrixSize);
         //((JSpinner) MatrixSizeSpinner).setValue(matrixSize);todo
         chkbxRandomValues.setSelected(true);
@@ -790,7 +804,7 @@ public class ParentFrame extends JFrame {
                         if (str.contains("*")){
                             str = str.substring(0, str.length() - 1);
                         }
-                        matrix[i][j] = Double.parseDouble((String) str);
+                        matrix[i][j] = Double.parseDouble(str);
                     }
                 } catch (NullPointerException e) {
                     System.out.println(e);

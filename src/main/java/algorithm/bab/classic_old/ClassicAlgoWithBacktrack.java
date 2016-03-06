@@ -1,6 +1,7 @@
 package algorithm.bab.classic_old;
 
 import algorithm.bruteforce.BruteforceAlgo;
+import algorithm.util.MethodAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author zabr1
  */
 @SuppressWarnings({"unused", "all"})
-public class ClassicAlgoWithBacktrack {
+public class ClassicAlgoWithBacktrack implements MethodAction{
     /**
      * Сделать вариант без возвратов.
      * Сделать вариант с возвратами.
@@ -228,7 +229,7 @@ public class ClassicAlgoWithBacktrack {
     //находим нулевые элементы, определяем ребро ветвления
     private Map defineMapEdge() {
 
-        Map map = new LinkedHashMap<Object, Object>();
+        Map<int[], Double> map = new LinkedHashMap<>();
 
         double t;
         for (int i = 0; i < array.length; i++) {
@@ -259,7 +260,7 @@ public class ClassicAlgoWithBacktrack {
         return map;
     }
 
-    private ArrayList difineEdges(Map map) {
+    private ArrayList difineEdges(Map <int[], Double> map) {
         double comparator = -Double.MAX_VALUE;
         int[] edge = new int[2];
         ArrayList edges = new ArrayList();
@@ -289,7 +290,7 @@ public class ClassicAlgoWithBacktrack {
         return edges;
     }
 
-    private int[] difineEdge(Map map) {
+    private int[] difineEdge(Map <int[], Double> map) {
         double comparator = -Double.MAX_VALUE;
         int[] edge = new int[2];
 
@@ -425,7 +426,7 @@ public class ClassicAlgoWithBacktrack {
         normalize(array);
         setH(getH() + getSumOfDelta());
         //System.out.println(delimeter);
-        Map map = new HashMap<Object, Double>();
+        Map <int[], Double> map = new HashMap<>();
         int[] edge;
         /*map.put(1, 2);
         map.put(3, 4);
@@ -694,6 +695,8 @@ public class ClassicAlgoWithBacktrack {
             }
         }
     }
+
+    @Override
     public void main() {
         sysTime = System.currentTimeMillis();
         initialize();
@@ -730,6 +733,7 @@ public class ClassicAlgoWithBacktrack {
         return str.toString();
     }
 
+    @Override
     public double getSum(double[][] a) {
         double Sum = 0;
         for (int k = 0; k < originalsize; k++) {
@@ -738,6 +742,7 @@ public class ClassicAlgoWithBacktrack {
         return Sum;
     }
 
+    @Override
     public long getTime() {
         return System.currentTimeMillis() - sysTime;
     }

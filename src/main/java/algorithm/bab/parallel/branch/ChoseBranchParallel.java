@@ -12,14 +12,14 @@ import java.util.Map;
  */
 public class ChoseBranchParallel extends ChoseBranchClassic {
 
-    public Struct chooseBoth(Path path, Var var, Var varRef) {
+    public Struct chooseBoth(Path path, Var var, Var varRef, ArrayClass arrayClass) {
         Struct sa;
 
         GeneralStruct generalStruct;
 
         // ���� ����� ������� > 2
         if (var.getArrayLength() > 2) {
-            Map map;// = new HashMap<Object, Double>();
+            Map <int[], Double> map;// = new HashMap<Object, Double>();
             // ������� max ����� ���� ������� ��-��� �� ������ ���
             map = defineMapEdge(var.getArray());
             // ������� ��-� �����-��� max ����� �� ����� map
@@ -29,7 +29,7 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
             if (map.size() == 0) {
                 return new Struct(true);
             }
-            sa = chooseHone((int[]) edges.get(0), (double) map.get(edges.get(0)), path, var, varRef);
+            sa = chooseHone((int[]) edges.get(0), map.get(edges.get(0)), path, var, varRef);
             /*} catch (Exception e) {
                 e.printStackTrace();
             }*/
@@ -39,12 +39,12 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
             double Sum = 0;
             var.setArray(null);
             var.setM1(null);
-            path.getP()[var.getOriginalSize() - 2][0] = path.getMi()[0];
-            path.getP()[var.getOriginalSize() - 2][1] = path.getMj()[1];
-            path.getP()[var.getOriginalSize() - 1][0] = path.getMi()[1];
-            path.getP()[var.getOriginalSize() - 1][1] = path.getMj()[0];
-            for (int k = 0; k < var.getOriginalSize(); k++) {
-                Sum += var.getA()[path.getP()[k][0]][path.getP()[k][1]];
+            path.getP()[arrayClass.getOriginalSize() - 2][0] = path.getMi()[0];
+            path.getP()[arrayClass.getOriginalSize() - 2][1] = path.getMj()[1];
+            path.getP()[arrayClass.getOriginalSize() - 1][0] = path.getMi()[1];
+            path.getP()[arrayClass.getOriginalSize() - 1][1] = path.getMj()[0];
+            for (int k = 0; k < arrayClass.getOriginalSize(); k++) {
+                Sum += arrayClass.getA()[path.getP()[k][0]][path.getP()[k][1]];
             }
             HWithout = Sum - var.getH();
             if (HWithout < 0) System.out.println("Error with (Sum - H) = " + HWithout);

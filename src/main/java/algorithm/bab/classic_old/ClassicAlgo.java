@@ -1,12 +1,15 @@
 package algorithm.bab.classic_old;
 
+import algorithm.util.MethodAction;
+
 import java.util.*;
 
 /**
  * @author zabr1
  */
-@SuppressWarnings({"unused", "all"})
-public class ClassicAlgo {
+@SuppressWarnings("all")
+//@SuppressWarnings({"unused", "Duplicates"})
+public class ClassicAlgo implements MethodAction {
     /**
      * Сделать вариант без возвратов.
      * Сделать вариант с возвратами.
@@ -18,7 +21,6 @@ public class ClassicAlgo {
     private static int[][] p;
     private static int[] mi;
     private static int[] mj;
-    private static int[] beforeP;
     private static double[] minArrI;
     private static double[] minArrJ;
     private static long sysTime;
@@ -38,7 +40,6 @@ public class ClassicAlgo {
         H = 0;
         mi = new int[originalsize];
         mj = new int[originalsize];
-        beforeP = new int[2];
         p = new int[originalsize][2];
         for (int i = 0; i < originalsize; i++) {
             array[i][i] = M;
@@ -87,6 +88,7 @@ public class ClassicAlgo {
             }
         }
         for (int i = 0; i < M.length; i++) {
+            //noinspection ForLoopReplaceableByForEach
             for (int j = 0; j < M.length; j++) {
                 if (M[j][i] != Double.POSITIVE_INFINITY && M[j][i] < minArrJ[i]) {
                     minArrJ[i] = M[j][i];
@@ -164,11 +166,11 @@ public class ClassicAlgo {
     //выводит значения массива на экран
     private static void display(double[][] array1, String msg) {
 
-        for (int i = 0; i < array1.length; i++) {
+        for (double[] anArray1 : array1) {
 
-            for (int j = 0; j < array1[i].length; j++) {
+            for (double anAnArray1 : anArray1) {
 
-                System.out.print(array1[i][j] + "\t");
+                System.out.print(anAnArray1 + "\t");
 
             }
 
@@ -194,11 +196,11 @@ public class ClassicAlgo {
     }
 
     //находим нулевые элементы, определяем ребро ветвления
-    private static Map defineMapEdge() {
+    private static Map<int[], Double> defineMapEdge() {
 
-        Map map = new LinkedHashMap<Object, Object>();
+        Map<int[], Double> map = new LinkedHashMap<>();
 
-        double t;
+//        double t;
         for (int i = 0; i < array.length; i++) {
 
             for (int j = 0; j < array[i].length; j++) {
@@ -208,8 +210,8 @@ public class ClassicAlgo {
                     int[] indexes = new int[2];
                     indexes[0] = i;
                     indexes[1] = j;
-                    t = getMinInRow(i, j);// todo delete
-                    t = getMinInCollumn(j, i);
+//                    t = getMinInRow(i, j);// todo delete
+//                    t = getMinInCollumn(j, i);
                     map.put(indexes, getMinInRow(i, j) + getMinInCollumn(j, i));
                     //array[i][j] = Double.POSITIVE_INFINITY;
 
@@ -245,7 +247,7 @@ public class ClassicAlgo {
         return result;
     }
 
-    private static int[] difineEdge(Map map) {
+    private static int[] difineEdge(Map<int[], Double> map) {
         double comparator = -Double.MAX_VALUE;
         int[] edge = new int[2];
 
@@ -264,7 +266,7 @@ public class ClassicAlgo {
         return edge;
     }
 
-    private static int[] difineEdgeWithout(Map map) {
+    private static int[] difineEdgeWithout(Map<int[], Double> map) {
         double comparator = 0;
         int[] edge = new int[2];
 
@@ -278,17 +280,17 @@ public class ClassicAlgo {
                 edge = key1;
             }
         }*/
-        List<Map.Entry<Object,Object>> entryList =
-                new ArrayList<Map.Entry<Object, Object>>(map.entrySet());
-        Map.Entry<Object, Object> lastEntry =
+        List<Map.Entry<int[], Double>> entryList =
+                new ArrayList<Map.Entry<int[], Double>>(map.entrySet());
+        Map.Entry<int[], Double> lastEntry =
                 entryList.get(entryList.size()-1);
 
         //array[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
-        return (int[]) lastEntry.getKey();
+        return lastEntry.getKey();
     }
 
     // Считаем H включая max элемент их map и заменяя его Infinity
-    private static double getHWith(Map map) {
+    private static double getHWith(Map <int[], Double> map) {
 
         /*System.out.println("KEY : " + edge[0] + ":" + edge[1]);
         System.out.println(comparator);
@@ -399,8 +401,8 @@ public class ClassicAlgo {
         normalize(array);
         setH(getSumOfDelta());
         //System.out.println(delimeter);
-        Map map = new HashMap<Object, Double>();
-        Map maparr = new HashMap<Integer, Map>();
+        Map<int[], Double> map = new HashMap<>();
+        Map<Integer, Map> maparr = new HashMap<>();
         Iterator iterator;
         Map.Entry entry;
         int[] edge = new int[0];
@@ -414,14 +416,14 @@ public class ClassicAlgo {
         entry = (Map.Entry) iterator.next();
         map.remove(entry.getKey());*/
         int count = array.length - 2;
-        Map st = new LinkedHashMap<Integer, ArrayList<Struct>>(count);
+//        Map st = new LinkedHashMap<Integer, ArrayList<Struct>>(count);
         /*st.put(1, 2);
         st.put(1, 3);
         st.put(4, 2);
         st.put(4, 2);
-        st.put(4, 5);*/
+        st.put(4, 5);*/ // todo
         Struct s = null;
-        Map m = new LinkedHashMap<Object, Object>();
+        Map<int[], Double> m = new LinkedHashMap<>();
         ArrayList arrayList = null;
         for (int i = 0; i < count; i++) {
 
@@ -429,8 +431,8 @@ public class ClassicAlgo {
             map.clear();
             map = defineMapEdge();
             edge = difineEdge(map);
-            double temp = (double) map.get(edge);
-            m.put(edge, (double) map.get(edge));
+            double temp = map.get(edge);
+            m.put(edge, map.get(edge));
 
             /*if (maparr.get(i) == null) { // Если матрица не существует
                 map.clear();
@@ -494,7 +496,7 @@ public class ClassicAlgo {
             }*/
         }
         count = 0;
-        for (Object entrySet : st.entrySet()) {
+        /*for (Object entrySet : st.entrySet()) {
             entry = (Map.Entry) entrySet;
             arrayList = (ArrayList) entry.getValue();
             Struct ss = (Struct) arrayList.get(0);
@@ -502,9 +504,10 @@ public class ClassicAlgo {
             System.err.println("i = " + count + "  getHWithoutSum = " + ss.getHWithoutSum());
             System.err.println("\n");
             count++;
-        }
+        }*/
     }
 
+    @Override
     public void main() {
         sysTime = System.currentTimeMillis();
         initialize();
@@ -540,6 +543,7 @@ public class ClassicAlgo {
         return str.toString();
     }
 
+    @Override
     public double getSum(double[][] a) {
         double Sum = 0;
         for (int k = 0; k < originalsize; k++) {
@@ -548,6 +552,7 @@ public class ClassicAlgo {
         return Sum;
     }
 
+    @Override
     public long getTime() {
         return System.currentTimeMillis() - sysTime;
     }

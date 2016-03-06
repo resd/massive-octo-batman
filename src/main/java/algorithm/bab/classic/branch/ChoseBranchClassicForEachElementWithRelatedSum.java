@@ -11,7 +11,7 @@ import java.util.Map;
 public class ChoseBranchClassicForEachElementWithRelatedSum extends ChoseBranchClassic{
 
     @Override
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         countSums(array);
         double[] sumOfEachRow = getSumOfEachRow();

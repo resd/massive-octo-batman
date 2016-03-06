@@ -3,6 +3,7 @@ package algorithm.bab.parallel_with_back;
 import algorithm.bab.classic.BaBClassicAlgorithm;
 import algorithm.bab.parallel_with_back.branch.*;
 import algorithm.bab.util.*;
+import algorithm.util.MethodAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,9 @@ import java.util.List;
  * @author Admin
  * @since 26.10.2015
  */
-@SuppressWarnings("all")
-public class BaBParallelWithBack extends BaBClassicAlgorithm {
+//@SuppressWarnings("all")
+//@SuppressWarnings({"unused", "Duplicates"})
+public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAction {
 
     /**
 
@@ -23,10 +25,13 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
      * Размышления на тему, когда сделать проверку на меньшее значение, записанное в da, по checkMin()
      * Вставить код из Clasic's solve сюда
      * Когда проверять на нижнюю границу
+     * Убрать из GeneralStruct ненужные поля
+     * Убрать из Var
 
      Что нужно сделать:
      * Найти причину по которой результат данного метода не совпадет с результатом полного перебора
      * Придумать способ прерывания долгих матриц
+     * Убрать из GeneralStruct неиспользуемые параметры из конструкторов
 
      Что можно сделать:
      * ctrl + Period [google]
@@ -47,9 +52,10 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
         this.methodsOrderParallel = methodsOrderParallel;
     }
 
+    @Override
     protected void initialize() {
-        path = new Path(var);
-        pathForLeft = new Path(var);
+        path = new Path(arrayClass);
+        pathForLeft = new Path(arrayClass);
         da = new DA();
         choseBranchParallels = new ArrayList<>();
         for (String method : methodsOrderParallel) {
@@ -83,7 +89,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
 
         Struct sa;
         boolean existNext;
-        sa = choseBranchParallel.chooseBoth(pathCopy, varCopy, this);
+        sa = choseBranchParallel.chooseBoth(pathCopy, varCopy, this, arrayClass);
 
         if (sa != null) {
             sa = da.checkSa(sa, var.getMinLowerBound());
@@ -92,6 +98,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
         return sa;
     }
 
+    @Override
     protected void solve() {
 
         // Объявление переменных
@@ -113,6 +120,8 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
 
         while (true) {
 
+
+
             var.setMinParallel(Double.MAX_VALUE);
             for (int i = 0; i < countOfChoseBranches; i++) {
 
@@ -128,6 +137,10 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
             int tempIndexForMinIndexForMinStruct = 0;
 
             // Определение всех edge по всем choseBranch
+
+//            if (var.getArrayLength() < 3) {
+//                int asdf = 3;
+//            }
 
             for (int i = 0; i < countOfChoseBranches; i++) {
 
@@ -170,7 +183,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
 
             } // end of for*/
 
-            System.out.println(count);
+//            System.out.println(count);
             var = new Var(varCopy[minIndexOfMinParallelInVarCopy]);
             path = new Path(pathCopy[minIndexOfMinParallelInVarCopy]);
 
@@ -247,6 +260,9 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
 
                 //da.checkLowerBound(sa, var.getMinLowerBound());
                 da.searchForLowestBound(path, var);
+
+                System.out.println(var.getMinLeftBound());
+
                 da.clearRestOfGeneralStructWithBiggerLowerBound(var);
 
                 if (var.getMinLeftBound() > var.getMin()) {
@@ -347,7 +363,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm {
 
         // Вычисление последней границы
 
-        Struct struct = choseBranchParallel.choseLeftOnlyLast(pathForLeft, varCopy);
+        Struct struct = choseBranchParallel.choseLeftOnlyLast(pathForLeft, varCopy, arrayClass);
         minP = Other.INSTANCE.cloneMatrix(pathForLeft.getP());
         da.add(struct);
         da.checkDa(varCopy.getMinLowerBound());

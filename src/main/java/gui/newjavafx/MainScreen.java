@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * Created by Admin on 06.08.15.
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class MainScreen extends Application {
 
     public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class MainScreen extends Application {
         stage.setTitle("Hello World");
         stage.setScene(new Scene(root, 1900 / 2, 1000));
         stage.setMaximized(true);
-        this.stage = stage;
+        MainScreen.stage = stage;
         stage.show();
     }
 

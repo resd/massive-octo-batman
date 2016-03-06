@@ -5,8 +5,9 @@ package algorithm.bab.util;
  * @since 14.07.15
  */
 public class Var {
+
     private double[][] array;
-    private double[][] a;
+//    private double[][] a;
     private double[][] M1;
     private double H;
     private double min;
@@ -14,16 +15,16 @@ public class Var {
     private double minLeftBound;
     private double minParallel;
 
-    private int originalSize;
 
-    public Var(double[][] array, double[][] a, double h, double[][] m1) {
+
+    public Var(double[][] array, double h, double[][] m1) {
         this.array = array;
         H = h;
         M1 = m1;
-        this.a = a;
-        originalSize = array.length;
+//        this.a = a;
+//        originalSize = array.length;
         double M = Double.POSITIVE_INFINITY;
-        for (int i = 0; i < originalSize; i++) {
+        for (int i = 0; i < array.length; i++) {
             array[i][i] = M;
         }
         minLowerBound = Double.MAX_VALUE;
@@ -36,8 +37,8 @@ public class Var {
         array = Other.INSTANCE.cloneMatrix(var.array);
         H = var.H;
         M1 = Other.INSTANCE.cloneMatrix(var.M1);
-        a = Other.INSTANCE.cloneMatrix(var.a);
-        originalSize = var.originalSize;
+//        a = Other.INSTANCE.cloneMatrix(var.a);
+//        originalSize = var.originalSize;
         min = var.min;
         minLowerBound = var.minLowerBound;
         minLeftBound = var.minLeftBound;
@@ -48,8 +49,8 @@ public class Var {
         return array;
     }
 
-    public Var(double[][] array, double[][] a) {
-        this(array, a, -Double.MAX_VALUE, null);
+    public Var(double[][] array) {
+        this(array, -Double.MAX_VALUE, null);
     }
 
     public void setArray(double[][] array) {
@@ -80,13 +81,13 @@ public class Var {
         this.min = min;
     }
 
-    public double[][] getA() {
+    /*public double[][] getA() {
         return a;
-    }
-
+    }*/
+/*
     public int getOriginalSize() {
         return originalSize;
-    }
+    }*/
 
     public int getArrayLength() {
         return array.length;

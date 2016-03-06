@@ -28,6 +28,7 @@ public class Work1OldStableVersion implements Methods {
         originalsize = M0.length;
     }
 
+    @Override
     public void initialize() {  // Метод инициализация переменных
         p = new int[originalsize][2]; // необходимых для
         mi = new int[originalsize];   // расчетов
@@ -48,6 +49,7 @@ public class Work1OldStableVersion implements Methods {
         saveAdditionalResult = false;
     }
 
+    @Override
     public void normalize(double[][] M) { // Приведение матрицы к нормальному виду
         double min = Double.MAX_VALUE;
 
@@ -90,6 +92,7 @@ public class Work1OldStableVersion implements Methods {
         }
     }
 
+    @Override
     public double[][] solve(double[][] M0) {// Метод вычисления матрицы приведений DDch
         double[][] M1; //  Объявление необходимых для расчета переменных
         double[][] M2;
@@ -166,6 +169,7 @@ public class Work1OldStableVersion implements Methods {
         return dpaij;
     }
 
+    @Override
     public int[] getD(double[][] DD, int i) {
         int[] d;
         if (i == 0) {
@@ -192,6 +196,7 @@ public class Work1OldStableVersion implements Methods {
         return new int[]{di, dj};
     }
 
+    @SuppressWarnings("ConstantConditions")
     private int[] max(double[][] DD, int ni, int nj) {
         double maxValue1 = -Double.MAX_VALUE;
         double maxValue2 = -Double.MAX_VALUE;
@@ -211,6 +216,7 @@ public class Work1OldStableVersion implements Methods {
         return (maxValue1 >= maxValue2) ? new int[]{di, nj} : new int[]{ni, dj}; // Возврат максимального элемента
     }
 
+    @Override
     public void getPath(int[] d, int i) {
         int x = d[0]; // Координаты максимального элемента
         int y = d[1];
@@ -239,6 +245,7 @@ public class Work1OldStableVersion implements Methods {
         return tmp;
     }
 
+    @Override
     public double[][] doM0(double[][] M0, int i, int j) {
         M0[j][i] = 0; // Обнуление j-го и i-го элемента для сохранения гамильтонова цикла
         M0 = changeJI(M0, i, j); // Смена i-й строки и j-го столбца местами
@@ -277,6 +284,7 @@ public class Work1OldStableVersion implements Methods {
         return M1;
     }
 
+    @Override
     public void computeLastElement() {
         if (mj[0] == mi[0] || mj[1] == mi[0]) { // Находим правильное сочетание последнех двух элементов в пути и возвращаем результат
             p[originalsize - 2][0] = mi[1];
@@ -292,6 +300,7 @@ public class Work1OldStableVersion implements Methods {
     }
 
 
+    @Override
     public int[][] getP() {
         return p;
     }

@@ -6,12 +6,12 @@ import java.util.Map;
 /**
  * @author Admin
  * @since 06.08.15
- * "МВиГ классический (по каждому элементу с суммой)"
+ * "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)"
  */
 public class ChoseBranchParallelForEachElementSum extends ChoseBranchParallel {
 
     @Override
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         countSums(array);
         double[] sumOfEachRow = getSumOfEachRow();

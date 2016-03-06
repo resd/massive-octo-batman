@@ -8,11 +8,11 @@ import java.util.Map;
  * @since 06.08.15
  * "МВиГ классический (по каждому элементу со смежными с суммой)"
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class ChoseBranchParallelForEachElementWithRelatedSum extends ChoseBranchParallel {
 
     @Override
-    protected Map defineMapEdge(double[][] array) {
+    protected Map<int[], Double> defineMapEdge(double[][] array) {
         Map<int[], Double> map = new LinkedHashMap<>();
         countSums(array);
         double[] sumOfEachRow = getSumOfEachRow();

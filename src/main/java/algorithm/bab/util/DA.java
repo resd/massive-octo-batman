@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author Admin
  * @since 14.07.15
  */
-@SuppressWarnings("all")
+//@SuppressWarnings({"all"})
 public class DA {
     private ArrayList<Struct> da;
 
@@ -164,7 +164,9 @@ public class DA {
                     indexOfDa++; // todo check
                     continue;
                 }
-                if (temp.isLowerBound() && temp.getH() >= valueOfMinLeftBound && checked) {
+                if (temp.isLowerBound() && temp.getH() > valueOfMinLeftBound) {
+                    da.remove(indexOfDa);
+                } else if (temp.isLowerBound() && temp.getH() == valueOfMinLeftBound && checked) {
                     da.remove(indexOfDa);
                 } else {
                     indexOfDa++;

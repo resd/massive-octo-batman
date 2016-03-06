@@ -1,9 +1,12 @@
 package algorithm.near;
 
+import algorithm.util.MethodAction;
+
 /**
  * Created by Admin on 02.04.15.
  */
-public class NearAlgoEveryDot {
+//@SuppressWarnings("all")
+public class NearAlgoEveryDot implements MethodAction {
     private double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
@@ -145,7 +148,8 @@ public class NearAlgoEveryDot {
         return p;
     }
 
-    public void go() {
+    @Override
+    public void main() {
         sysTime = System.currentTimeMillis();
         int randomNumX = -1;
         double[][] M;
@@ -180,7 +184,7 @@ public class NearAlgoEveryDot {
 
     /*public static void main(String[] args) {
         NearAlgoEveryDot na = new NearAlgoEveryDot(M0);
-        na.go();
+        na.main();
         double sum = na.getSum(M0);
         C.p("\nPath: " + na.getPath() + "\nSum = " + sum + ",  Time: " + na.getTime());
     }*/
@@ -219,6 +223,7 @@ public class NearAlgoEveryDot {
         return Sum;
     }
 
+    @Override
     public double getSum(double[][] a) {
         double minValue = Double.MAX_VALUE;
 
@@ -231,6 +236,7 @@ public class NearAlgoEveryDot {
         return minValue;
     }
 
+    @Override
     public long getTime() {
         return System.currentTimeMillis() - sysTime;
     }

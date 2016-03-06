@@ -140,7 +140,7 @@ public class BruteforceAlgo {
         for (int i = 0; i < a.length; i++) {
             clone[i] = a[i].clone();
         }
-        this.M0 = clone;
+        M0 = clone;
         originalsize = a.length;
     }
 }
