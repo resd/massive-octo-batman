@@ -6,8 +6,8 @@ package algorithm.bab.util;
  */
 public class ArrayClass {
 
-    private double[][] a;
-    private int originalSize;
+    private final double[][] a;
+    private final int originalSize;
 
     public ArrayClass(double[][] a) {
         this.a = a;

@@ -10,7 +10,7 @@ import java.util.List;
  * lastModify on 29.02.16
  */
 public class ButtonLogicForMultiLoad extends ButtonLogic {
-    List<List<String>> list;
+    private List<List<String>> list;
 
     @Override
     protected double[][] getMatrix(ControllerMain controllerMain, int i) {

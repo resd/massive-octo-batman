@@ -6,13 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.net.URL;
-
 /**
- * Created by Admin on 06.08.15.
+ * @author Admin
+ * @since 06.08.15
  */
-//@SuppressWarnings({"all"})
 public class MainScreen extends Application {
 
     public static void main(String[] args) {
@@ -20,7 +17,6 @@ public class MainScreen extends Application {
     }
 
     private static Stage stage;
-    private Button btn;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -28,10 +24,8 @@ public class MainScreen extends Application {
         //File file = new File(mainFxml);
         //System.out.println(file.getAbsolutePath());
         //System.out.println(file.exists());
-        URL url = getClass().getResource(mainFxml);
+//        URL url = getClass().getResource(mainFxml);
         //System.out.println(url.toString());
-
-        btn = new Button();
 
         Parent root = FXMLLoader.load(getClass().getResource(mainFxml));
         stage.setTitle("Hello World");

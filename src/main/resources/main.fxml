@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
+<!--TODO Deal with warnings-->
+
 <BorderPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.newjavafx.ControllerMain">
     <fx:define>
         <ToggleGroup fx:id="btnGroup" />
@@ -52,7 +54,7 @@
             <Button fx:id="btnSolve" onAction="#handleButtonAction" text="Вычислить" />
             <Button fx:id="btnMultiSolve" onAction="#handleButtonAction" text="Серия вычислений" />
             <TextField fx:id="multiSolveCount" text="100" />
-            <CheckBox fx:id="cbMultiSolveProcent" onAction="#handleButtonAction" text="Вычислить результат в процентах относительно классическго метода"/>
+            <CheckBox fx:id="cbMultiSolvePercent" onAction="#handleButtonAction" text="Вычислить результат в процентах относительно классическго метода"/>
             <CheckBox fx:id="cbMultiSolveFromFile" onAction="#handleButtonAction" text="Взять данные из файла" visible="false"/>
             <Label fx:id="multiSolveStr" text="" />
          <BorderPane.margin>
@@ -117,7 +119,7 @@
                         </Menu>
                         <Menu  mnemonicParsing="false" text="Запустить старую версию программы">
                             <items>
-                                <MenuItem fx:id="btnOldProgramm" mnemonicParsing="false" onAction="#handleButtonAction" text="Запустить старую версию программы" />
+                                <MenuItem fx:id="btnOldProgram" mnemonicParsing="false" onAction="#handleButtonAction" text="Запустить старую версию программы" />
                             </items>
                         </Menu>
 

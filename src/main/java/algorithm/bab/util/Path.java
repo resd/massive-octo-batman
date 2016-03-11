@@ -1,7 +1,8 @@
 package algorithm.bab.util;
 
 /**
- * Created by Admin on 14.07.15.
+ * @author Admin
+ * @since 14.07.15
  */
 public class Path {
 
@@ -25,25 +26,13 @@ public class Path {
     }
 
     public Path(Path path) {
-        p = Other.INSTANCE.cloneMatrix(path.p);
+        p = Other.cloneMatrix(path.p);
         mi = path.mi.clone();
         mj = path.mj.clone();
         pathCount = path.pathCount;
     }
 
     public void getPath(int[] d) {
-        int x = d[0];
-        int y = d[1];
-        p[pathCount][0] = mi[x];
-        p[pathCount][1] = mj[y];
-        pathCount++;
-        mi[x] = mi[y];
-
-        mi = remove(mi, y);
-        mj = remove(mj, y);
-    }
-
-    void getPath(int[] d, int[] mi, int[] mj, int pathCount) {
         int x = d[0];
         int y = d[1];
         p[pathCount][0] = mi[x];
@@ -62,6 +51,7 @@ public class Path {
         return tmp;
     }
 
+    @SuppressWarnings("unused") // Discover if this method still need
     private void getPathAlternative(double[][] array, int[] d) {
         int x = d[0];
         int y = d[1];
@@ -85,7 +75,7 @@ public class Path {
         }
         array[di][x] = Double.POSITIVE_INFINITY;
     }
-//
+
     public void computeLastElement(ArrayClass arrayClass) {
         int originalSize = arrayClass.getOriginalSize();
         p[originalSize - 2][0] = mi[0];
@@ -94,6 +84,7 @@ public class Path {
         p[originalSize - 1][1] = mj[0];
     }
 
+    @SuppressWarnings("unused") // Discover if this method still need
     private void getPathForZero(double[][] array, int[] d) {
         int x = d[0];//0
         int y = d[1];//2

@@ -5,9 +5,8 @@ package gui.deltapackage;/*
  */
 
 
-import util.C;
-import algorithm.bastrikov.Work1Main;
 import gui.deltapackage.table.CustomCellRenderer;
+import util.C;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -878,11 +877,11 @@ public class ParentFrame extends JFrame {
         java.util.Date date = new java.util.Date(System.currentTimeMillis());
 
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(System.lineSeparator());
         builder.append(date.toString());
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
 
         for (int i = 0; i < MatrixSize; i++) {
 
@@ -898,7 +897,7 @@ public class ParentFrame extends JFrame {
         }
 
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(System.lineSeparator());
 
         builder.append(messagesTextPane.getText());
@@ -936,22 +935,22 @@ public class ParentFrame extends JFrame {
 
                 java.util.List<String> fileContent = Files.readAllLines(fc.getSelectedFile().toPath(), Charset.forName("UTF-8"));
 
-                int delimeterCounter = 0;
+                int delimiterCounter = 0;
 
                 for (String fileContent1 : fileContent) {
 
                     System.out.println(fileContent1);
 
-                    if (fileContent1.equals(delimeter)) {
-                        delimeterCounter++;
+                    if (fileContent1.equals(delimiter)) {
+                        delimiterCounter++;
                         continue;
                     }
 
-                    if (delimeterCounter == 2) {
+                    if (delimiterCounter == 2) {
                         newLines.add(fileContent1);
                     }
 
-                    if (delimeterCounter > 2) {
+                    if (delimiterCounter > 2) {
                         break;
                     }
                 }
@@ -1027,9 +1026,9 @@ public class ParentFrame extends JFrame {
     private StringBuilder appendMatrixToBuilder(StringBuilder builder, double[][] d1, String name) {
 
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(name);
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(System.lineSeparator());
 
         for (int i = 0; i < d1.length; i++) {
@@ -1084,9 +1083,7 @@ public class ParentFrame extends JFrame {
     private javax.swing.JButton saveBtn;
     private javax.swing.JTable valueTable;
     // End of variables declaration//GEN-END:variables
-    String delimeter = "---------------------";
-    Work1Main w = new Work1Main(1);
-    Work1Main w2 = new Work1Main(2);
+    String delimiter = "---------------------";
     ParentFrameButtonLogic buttonLogic = new ParentFrameButtonLogic();
 
     private void parseAndHighlightPath(String path) {

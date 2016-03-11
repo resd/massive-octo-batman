@@ -15,11 +15,11 @@ import algorithm.util.MethodAction;
 //@SuppressWarnings({"unused", "Duplicates"})
 public class BaBParallel extends BaBClassicAlgorithm implements MethodAction {
 
-    protected ChoseBranchParallelSum cbSum;
-    protected ChoseBranchParallelForEachElement cbForEachElement;
-    protected ChoseBranchParallelForEachElementSum cbForEachElementSum;
-    protected ChoseBranchParallelForEachElementWithRelated cbForEachElementWithRelated;
-    protected ChoseBranchParallelForEachElementWithRelatedSum cbForEachElementWithRelatedSum;
+    private ChoseBranchParallelSum cbSum;
+    private ChoseBranchParallelForEachElement cbForEachElement;
+    private ChoseBranchParallelForEachElementSum cbForEachElementSum;
+    private ChoseBranchParallelForEachElementWithRelated cbForEachElementWithRelated;
+    private ChoseBranchParallelForEachElementWithRelatedSum cbForEachElementWithRelatedSum;
     private ChoseBranchParallel cbp;
 
     public BaBParallel(double[][] array) {
@@ -127,7 +127,7 @@ public class BaBParallel extends BaBClassicAlgorithm implements MethodAction {
                 da.searchForLowestBound(path, var);
                 if (var.getMinLeftBound() > var.getMin()) { // todo ��������� � choseBrance => ( > 2 ) {} ( else ) { here }
                     var.setMinLeftBound(var.getMin());
-                    minP = Other.INSTANCE.cloneMatrix(path.getP());
+                    minP = Other.cloneMatrix(path.getP());
                 }
                 existNext = da.checkMin(path, var);
                 if (!existNext) {
@@ -147,7 +147,7 @@ public class BaBParallel extends BaBClassicAlgorithm implements MethodAction {
         System.out.println("count = " + count);*/
     }
 
-    public double getSum(double[][] a, Path path) {
+    private double getSum(double[][] a, Path path) {
         double sum = 0;
         int[][] p = path.getP();
         for (int k = 0; k < originalSize; k++) {

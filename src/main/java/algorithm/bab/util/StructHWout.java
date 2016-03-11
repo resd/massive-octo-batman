@@ -10,11 +10,11 @@ public class StructHWout {
     // Fields
 
     //private double H;
-    private double HWithoutSum;
+    private final double HWithoutSum;
     private double[][] M1;
     private double HWithout;
-    private int[][] pNew;
-    private int pathCountNew;
+    private final int[][] pNew;
+    private final int pathCountNew;
     private int[] mi;
     private int[] mj;
 
@@ -32,7 +32,8 @@ public class StructHWout {
         this.mj = mj;
     }
 
-    public void setAdditional(int[][] pNew, double[][] M1, int[] mi, int[] mj, int pathCountNew) {
+    // TODO Deal with this methods
+    /*public void setAdditional(int[][] pNew, double[][] M1, int[] mi, int[] mj, int pathCountNew) {
         this.M1 = M1;
         this.pNew = pNew;
         this.mi = mi;
@@ -59,7 +60,7 @@ public class StructHWout {
     public void addMiMj(int[] miOld, int[] mjOld) {
 //        this.miOld = miOld;
 //        this.mjOld = mjOld;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -71,10 +72,6 @@ public class StructHWout {
 
     public double getHWithoutSum() {
         return HWithoutSum;
-    }
-
-    public void setHWithoutSum(double HWithoutSum) {
-        this.HWithoutSum = HWithoutSum;
     }
 
     public double[][] getM1() {
@@ -97,16 +94,8 @@ public class StructHWout {
         return pNew;
     }
 
-    public void setpNew(int[][] pNew) {
-        this.pNew = pNew;
-    }
-
     public int getPathCountNew() {
         return pathCountNew;
-    }
-
-    public void setPathCountNew(int pathCountNew) {
-        this.pathCountNew = pathCountNew;
     }
 
     public int[] getMi() {

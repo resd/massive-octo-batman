@@ -5,9 +5,10 @@ import gui.newjavafx.ControllerMain;
 import java.util.List;
 
 /**
- * create on 29.02.16
+ * @author Admin
+ * @since 29.02.16
  * lastModify on 29.02.16
-* */
+ */
 
 public class ButtonLogic {
 
@@ -16,9 +17,9 @@ public class ButtonLogic {
        * Если это будет невозможно, то подумать, можно ли что-то сделать с архитектурой.
      * */
 
-    // Addithion methods
+    // Addition methods
 
-    protected double[][] getMatrix(ControllerMain controllerMain, int i) {
+    double[][] getMatrix(ControllerMain controllerMain, int i) {
         controllerMain.btnFill.fire();
         return controllerMain.getMatrix();
     }
@@ -26,13 +27,13 @@ public class ButtonLogic {
     public void setList(List<List<String>> list) {
         // Do nothing
         // Need for inherit class
-        // Bad arhitecture, I know
+        // Bad arhitecture, I know // TODO Check word arhitecture
     }
 
     public List<List<String>> getList() {
         // Return null
         // Need for inherit class
-        // Bad arhitecture, I know
+        // Bad arhitecture, I know // TODO Check word arhitecture
         return null;
     }
 }

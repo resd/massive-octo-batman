@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author Admin
+ * @since 11.08.15
  * lastModify on 29.02.16
- * */
-//@SuppressWarnings({"all"})
+ */
 public class FileController {
 
     private String addToSaveFile = "";
+    private final String delimiter = "==========================";
 
     /**
      * Save data function
@@ -38,6 +40,7 @@ public class FileController {
 
     }
 
+    @SuppressWarnings("unused") // TODO Safe delete
     public void saveInformationFromFormToTextFile(double[][] data, String file) {
 
         saveInformationFromFormToTextFile(data, new File(file));
@@ -60,14 +63,13 @@ public class FileController {
         java.util.Date date = new java.util.Date(System.currentTimeMillis());
 
         StringBuilder builder = new StringBuilder();
-        String delimeter = "==========================";
 
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(System.lineSeparator());
         builder.append(date.toString());
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
 
         for (int i = 0; i < size; i++) {
 
@@ -88,7 +90,7 @@ public class FileController {
         }
 
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(System.lineSeparator());
 
         SaveFile(builder.toString(), file);
@@ -118,18 +120,18 @@ public class FileController {
         if (file == null) return;
 
         StringBuilder builder = new StringBuilder();
-        String delimeter = "==========================";
 
         String matrixSizeStr = controllerMain.matrixSize.textProperty().getValue();
         int matrixSizeInt = Integer.parseInt(matrixSizeStr);
         builder.append(multiSolveCountInt);
         builder.append(System.lineSeparator());
 
+        //noinspection unused // TODO Safe delete?
         int size = ControllerMain.getTableViewController().getMatrixSize();
         for (int tempI = 0; tempI < multiSolveCountInt; tempI++) {
             controllerMain.btnFill.fire();
             double[][] data = controllerMain.getMatrix();
-            builder.append(delimeter);
+            builder.append(delimiter);
             builder.append(System.lineSeparator());
 
             for (int i = 0; i < matrixSizeInt; i++) {
@@ -149,15 +151,13 @@ public class FileController {
 
         }
 
-        if (file != null) {
-            SaveFile(builder.toString(), file);
-        }
+        SaveFile(builder.toString(), file);
 
     }
 
     private void SaveFile(String content, File file) {
         try {
-            FileWriter fileWriter = null;
+            FileWriter fileWriter;
 
             fileWriter = new FileWriter(file);
             fileWriter.write(content);
@@ -179,22 +179,21 @@ public class FileController {
                 localTime.getMinute() + "-" + localTime.getSecond() + "-" + localTime.getNano();
         String localDateTime = localDate.toString() + " T " + localTimeString;
         File file = new File("C:/data/" + size);
-        if (!file.exists()) file.mkdir();
+        if (!file.exists()) //noinspection ResultOfMethodCallIgnored
+            file.mkdir(); // Don't need to know result
         file = new File(file, size + "  " + localDateTime + getAddToSaveFile() + ".txt");
         System.out.println(file);
-        if (file == null) return;
 
         java.util.Date date = new java.util.Date(System.currentTimeMillis());
 
         StringBuilder builder = new StringBuilder();
-        String delimeter = "==========================";
 
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(System.lineSeparator());
         builder.append(date.toString());
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
 
         for (int i = 0; i < size; i++) {
             String s = "";
@@ -209,7 +208,7 @@ public class FileController {
             builder.append(s);
         }
         builder.append(System.lineSeparator());
-        builder.append(delimeter);
+        builder.append(delimiter);
         builder.append(System.lineSeparator());
 
         SaveFile(builder.toString(), file);
@@ -222,7 +221,6 @@ public class FileController {
     public List<String> loadDataFromFile() {
 
         FileChooser fileChooser = new FileChooser();
-        String delimeter = "==========================";
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -240,23 +238,18 @@ public class FileController {
     }
 
     //
+    @SuppressWarnings("unused") // In case it will be need
     public List<String> loadDataFromFile(String fileString) {
         File file = new File(fileString);
 
-        if (file != null) {
-            return loadOneFile(file);
-        }
-        return null;
+        return loadOneFile(file);
     }
 
     public List<String> loadDataFromFile(boolean loadLastMatrix) {
         if (loadLastMatrix) {
             File file = new File("C:/data/lastMatrix.txt");
 
-            if (file != null) {
-                return loadOneFile(file);
-            }
-            return null;
+            return loadOneFile(file);
         } else {
             return loadDataFromFile();
         }
@@ -264,28 +257,27 @@ public class FileController {
     }
 
     private List<String> loadOneFile(File file) {
-        String delimeter = "==========================";
-        List<String> newLines = new ArrayList<String>();
+        List<String> newLines = new ArrayList<>();
         try {
 
             java.util.List<String> fileContent = Files.readAllLines(file.toPath(), Charset.forName("UTF-8"));
 
-            int delimeterCounter = 0;
+            int delimiterCounter = 0;
 
             for (String fileContent1 : fileContent) {
 
                 //System.out.println(fileContent1);
 
-                if (fileContent1.equals(delimeter)) {
-                    delimeterCounter++;
+                if (fileContent1.equals(delimiter)) {
+                    delimiterCounter++;
                     continue;
                 }
 
-                if (delimeterCounter == 2) {
+                if (delimiterCounter == 2) {
                     newLines.add(fileContent1);
                 }
 
-                if (delimeterCounter > 2) {
+                if (delimiterCounter > 2) {
                     break;
                 }
             }
@@ -294,7 +286,7 @@ public class FileController {
         } catch (Exception ex) {
             //System.out.println(fileChooser.getInitialDirectory().toString());
             //JOptionPane.showMessageDialog(this, "ERROR!!!");
-            System.out.println(ex);
+            ex.printStackTrace();
             return null;
         }
     }
@@ -303,10 +295,9 @@ public class FileController {
     /**
      * Load multi data from file
      */
-    public List<List<String>> loadMultiDataFromFile(ControllerMain controllerMain) {
+    public List<List<String>> loadMultiDataFromFile() {
 
         FileChooser fileChooser = new FileChooser();
-        String delimeter = "==========================";
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -324,18 +315,15 @@ public class FileController {
     }
 
     private List<List<String>> loadMultiFile(File file) {
-        String delimeter = "==========================";
-        List<List<String>> newLines = new ArrayList<List<String>>();
+        List<List<String>> newLines = new ArrayList<>();
         try {
             java.util.List<String> fileContent = Files.readAllLines(file.toPath(), Charset.forName("UTF-8"));
             List<String> nextList = new ArrayList<>();
 
-            for (int i = 0; i < fileContent.size(); i++) {
-                String thisLine = fileContent.get(i);
-
+            for (String thisLine : fileContent) {
                 //System.out.println(thisLine);
 
-                if (thisLine.equals(delimeter)) {
+                if (thisLine.equals(delimiter)) {
                     newLines.add(nextList);
                     nextList = new ArrayList<>();
                 } else {
@@ -349,7 +337,7 @@ public class FileController {
         } catch (Exception ex) {
             //System.out.println(fileChooser.getInitialDirectory().toString());
             //JOptionPane.showMessageDialog(this, "ERROR!!!");
-            System.out.println(ex);
+            ex.printStackTrace();
             return null;
         }
     }

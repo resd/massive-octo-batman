@@ -9,9 +9,10 @@ public class Normalize {
     private double[] minArrJ;
     public static final Normalize INSTANCE = new Normalize();
 
+    @SuppressWarnings("Duplicates")
     public void normalize(double[][] M) {//todo сразу считать minSum, правда если нужно.
-        minArrI = null;
-        minArrJ = null;
+        minArrI = null; // TODO Google for same methods realization
+        minArrJ = null; // TODO Fix at same time method - algorithm.bastrikov.WorkBase.normalize(double[][] M)
         minArrI = new double[M.length];
         minArrJ = new double[M.length];
         for (int i = 0; i < M.length; i++) {
@@ -39,10 +40,10 @@ public class Normalize {
             }
         }
         for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M.length; j++) {
-                if (M[j][i] != Double.POSITIVE_INFINITY && M[j][i] < minArrJ[i]) {
-                    minArrJ[i] = M[j][i];
-                    if (M[j][i] == 0) {
+            for (double[] aM : M) {
+                if (aM[i] != Double.POSITIVE_INFINITY && aM[i] < minArrJ[i]) {
+                    minArrJ[i] = aM[i];
+                    if (aM[i] == 0) {
                         break;
                     }
                 }
@@ -66,7 +67,7 @@ public class Normalize {
         double[] minArrI = getMinArrI();
         double[] minArrJ = getMinArrJ();
 
-        for (int i = 0; i < minArrI.length; i++) {
+        for (int i = 0, tempIndexLimit = minArrI.length; i < tempIndexLimit; i++) {
             sum += minArrI[i];
             sum += minArrJ[i];
         }

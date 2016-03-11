@@ -1,43 +1,42 @@
 package algorithm.bab.classic;
 
+import algorithm.bab.Bab;
 import algorithm.bab.classic.branch.ChoseBranchClassic;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElement;
 import algorithm.bab.util.*;
-import algorithm.bruteforce.BruteforceAlgo;
+import algorithm.bruteforce.BruteForceAlgorithm;
 import algorithm.util.MethodAction;
 
 /**
  * @author zabr1
  */
-//@SuppressWarnings({"all"})
-//@SuppressWarnings({"unused", "Duplicates"})
 public class BaBClassicAlgorithm implements MethodAction {
     /**
      * Сделать вариант без возвратов.
      * Сделать вариант с возвратами.
      */
-    protected int originalSize;
-    protected long sysTime;
+    protected final int originalSize;
+    private long sysTime;
     protected Path path;
     protected Var var;
-    protected ArrayClass arrayClass;
+    protected final ArrayClass arrayClass;
     protected DA da;
 
     protected int count;
-    protected ChoseBranchClassic cb;
+    private ChoseBranchClassic cb;
     protected int[][] minP;
-    protected boolean needChooseLeftFirst;
+    boolean needChooseLeftFirst;
 
     // Конструктор
 
     public BaBClassicAlgorithm(double[][] array) {
-        var = new Var(Other.INSTANCE.cloneMatrix(array));
+        var = new Var(Other.cloneMatrix(array));
         arrayClass = new ArrayClass(array);
         originalSize = array.length;
     }
 
     public BaBClassicAlgorithm(double[][] array, ChoseBranchClassic cb) {
-        var = new Var(Other.INSTANCE.cloneMatrix(array));
+        var = new Var(Other.cloneMatrix(array));
         arrayClass = new ArrayClass(array);
         originalSize = array.length;
         this.cb = cb;
@@ -54,7 +53,7 @@ public class BaBClassicAlgorithm implements MethodAction {
         minP = new int[originalSize][2];
     }
 
-    protected void prepare() {
+    private void prepare() {
 
         // Нормализация
 
@@ -67,14 +66,11 @@ public class BaBClassicAlgorithm implements MethodAction {
 
     protected void solve() {
 
-        boolean existNext;// = false
-
         // Пока не переберутся все варианты
 
         while(true) { // checkMin(sa)
             Struct sa = cb.chooseBoth(path, var, arrayClass);
 //            System.out.println(sa);
-
 
             sa = da.checkSa(sa, var.getMinLowerBound());
 //            System.out.println(sa); //      comment
@@ -84,7 +80,7 @@ public class BaBClassicAlgorithm implements MethodAction {
 //                }
 //                if (da.isEmpty()) {
 //                    if (var.getMinLowerBound() < var.getMin()) {
-//                        path.setP(Other.INSTANCE.cloneMatrix(minP));
+//                        path.setP(Other.cloneMatrix(minP));
 //                    }
 //                    break;
 //                } else {
@@ -94,52 +90,39 @@ public class BaBClassicAlgorithm implements MethodAction {
 //            } else {
 //                existNext = checkMin(path, var);
 //            }
-
-            if (sa == null || !sa.getGeneralStruct().isLowerBound()) {
-                existNext = da.checkMin(path, var);
-                if (sa != null) {
-                    if (!existNext) {
-                        if (sa.hasStructHWout() && sa.hasStructHW()) { // Если есть и HW и HWo
-                            if (sa.getStructHWout().getHWithoutSum() <= sa.getStructHW().getHWithSum()) {
-                                sa.setStructHWout(null);
-                            } else {
-                                sa.setStructHW(null);
-                            }
-                        } else
-                            sa = null;
-                    }
-                } else {
-                    if (!existNext) {
-                        da.searchForLowestBound(path, var);
-                        break;
-                    }
-                }
+            if (Bab.isEndByNoMoreSmallerBounds(sa, da, path, var)) {
+                break;
             }
 
             if (sa != null)
                 da.add(sa);
 
-            //sa = null;
-            if (var.isArrayNull()) {
-                //da.checkLowerBound(sa, var.getMinLowerBound());
-                da.searchForLowestBound(path, var);
-                if (var.getMinLeftBound() > var.getMin()) { // todo Перенести в choseBrance => ( > 2 ) {} ( else ) { here }
-                    var.setMinLeftBound(var.getMin());
-                    minP = Other.INSTANCE.cloneMatrix(path.getP());
-                }
-                existNext = da.checkMin(path, var);
-                if (!existNext) {
-                    break;
-                } else {
-                    da.checkDa(var.getMinLeftBound());
-                }
-            }
+            if (isEndByFindLowestBound()) break;
             count++;
-            sa = null;
+            //noinspection UnusedAssignment
+            sa = null; // probably need to avoid memory leak
         }
         /*System.out.println("countBackWith = " + countBackWith);todo
         System.out.println("countHwith = " + countHwith);
         System.out.println("count = " + count);*/
+    }
+
+    private boolean isEndByFindLowestBound() {
+        if (var.isArrayNull()) {
+            //da.checkLowerBound(sa, var.getMinLowerBound());
+            da.searchForLowestBound(path, var);
+            if (var.getMinLeftBound() > var.getMin()) { // todo Перенести в choseBranch => ( > 2 ) {} ( else ) { here }
+                var.setMinLeftBound(var.getMin());
+                minP = Other.cloneMatrix(path.getP());
+            }
+            boolean existNext = da.checkMin(path, var);
+            if (!existNext) {
+                return true;
+            } else {
+                da.checkDa(var.getMinLeftBound());
+            }
+        }
+        return false;
     }
 
     @Override
@@ -160,11 +143,11 @@ public class BaBClassicAlgorithm implements MethodAction {
         //System.out.println("Path = " + this.getPath());
     }
 
-    protected boolean choseLeft() {
+    private boolean choseLeft() {
         // Пока длина матрицы > 2
 
         while(var.getArrayLength() > 2) {
-            Struct sa = cb.choseLeftOnly(da, path, var);
+            cb.choseLeftOnly(da, path, var); // Struct sa =
 //            System.out.println(var.getH() + "");
 //            System.out.println(sa); //      comment
 //            print(var.getArray());
@@ -174,7 +157,7 @@ public class BaBClassicAlgorithm implements MethodAction {
         // Вычисление последней границы
 
         Struct struct = cb.choseLeftOnlyLast(path, var, arrayClass);
-        minP = Other.INSTANCE.cloneMatrix(path.getP());
+        minP = Other.cloneMatrix(path.getP());
         var.setMinLeftBound(var.getMinLowerBound());
         da.add(struct);
         da.checkDa(var.getMinLowerBound());
@@ -227,6 +210,7 @@ public class BaBClassicAlgorithm implements MethodAction {
         return System.currentTimeMillis() - sysTime;
     }
 
+    @SuppressWarnings({"MismatchedReadAndWriteOfArray", "UnusedAssignment", "unused"}) // Matrix need to test
     public static void main(String[] args) {
         double M = Double.POSITIVE_INFINITY;
         double[][] example =
@@ -309,7 +293,7 @@ public class BaBClassicAlgorithm implements MethodAction {
         ca.print(example);
 
         //ca.display(ca.arrs[1]);
-        //System.out.println(ca.delimeter);
+        //System.out.println(ca.delimiter);
         //ca.display(ca.arrs[4]);
         //System.err.println(array[0][3]+ array[3][2]+ array[2][4]+ array[4][1]+ array[1][0]);
     }
@@ -321,14 +305,13 @@ public class BaBClassicAlgorithm implements MethodAction {
         //computeLastElement();
         System.out.println("Sum = " + getSum(example) + ", H = " + var.getH() + ", count = " + count);
         System.out.println("Path = " + getPath());
-        BruteforceAlgo bf = new BruteforceAlgo();
+        BruteForceAlgorithm bf = new BruteForceAlgorithm();
         StringBuilder blder = new StringBuilder();
-        bf.setM0(example);
         bf.main(example);
         blder.append("\nPath: ");
         blder.append(bf.getPath());
         blder.append("\nSum = ");
-        blder.append(bf.getSum(example));
+        blder.append(bf.getSum());
         blder.append(",  Time: ");
         blder.append(bf.getTime());
         //parseAndHighlightPath(bf.getPath());

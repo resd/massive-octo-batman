@@ -1,8 +1,13 @@
 package algorithm.bastrikov;
 
-public class Work1OldStableVersion implements Methods {
+import algorithm.util.DuplicatesMethods;
 
-    double[][] M0 = {
+import static algorithm.util.DuplicatesMethods.remove;
+
+public class Work1OldStableVersion extends WorkBase implements Methods {
+
+
+    /*double[][] M0 = { // Need to test
             {0, 0, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
             {29, 1, 0, 19, 0, 12, 5},
@@ -10,112 +15,20 @@ public class Work1OldStableVersion implements Methods {
             {3, 21, 56, 7, 0, 0, 28},
             {0, 85, 8, 42, 89, 0, 0},
             {18, 0, 0, 0, 58, 13, 0}
-    };
-    double[][][] M0ch;
-    double[][][] M1ch;
-    double[][][] M2ch;
-    double[][][] D1ch;
-    double[][][] D2ch;
-    double[][][] DDch;
-    boolean saveAdditionalResult;
-    int originalsize;
-    int[][] p;
-    int[] mi;
-    int[] mj;
-    int[] beforeP;
+    };*/
+    /*private double[][][] M0ch; // TODO Deal with this
+    private double[][][] M1ch;
+    private double[][][] M2ch;
+    private double[][][] D1ch;
+    private double[][][] D2ch;
+    private double[][][] DDch;
+    private boolean saveAdditionalResult;*/
 
     public Work1OldStableVersion(double[][] M0) {
-        originalsize = M0.length;
+        originalSize = M0.length;
     }
 
-    @Override
-    public void initialize() {  // Метод инициализация переменных
-        p = new int[originalsize][2]; // необходимых для
-        mi = new int[originalsize];   // расчетов
-        mj = new int[originalsize];
-        for (int i = 0; i < originalsize; i++) {
-            mi[i] = i;
-            mj[i] = i;
-            p[i][0] = -1;
-            p[i][1] = -1;
-        }
-        M0ch = new double[originalsize - 2][][];
-        M1ch = new double[originalsize - 2][][];
-        M2ch = new double[originalsize - 2][][];
-        D1ch = new double[originalsize - 2][][];
-        D2ch = new double[originalsize - 2][][];
-        DDch = new double[originalsize - 2][][];
-        beforeP = new int[2];
-        saveAdditionalResult = false;
-    }
-
-    @Override
-    public void normalize(double[][] M) { // Приведение матрицы к нормальному виду
-        double min = Double.MAX_VALUE;
-
-        for (int i = 0; i < M.length; i++) { // Нахождение минимальных значений в каждой строке
-            for (int j = 0; j < M.length; j++) {
-                if (i != j && M[i][j] < min) {
-                    min = M[i][j];
-                    if (M[i][j] == 0) {
-                        break;
-                    }
-                }
-            }
-            if (min != 0) { // Вычитание из каждой строки минимальный элемент
-                for (int j = 0; j < M.length; j++) {
-                    if (i != j) {
-                        M[i][j] -= min;
-                    }
-                }
-            }
-            min = Double.MAX_VALUE;
-        }
-
-        for (int i = 0; i < M.length; i++) { // Нахождение минимальных значений в каждом столбце
-            for (int j = 0; j < M.length; j++) {
-                if (i != j && M[j][i] < min) {
-                    min = M[j][i];
-                    if (M[j][i] == 0) {
-                        break;
-                    }
-                }
-            }
-            if (min != 0) { // Вычитание из каждого столбца минимальный элемент
-                for (int j = 0; j < M.length; j++) {
-                    if (i != j) {
-                        M[j][i] -= min;
-                    }
-                }
-            }
-            min = Double.MAX_VALUE;
-        }
-    }
-
-    @Override
-    public double[][] solve(double[][] M0) {// Метод вычисления матрицы приведений DDch
-        double[][] M1; //  Объявление необходимых для расчета переменных
-        double[][] M2;
-        double[][] D1;
-        double[][] D2;
-        double[][] DD;
-        M1 = doMfromM0(M0);              // Методы для расчета
-        M2 = doMfromM0(M1);
-        D1 = doDfromM(M0, M1);
-        D2 = doDfromM(M1, M2);
-        DD = doDDfromD(M0, D1, D2);
-        return DD; // Возврат DD
-    }
-
-    static double[][] cloneMatrix(double[][] a) { // Метод для копирования матриц
-        double[][] clone = a.clone();
-        for (int i = 0; i < a.length; i++) {
-            clone[i] = a[i].clone();
-        }
-        return clone;
-    }
-
-    private double[][] doMfromM0(double[][] M0) {// Метод для вычисление матрицы М
+    /*private double[][] doMfromM0(double[][] M0) {// Метод для вычисление матрицы М
         double[][] M = new double[M0.length][M0.length];
         double alfa = 0.005;
         for (int i = 0; i < M.length; i++) {
@@ -147,27 +60,7 @@ public class Work1OldStableVersion implements Methods {
             }
         }
         return DD;
-    }
-
-    private double dpaij(double[][] M0, int di, int dj) {// Метод для вычисление оценки ветви
-        double dpaij;
-        double zaik = 0;
-        double zakj = 0;
-        double zajk = 0;
-        double zaki = 0;
-        double aij;
-        double aji;
-        for (int k = 0; k < M0.length; k++) {
-            zaik += M0[di][k];
-            zakj += M0[k][dj];
-            zajk += M0[dj][k];
-            zaki += M0[k][di];
-        }
-        aij = M0[di][dj];
-        aji = M0[dj][di];
-        dpaij = zaik + zakj - zajk - zaki - 3. * aij + 3. * aji;
-        return dpaij;
-    }
+    }*/
 
     @Override
     public int[] getD(double[][] DD, int i) {
@@ -217,6 +110,10 @@ public class Work1OldStableVersion implements Methods {
     }
 
     @Override
+    @SuppressWarnings("Duplicates") /** Duplicate in
+     @path algorithm.near.NearAlgorithmBase
+     */
+    // Don't know how to fix this
     public void getPath(int[] d, int i) {
         int x = d[0]; // Координаты максимального элемента
         int y = d[1];
@@ -238,13 +135,6 @@ public class Work1OldStableVersion implements Methods {
         mj = remove(mj, y);
     }
 
-    int[] remove(int[] mi, int y) { // Метод для удаления координат текущего элемента из пути
-        int[] tmp = new int[mi.length - 1];
-        System.arraycopy(mi, 0, tmp, 0, y);
-        System.arraycopy(mi, y + 1, tmp, y, mi.length - y - 1);
-        return tmp;
-    }
-
     @Override
     public double[][] doM0(double[][] M0, int i, int j) {
         M0[j][i] = 0; // Обнуление j-го и i-го элемента для сохранения гамильтонова цикла
@@ -264,39 +154,12 @@ public class Work1OldStableVersion implements Methods {
     }
 
     private double[][] setElementsM0toM(double[][] M0, int dj) {//  Вычитаем строку и столбец, возвращаем полученную редуцированную матрицу
-        double[][] M1 = new double[M0.length - 1][M0.length - 1]; // todo попробовать перерилить это через systemarraycopy()
-        int ki = 0;
-        int kj;
-        for (int i = 0; i < M0.length; i++) {
-            if (i == dj) {
-                ki++;
-                continue;
-            }
-            kj = 0;
-            for (int j = 0; j < M0.length; j++) {
-                if (j == dj) {
-                    kj++;
-                } else {
-                    M1[i - ki][j - kj] = M0[i][j];
-                }
-            }
-        }
-        return M1;
+        return DuplicatesMethods.setElementsM0toM(M0, dj);
     }
 
     @Override
     public void computeLastElement() {
-        if (mj[0] == mi[0] || mj[1] == mi[0]) { // Находим правильное сочетание последнех двух элементов в пути и возвращаем результат
-            p[originalsize - 2][0] = mi[1];
-            p[originalsize - 2][1] = mi[0];
-            p[originalsize - 1][0] = mi[0];
-            p[originalsize - 1][1] = mj[1];
-        } else {
-            p[originalsize - 2][0] = mi[0];
-            p[originalsize - 2][1] = mi[1];
-            p[originalsize - 1][0] = mi[1];
-            p[originalsize - 1][1] = mj[0];
-        }
+        DuplicatesMethods.computeLastElement(p, mi, mj, originalSize);
     }
 
 
@@ -313,8 +176,8 @@ public class Work1OldStableVersion implements Methods {
         return M0ch;
     }
 
-    public void setOriginalsize(int originalsize) {
-        Work1OldStableVersion.originalsize = originalsize;
+    public void setOriginalsize(int originalSize) {
+        Work1OldStableVersion.originalSize = originalSize;
     }
 
     *//**

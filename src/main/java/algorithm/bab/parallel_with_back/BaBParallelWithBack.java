@@ -1,5 +1,6 @@
 package algorithm.bab.parallel_with_back;
 
+import algorithm.bab.Bab;
 import algorithm.bab.classic.BaBClassicAlgorithm;
 import algorithm.bab.parallel_with_back.branch.*;
 import algorithm.bab.util.*;
@@ -43,7 +44,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
 
     private Path pathForLeft;
     private ArrayList<int[]> edgesTemp;
-    private List<String> methodsOrderParallel;
+    private final List<String> methodsOrderParallel;
     private ArrayList<ChoseBranchParallel> choseBranchParallels;
 
 
@@ -85,10 +86,9 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
         edgesTemp = new ArrayList<>();
     }
 
-    protected Struct doWithChooseBranch(ChoseBranchParallel choseBranchParallel, Path pathCopy, Var varCopy) {
+    private Struct doWithChooseBranch(ChoseBranchParallel choseBranchParallel, Path pathCopy, Var varCopy) {
 
         Struct sa;
-        boolean existNext;
         sa = choseBranchParallel.chooseBoth(pathCopy, varCopy, this, arrayClass);
 
         if (sa != null) {
@@ -106,8 +106,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
         int countOfChoseBranches = choseBranchParallels.size();
         Var[] varCopy = new Var[countOfChoseBranches];
         Path[] pathCopy = new Path[countOfChoseBranches];
-        Struct struct;
-        Struct sturctForCheckToExitOfCyrlyWhile = null;
+        Struct structForCheckToExitOfWhile = null;
         boolean existNext;
         ArrayList<Struct> tempStructArrayList = new ArrayList<>(countOfChoseBranches);
 
@@ -191,49 +190,15 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
 
                 //int minStructIndex = indexOfCurrentSizeOfDa + minIndexOfMinParallelInVarCopy;
                 //Struct sa = da.get(minStructIndex); // Получение struct, соответствующего минимальному элементу
-                sturctForCheckToExitOfCyrlyWhile = tempStructArrayList.get(minIndexForMinStruct);
+                structForCheckToExitOfWhile = tempStructArrayList.get(minIndexForMinStruct);
 
             } // end of if
 
-            if (sturctForCheckToExitOfCyrlyWhile == null || !sturctForCheckToExitOfCyrlyWhile.getGeneralStruct().isLowerBound()) {
-                existNext = da.checkMin(path, var);
+            if ( Bab.isEndByNoMoreSmallerBounds( structForCheckToExitOfWhile, da, path, var ) ) {
+                break;
+            }
 
-                if (sturctForCheckToExitOfCyrlyWhile != null) {
-
-                    if (!existNext) {
-
-                        if (sturctForCheckToExitOfCyrlyWhile.hasStructHWout() && sturctForCheckToExitOfCyrlyWhile.hasStructHW()) { // Если есть и HW и HWo
-
-                            if (sturctForCheckToExitOfCyrlyWhile.getStructHWout().getHWithoutSum() <= sturctForCheckToExitOfCyrlyWhile.getStructHW().getHWithSum()) {
-
-                                sturctForCheckToExitOfCyrlyWhile.setStructHWout(null);
-
-                            } else {
-
-                                sturctForCheckToExitOfCyrlyWhile.setStructHW(null);
-
-                            }
-
-                        } else
-
-                            sturctForCheckToExitOfCyrlyWhile = null;
-
-                    } // end of if
-
-                } else {
-
-                    if (!existNext) {
-
-                        da.searchForLowestBound(path, var);
-                        break;
-
-                    }  // end of if
-
-                }
-
-            } // end of if
-
-            if (sturctForCheckToExitOfCyrlyWhile != null) {
+            if (structForCheckToExitOfWhile != null) {
 
                 da.add(tempStructArrayList.get(minIndexForMinStruct));
 
@@ -241,18 +206,13 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
 
             if (!tempStructArrayList.isEmpty()) tempStructArrayList.remove(minIndexForMinStruct);
 
-            for (Struct structInLoop : tempStructArrayList) {
-
-                if (structInLoop != null) {
-
-                    da.add(structInLoop);
-
-                } // end of if
-
-            } // end of for
+            // end of if
+// end of for
+            tempStructArrayList.stream().filter(structInLoop -> structInLoop != null).
+                    forEach(structInLoop -> da.add(structInLoop));
 
             tempStructArrayList.clear();
-            sturctForCheckToExitOfCyrlyWhile = null;
+            structForCheckToExitOfWhile = null;
 
             // Проверка на достижение нижней границы и на выход из цикла
 
@@ -268,7 +228,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
                 if (var.getMinLeftBound() > var.getMin()) {
 
                     var.setMinLeftBound(var.getMin());
-                    minP = Other.INSTANCE.cloneMatrix(path.getP());
+                    minP = Other.cloneMatrix(path.getP());
 
                 }  // end of if
 
@@ -328,7 +288,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
                 da.searchForLowestBound(path, var);
                 if (var.getMinLeftBound() > var.getMin()) { // todo Перенести в choseBrance => ( > 2 {} ( else ) { here }
                     var.setMinLeftBound(var.getMin());
-                    minP = Other.INSTANCE.cloneMatrix(path.getP());
+                    minP = Other.cloneMatrix(path.getP());
                 }
                 existNext = da.checkMin(path, var);
                 if (!existNext) {
@@ -348,13 +308,13 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
         System.out.println("count = " + count);*/
     }
 
-    protected double choseLeftForParallel(ChoseBranchParallel choseBranchParallel) {
+    private double choseLeftForParallel(ChoseBranchParallel choseBranchParallel) {
         Var varCopy = new Var(var);
 
         // Пока длина матрицы > 2
 
         while(varCopy.getArrayLength() > 2) {
-            Struct sa = choseBranchParallel.choseLeftOnly(da, pathForLeft, varCopy);
+            choseBranchParallel.choseLeftOnly(da, pathForLeft, varCopy); // Struct sa =
 //            System.out.println(varCopy.getH() + "");
 //            System.out.println(sa); //      comment
 //            print(varCopy.getArray());
@@ -364,7 +324,7 @@ public class BaBParallelWithBack extends BaBClassicAlgorithm implements MethodAc
         // Вычисление последней границы
 
         Struct struct = choseBranchParallel.choseLeftOnlyLast(pathForLeft, varCopy, arrayClass);
-        minP = Other.INSTANCE.cloneMatrix(pathForLeft.getP());
+        minP = Other.cloneMatrix(pathForLeft.getP());
         da.add(struct);
         da.checkDa(varCopy.getMinLowerBound());
         return varCopy.getMinLowerBound();

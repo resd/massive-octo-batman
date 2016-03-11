@@ -1,6 +1,6 @@
-
 package algorithm.bastrikov;
 
+import algorithm.bab.util.Other;
 import algorithm.util.MethodAction;
 
 /**
@@ -9,7 +9,7 @@ import algorithm.util.MethodAction;
  */
 public class Work1Main implements MethodAction {
 
-    double[][] M0 = {
+    private double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
             {29, 1, 0, 19, 0, 12, 5},
@@ -21,16 +21,10 @@ public class Work1Main implements MethodAction {
 
     @SuppressWarnings("unused")
     public Work1Main(double[][] a, int idMethod) {
-        setM0(a);
-        this.idMethod = idMethod;
+        setM0(a, idMethod);
     }
 
-    public Work1Main(int idMethod) {
-        this.idMethod = idMethod;
-    }
-
-    private int idMethod;
-    private int originalsize;
+    private int originalSize;
     private int[][] p;
 
     private Methods w;
@@ -44,7 +38,7 @@ public class Work1Main implements MethodAction {
     public void main() {
         sysTime = System.currentTimeMillis();
         double[][] M;
-        M = Work1OldStableVersion.cloneMatrix(M0);
+        M = Other.cloneMatrix(M0);
 
         double[][] DD;
         int d[];
@@ -119,7 +113,7 @@ public class Work1Main implements MethodAction {
 */
     public String getPath() {
         StringBuilder str = new StringBuilder("");
-        for (int i = 0; i < originalsize; i++) {
+        for (int i = 0; i < originalSize; i++) {
             str.append("(").append(p[i][0] + 1).append("-").append(p[i][1] + 1).append(") ");
         }
         return str.toString();
@@ -128,7 +122,7 @@ public class Work1Main implements MethodAction {
     @Override
     public double getSum(double[][] a) {
         double Sum = 0;
-        for (int k = 0; k < originalsize; k++) {
+        for (int k = 0; k < originalSize; k++) {
             Sum += a[p[k][0]][p[k][1]];
         }
         return Sum;
@@ -139,19 +133,19 @@ public class Work1Main implements MethodAction {
         return System.currentTimeMillis() - sysTime;
     }
 
-    public void setM0(double[][] a) {
+    public void setM0(double[][] a, int idMethod) {
         double[][] clone = a.clone();
 
         for (int i = 0; i < a.length; i++) {
             clone[i] = a[i].clone();
         }
         this.M0 = clone;
-        originalsize = a.length;
+        originalSize = a.length;
 
         if (idMethod == 1) {
-            w = new Work1OldStableVersion(Work1OldStableVersion.cloneMatrix(M0));
+            w = new Work1OldStableVersion(Other.cloneMatrix(M0));
         } else {
-            w = new Work2OldStableVersion(Work1OldStableVersion.cloneMatrix(M0));
+            w = new Work2OldStableVersion(Other.cloneMatrix(M0));
         }
     }
 

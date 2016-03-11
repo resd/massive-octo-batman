@@ -9,13 +9,13 @@ import javafx.util.StringConverter;
 import java.util.Random;
 
 /**
- * Created by Admin on 28.08.15
+ * @author Admin
+ * @since 28.08.15
  */
-//@SuppressWarnings({"all"})
 public class TableViewController {
 
-    private TableView<DoubleData> table;
-    private Label label1;
+    private final TableView<DoubleData> table;
+    private final Label label1;
     private double[][] matrix;
 
     public TableViewController(TableView<DoubleData> table, Label label1) {
@@ -24,7 +24,7 @@ public class TableViewController {
         initialize();
     }
 
-    public void initialize() {
+    private void initialize() {
         table.setRowFactory(tv -> new TableRow<DoubleData>() {
             @Override
             public void updateItem(DoubleData num, boolean empty) {
@@ -152,23 +152,18 @@ public class TableViewController {
     }
 
     public static class DoubleData {
-        private SimpleDoubleProperty value;
+        private final SimpleDoubleProperty value;
 
         public DoubleData(Double value) {
             this.value = new SimpleDoubleProperty(value);
         }
 
-
-        public DoubleData(SimpleDoubleProperty value) {
+        /*public DoubleData(SimpleDoubleProperty value) {
             this.value = value;
-        }
+        }*/
 
         public double getValue() {
             return value.get();
-        }
-
-        public SimpleDoubleProperty valueProperty() {
-            return value;
         }
 
         public void setValue(double value) {
@@ -181,20 +176,20 @@ public class TableViewController {
         }
     }
 
-    private StringConverter stringConverter = new StringConverter() {
+    private final StringConverter<String> stringConverter = new StringConverter<String>() {
         @Override
-        public String toString(Object t) {
+        public String toString(String t) {
                                 /*if (t == null || t.toString().equals("-1.0"))
                                     return "-";
                                 else*/
-            if (t == null || t.toString().equals("-"))
+            if (t == null || t.equals("-"))
                 return "-";
             else
-                return t.toString();
+                return t;
         }
 
         @Override
-        public Object fromString(String string) {
+        public String fromString(String string) {
                                 /*if (string.equals("-"))
                                     return -1.0d;
                                 else

@@ -6,9 +6,9 @@ import algorithm.bab.classic.branch.*;
 import algorithm.bab.parallel.BaBParallel;
 import algorithm.bab.parallel_with_back.BaBParallelWithBack;
 import algorithm.bastrikov.Work1Main;
-import algorithm.bruteforce.BruteforceAlgo;
-import algorithm.far.FarAlgo;
-import algorithm.near.NearAlgoEveryDot;
+import algorithm.bruteforce.BruteForceAlgorithm;
+import algorithm.far.FarAlgorithm;
+import algorithm.near.NearAlgorithmEveryDot;
 import gui.newjavafx.FileController;
 
 import java.util.ArrayList;
@@ -19,21 +19,25 @@ import java.util.List;
  * @since 29.02.2016
  * lastModify on 29.02.16
  */
-@SuppressWarnings("Duplicates")
+@SuppressWarnings("Duplicates") // TODO Deal with duplicates
 public class ButtonSolveActionPerformed {
+
+
 
     /*
  * Вычисляет путь вмеми заданными методами
  * */
+    // TODO Split method on several small methods
     public String btnSolveActionPerformed(double[][] a, List<String> methodsOrder,
                                           ArrayList<String> methodsOrderParallel) {
+        // TODO Delete unused local fields
         StringBuilder blder = new StringBuilder();
         //blder.append("\n\n");
-        BruteforceAlgo bf = new BruteforceAlgo();
+        BruteForceAlgorithm bf = new BruteForceAlgorithm();
 //        ClassicAlgo sm = new ClassicAlgo(a);
         BaBClassicAlgorithmWithFirstLeftBounds baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a);
 //        ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
-        NearAlgoEveryDot na = new NearAlgoEveryDot(a);
+        NearAlgorithmEveryDot na = new NearAlgorithmEveryDot(a);
         BaBClassicAlgorithm cam = new BaBClassicAlgorithm(a);
         BaBClassicAlgorithm camp = new BaBClassicAlgorithm(a, new ChoseBranchClassicForEachElement());
         BaBClassicAlgorithm classicSum = new BaBClassicAlgorithm(a, new ChoseBranchClassicSum());
@@ -42,25 +46,24 @@ public class ButtonSolveActionPerformed {
         BaBClassicAlgorithm classicForEachRelatedElementSum = new BaBClassicAlgorithm(a, new ChoseBranchClassicForEachElementWithRelatedSum());
         BaBParallel parallel = new BaBParallel(a);
         BaBParallelWithBack parallelWithBack = new BaBParallelWithBack(a, methodsOrderParallel);
-        FarAlgo fa = new FarAlgo(a);
-        Work1Main w = new Work1Main(1);
-        Work1Main w2 = new Work1Main(2);
-        double ppsum = -Double.MAX_VALUE;
+        FarAlgorithm fa = new FarAlgorithm(a);
+        Work1Main w = new Work1Main(a, 1);
+        Work1Main w2 = new Work1Main(a, 2);
+        double ppsum = -Double.MAX_VALUE; // TODO Safe delete
         double sum;
 
         //blder.append("\n\n");
         for (String method : methodsOrder) {
             switch (method) {
                 case "Полный перебор":
-                    bf.setM0(a);
                     bf.main(a);
                     blder.append(method);
                     blder.append(":");
                     blder.append("\nPath: ");
                     blder.append(bf.getPath());
                     blder.append("\nSum = ");
-                    ppsum = bf.getSum(a);
-                    blder.append(bf.getSum(a));
+                    ppsum = bf.getSum();
+                    blder.append(bf.getSum());
                     blder.append(",  Time: ");
                     blder.append(bf.getTime());
                     //parseAndHighlightPath(bf.getPath());
@@ -194,7 +197,6 @@ public class ButtonSolveActionPerformed {
                     blder.append("\n\n");
                     break;*/
                 case "МВиГ улучшенный (без разрывов)":
-                    w.setM0(a);
                     w.main();
                     blder.append(method);
                     blder.append(":");
@@ -209,7 +211,6 @@ public class ButtonSolveActionPerformed {
                     blder.append("\n\n");
                     break;
                 case "МВиГ улучшенный (с разрывами)":
-                    w2.setM0(a);
                     w2.main();
                     blder.append(method);
                     blder.append(":");

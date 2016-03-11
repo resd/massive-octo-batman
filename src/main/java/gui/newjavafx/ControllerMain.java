@@ -3,7 +3,6 @@ package gui.newjavafx;
 import gui.deltapackage.ParentFrame;
 import gui.newjavafx.buttonlogic.*;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -23,13 +22,15 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
- * Created by Admin on 11.08.15
+ * @author Admin
+ * @since 11.08.15
  * lastModify on 29.02.16
  */
-//@SuppressWarnings({"all"})
 public class ControllerMain implements Initializable {
     @FXML
     public VBox vBoxForSettings;
@@ -39,10 +40,8 @@ public class ControllerMain implements Initializable {
             /*"Полный перебор",*/
             "МВиГ классический (начиная по левым ветвям)",
             "МВиГ классический (с учетом потерянных ветвей)",
-//            "МВиГ классический",
             "МВиГ параллельный (с возвратом)",
             "МВиГ параллельный",
-            /*"МВиГ классический (без возвратов)",*/  // За повторением результата модульного метода
             "МВиГ улучшенный (без разрывов)",
             "МВиГ улучшенный (с разрывами)",
             "Ближнего соседа",
@@ -70,7 +69,7 @@ public class ControllerMain implements Initializable {
     };
     public Button btnSolve;
     public Button btnMultiSolve;
-    public GridPane gridPane;
+    private GridPane gridPane;
     public TextField matrixSize;
 
     public TextArea outputText;
@@ -81,30 +80,29 @@ public class ControllerMain implements Initializable {
     public MenuItem btnLoad;
     public TextField constantValue;
     public TextField multiSolveCount;
-    public MenuItem btnOldProgramm;
+    public MenuItem btnOldProgram;
     public MenuItem btnMultiLoad;
     public MenuItem btnMultiSave;
     public CheckBox cbMultiSolveFromFile;
     public Label multiSolveStr;
     public HBox hBoxForCheckBoxesForParallel;
-    public CheckBox cbMultiSolveProcent;
+    public CheckBox cbMultiSolvePercent;
     //public ListView<Task> listViewForCheckBoxes;
     //checkList
 
     private ObservableList<Task> tasks;
     private ObservableList<Task> tasksParallel;
-    public ListView<Task> listViewForCheckBoxes;
-    public ListView<Task> listViewForCheckBoxesParallel;
+    private ListView<Task> listViewForCheckBoxes;
 
     public HBox hBoxForCheckBoxes;
-    public VBox vBoxForButtonBeforeCheckBoxes;
     public Button btnCheckAll;
     public Button btnUncheckAll;
     public Button btnMoveUp;
     public Button btnMoveDown;
     private static TableViewController tableViewController;
     private FileController fileController;
-    private boolean fireBtnFillBeforeBtnSolve;
+    @SuppressWarnings("unused")
+    private boolean fireBtnFillBeforeBtnSolve; // Need to debug
     private ButtonMultiSolveActionPerformedForMoreThan12 newBtnLogicMore12;
     private ButtonMultiSolveActionPerformed newBtnLogicLess12;
 
@@ -120,14 +118,9 @@ public class ControllerMain implements Initializable {
         }
 
         listViewForCheckBoxes = new ListView<>(tasks);
-        listViewForCheckBoxesParallel = new ListView<>(tasksParallel);
+        ListView<Task> listViewForCheckBoxesParallel = new ListView<>(tasksParallel);
 
-        Callback<Task, ObservableValue<Boolean>> callback = new Callback<Task, ObservableValue<Boolean>>() {
-            @Override
-            public ObservableValue<Boolean> call(Task param) {
-                return param.selectedProperty();
-            }
-        };
+        Callback<Task, ObservableValue<Boolean>> callback = Task::selectedProperty;
 
         StringConverter<Task> stringConverter = new StringConverter<Task>() {
             @Override
@@ -154,6 +147,8 @@ public class ControllerMain implements Initializable {
 //        tasks.get(2).setSelected(true);
         tasksParallel.get(0).setSelected(true);
         tasksParallel.get(1).setSelected(true);
+//        tasks.get(4).setSelected(true);
+//        tasks.get(5).setSelected(true);
         //tasksParallel.get(3).setSelected(true);
         //tasksParallel.get(4).setSelected(true);
 //        tasks.get(8).setSelected(true);
@@ -174,17 +169,13 @@ public class ControllerMain implements Initializable {
     public void handleButtonAction(ActionEvent actionEvent) {
         // Кнопка для выделения всех методов
         if (actionEvent.getSource() == btnCheckAll) {
-            tasks.forEach(task -> {
-                task.setSelected(true);
-            });
+            tasks.forEach(task -> task.setSelected(true));
             return;
         }
 
         // Кнопка для снятия выделения со всех методов
         if (actionEvent.getSource() == btnUncheckAll) {
-            tasks.forEach(task -> {
-                task.setSelected(false);
-            });
+            tasks.forEach(task -> task.setSelected(false));
             return;
         }
 
@@ -250,26 +241,18 @@ public class ControllerMain implements Initializable {
             //
 
             // Получение массива строк методов в заданном пользователем порядке
-            ArrayList<String> methodsOrder = new ArrayList<String>();
-            ArrayList<String> methodsOrderParallel = new ArrayList<String>();
+            ArrayList<String> methodsOrder = new ArrayList<>();
+            ArrayList<String> methodsOrderParallel = new ArrayList<>();
             if (tableViewController.getMatrixSize() < 13) {
                 methodsOrder.add("Полный перебор");
             }
-            for (Task task : tasks) {
-                if (task.isSelected()) {
-                    methodsOrder.add(task.getName());
-                }
-            }
+            methodsOrder.addAll(tasks.stream().filter(Task::isSelected).map(Task::getName).collect(Collectors.toList()));
 
-            for (Task task : tasksParallel) {
-                if (task.isSelected()) {
-                    methodsOrderParallel.add(task.getName());
-                }
-            }
+            methodsOrderParallel.addAll(tasksParallel.stream().filter(Task::isSelected).map(Task::getName).collect(Collectors.toList()));
 
             if (methodsOrder.size() == 0) {
                 // Тернарный оператор не работает
-                outputText.setText((outputText.getText() != "" ? "\n\n" : "") +
+                outputText.setText((!Objects.equals(outputText.getText(), "") ? "\n\n" : "") +
                         "Не выбранно ни одного метода."); // outputText.getText() +
                 return;
             }
@@ -279,12 +262,12 @@ public class ControllerMain implements Initializable {
             // Save last solved matrix
             fileController.saveInformationFromFormToTextFile(getMatrix(), true);
 
-            boolean correctOutput = false;
+//            boolean correctOutput = false; // TODO Safe delete
             // Вывод результата выполнения вычислений
             try {
                 outputText.setText(new ButtonSolveActionPerformed().btnSolveActionPerformed(
                         matrix, methodsOrder, methodsOrderParallel));
-                correctOutput = true;
+//                correctOutput = true;
             } catch (Exception e) {
                 outputText.setText(e.getLocalizedMessage());
                 e.printStackTrace();
@@ -305,15 +288,11 @@ public class ControllerMain implements Initializable {
 
             if (methodsOrder.size() == 0) {
                 // Тернарный оператор не работает
-                outputText.setText((outputText.getText() != "" ? "\n\n" : "") + "Не выбранно ни одного метода."); // outputText.getText() +
+                outputText.setText((!Objects.equals(outputText.getText(), "") ? "\n\n" : "") + "Не выбранно ни одного метода."); // outputText.getText() +
                 return;
             }
 
-            for (Task task : tasksParallel) {
-                if (task.isSelected()) {
-                    methodsOrderParallel.add(task.getName());
-                }
-            }
+            methodsOrderParallel.addAll(tasksParallel.stream().filter(Task::isSelected).map(Task::getName).collect(Collectors.toList()));
 
             String strTemp = matrixSize.textProperty().getValue();
             int matrixSizeInt = Integer.parseInt(strTemp);
@@ -323,7 +302,7 @@ public class ControllerMain implements Initializable {
 //                return;
 //            }
             if (isConstant) {
-                outputText.setText((outputText.getText() != "" ? "\n\n" : "") +
+                outputText.setText((!Objects.equals(outputText.getText(), "") ? "\n\n" : "") +
                         "Методом заполнения выбрана константа, что делает серию решений бессмысленной.");
                 return;
             }
@@ -347,8 +326,8 @@ public class ControllerMain implements Initializable {
                     outputText.setText(newBtnLogicMore12.btnMultiSolveActionPerformedForMoreThan12(
                             multiSolveCountInt, methodsOrder, methodsOrderParallel, this));
                 } else {
-                    if (cbMultiSolveProcent.isSelected()) {
-                        outputText.setText(new ButtonMultiSolveActionPerformedForMoreThan12InProcent(
+                    if (cbMultiSolvePercent.isSelected()) {
+                        outputText.setText(new ButtonMultiSolveActionPerformedForMoreThan12InPercent(
                                 new ButtonLogic()).btnMultiSolveActionPerformedForMoreThan12(
                                 multiSolveCountInt, methodsOrder, methodsOrderParallel, this));
                     } else {
@@ -375,7 +354,7 @@ public class ControllerMain implements Initializable {
         }
 
         // Кнопка меню для запуска старой программы
-        if (actionEvent.getSource() == btnOldProgramm) {
+        if (actionEvent.getSource() == btnOldProgram) {
             //MainScreen.getStage().hide();
             //MainScreen.getStage().close();
             new ParentFrame(getMatrix()).setVisible(true);
@@ -390,7 +369,7 @@ public class ControllerMain implements Initializable {
 
         // Кнопка меню для загрузки новой матрицы в программу
         if (actionEvent.getSource() == btnMultiLoad) {
-            List<List<String>> list = fileController.loadMultiDataFromFile(this);
+            List<List<String>> list = fileController.loadMultiDataFromFile();
             if (list == null || list.isEmpty()) return;
 
             newBtnLogicLess12 = new ButtonMultiSolveActionPerformed(new ButtonLogicForMultiLoad());
@@ -399,7 +378,8 @@ public class ControllerMain implements Initializable {
             newBtnLogicMore12.getButtonLogic().setList(list);
             multiSolveStr.setText("list = " + list.size() + ", countIteration = " + list.get(0).get(0));
             //outputText.setText(newBtnLogic.btnMultiSolveActionPerformed(multiSolveCountInt, methodsOrder, this));
-            return;
+            //noinspection UnnecessaryReturnStatement
+            return; // Need to not forget if add another button
         }
     }
 
@@ -418,17 +398,10 @@ public class ControllerMain implements Initializable {
 
     public ArrayList<String> getMethodOrder() {
         // Получение массива строк методов в заданном пользователем порядке
-        ArrayList<String> methodsOrder = new ArrayList<String>();
-        for (Task task : tasks) {
-            if (!(task.getName().equals("Полный перебор") && tableViewController.getMatrixSize() > 13)) {
-                if (task.isSelected()) {
-                    methodsOrder.add(task.getName());
-                }
-            }
-        }
-        return methodsOrder;
+        return tasks.stream().filter(task -> !(task.getName().equals("Полный перебор") && tableViewController.getMatrixSize() > 13)).filter(Task::isSelected).map(Task::getName).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    @SuppressWarnings("unused") // TODO Safe delete
     public void updateDisplay(int matricSize) {
         gridPane.getChildren().clear();
         gridPane.setHgap(0);
@@ -449,7 +422,8 @@ public class ControllerMain implements Initializable {
                 //and heightProperty of the child
                 gridPane.add(textField, i, j);
                 //gridPane.add(textField, i, j);
-                textField = null;
+                //noinspection UnusedAssignment
+                textField = null; // TODO Check for memory leak
             }
         }
     }
@@ -459,8 +433,8 @@ public class ControllerMain implements Initializable {
     }
 
     public static class Task {
-        private ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
-        private BooleanProperty selected = new SimpleBooleanProperty(false);
+        private final ReadOnlyStringWrapper name = new ReadOnlyStringWrapper();
+        private final BooleanProperty selected = new SimpleBooleanProperty(false);
 
         public Task(String name) {
             this.name.set(name);
@@ -470,9 +444,9 @@ public class ControllerMain implements Initializable {
             return name.get();
         }
 
-        public ReadOnlyStringProperty nameProperty() {
+        /*public ReadOnlyStringProperty nameProperty() { // TODO Safe delete?
             return name.getReadOnlyProperty();
-        }
+        }*/
 
         public BooleanProperty selectedProperty() {
             return selected;
@@ -485,10 +459,6 @@ public class ControllerMain implements Initializable {
         public void setSelected(boolean selected) {
             this.selected.set(selected);
         }
-    }
-
-    public ObservableList<Task> getTasks() {
-        return tasks;
     }
 
     public static TableViewController getTableViewController() {

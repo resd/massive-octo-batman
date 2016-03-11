@@ -13,11 +13,7 @@ public class Struct {
     private StructHW structHW;
     private GeneralStruct generalStruct;
 
-    // Constructors
-
-    private Struct() {
-    }
-
+    @SuppressWarnings("UnusedParameters") // Need to be an extra constructor
     public Struct(boolean isNull) {
         generalStruct = new GeneralStruct(-1, -1, -1);
     }
@@ -116,9 +112,5 @@ public class Struct {
 
     public GeneralStruct getGeneralStruct() {
         return generalStruct;
-    }
-//
-    public void setGeneralStruct(GeneralStruct generalStruct) {
-        this.generalStruct = generalStruct;
     }
 }

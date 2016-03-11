@@ -1,9 +1,10 @@
 package algorithm.bastrikov;
 
 /**
- * Created by Admin on 19.12.14.
+ * @author Admin
+ * @since 19.12.14
  */
-public interface Methods {
+interface Methods {
     void initialize();
 
     void normalize(double[][] M);

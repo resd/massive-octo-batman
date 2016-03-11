@@ -3,10 +3,11 @@ package algorithm.near;
 import algorithm.util.MethodAction;
 
 /**
- * Created by Admin on 02.04.15.
+ * @author Admin
+ * @since 02.04.15
  */
 //@SuppressWarnings("all")
-public class NearAlgoEveryDot implements MethodAction {
+public class NearAlgorithmEveryDot extends NearAlgorithmBase implements MethodAction {
     private double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
             {0, 0, 66, 37, 17, 12, 26},
@@ -16,37 +17,19 @@ public class NearAlgoEveryDot implements MethodAction {
             {0, 85, 8, 42, 89, 0, 0},
             {18, 0, 0, 0, 58, 13, 0}
     };
-    private int originalsize;
-    private int[][] p;
-    private int[] mi;
-    private int[] mj;
-    private int[] beforeP;
     private long sysTime;
     private double[] sumArr;
     private int[][][] pArr;
     private int idMax;
 
-    public NearAlgoEveryDot(double[][] M0) {
+    public NearAlgorithmEveryDot(double[][] M0) {
         this.M0 = cloneMatrix(M0);
-        originalsize = M0.length;
+        originalSize = M0.length;
     }
 
     public void setM0(double[][] M0) {
         this.M0 = cloneMatrix(M0);
-        originalsize = M0.length;
-    }
-
-    private void initialize() {  // Метод инициализация переменных
-        p = new int[originalsize][2]; // необходимых для
-        mi = new int[originalsize];   // расчетов
-        mj = new int[originalsize];
-        for (int i = 0; i < originalsize; i++) {
-            mi[i] = i;
-            mj[i] = i;
-            p[i][0] = -1;
-            p[i][1] = -1;
-        }
-        beforeP = new int[2];
+        originalSize = M0.length;
     }
 
     private int[] min(double[][] DD, int ni) {
@@ -61,33 +44,6 @@ public class NearAlgoEveryDot implements MethodAction {
         }
 
         return new int[]{ni, dj}; // Возврат максимального элемента
-    }
-
-    private void getPath(int[] d, int i) {
-        int x = d[0]; // Координаты максимального элемента
-        int y = d[1];
-
-        p[i][0] = mi[x];// Соответствие по данным координатам пути в исходной матрице
-        p[i][1] = mj[y];
-
-        if (x <= y) {// Сохранение координат текущего максимального элемента в редуцированной матрице
-            beforeP[0] = x;
-            beforeP[1] = x;
-        } else {
-            beforeP[1] = x - 1;
-            beforeP[0] = x - 1;
-        }
-
-        mi[x] = mi[y];// Необходимые приведения
-        mi = remove(mi, y);
-        mj = remove(mj, y);
-    }
-
-    int[] remove(int[] mi, int y) { // Метод для удаления координат текущего элемента из пути
-        int[] tmp = new int[mi.length - 1];
-        System.arraycopy(mi, 0, tmp, 0, y);
-        System.arraycopy(mi, y + 1, tmp, y, mi.length - y - 1);
-        return tmp;
     }
 
     private double[][] doM0(double[][] M0, int i, int j) {
@@ -107,47 +63,6 @@ public class NearAlgoEveryDot implements MethodAction {
         return M0;
     }
 
-    private double[][] setElementsM0toM(double[][] M0, int dj) {//  Вычитаем строку и столбец, возвращаем полученную редуцированную матрицу
-        double[][] M1 = new double[M0.length - 1][M0.length - 1]; // todo попробовать перерилить это через systemarraycopy()
-        int ki = 0;
-        int kj;
-        for (int i = 0; i < M0.length; i++) {
-            if (i == dj) {
-                ki++;
-                continue;
-            }
-            kj = 0;
-            for (int j = 0; j < M0.length; j++) {
-                if (j == dj) {
-                    kj++;
-                } else {
-                    M1[i - ki][j - kj] = M0[i][j];
-                }
-            }
-        }
-        return M1;
-    }
-
-    private void computeLastElement() {
-        if (mj[0] == mi[0] || mj[1] == mi[0]) { // Находим правильное сочетание последнех двух элементов в пути и возвращаем результат
-            p[originalsize - 2][0] = mi[1];
-            p[originalsize - 2][1] = mi[0];
-            p[originalsize - 1][0] = mi[0];
-            p[originalsize - 1][1] = mj[1];
-        } else {
-            p[originalsize - 2][0] = mi[0];
-            p[originalsize - 2][1] = mi[1];
-            p[originalsize - 1][0] = mi[1];
-            p[originalsize - 1][1] = mj[0];
-        }
-    }
-
-
-
-    private int[][] getP() {
-        return p;
-    }
-
     @Override
     public void main() {
         sysTime = System.currentTimeMillis();
@@ -155,11 +70,11 @@ public class NearAlgoEveryDot implements MethodAction {
         double[][] M;
         int d[];
         int countSum = 0;
-        sumArr = new double[originalsize*originalsize - originalsize];
-        pArr = new int[originalsize*originalsize - originalsize][originalsize][2];
+        sumArr = new double[originalSize * originalSize - originalSize];
+        pArr = new int[originalSize * originalSize - originalSize][originalSize][2];
 
-        for (int count = 0; count < originalsize; count++) {
-            for (int c = 0; c < originalsize; c++) {
+        for (int count = 0; count < originalSize; count++) {
+            for (int c = 0; c < originalSize; c++) {
                 if (c == count) continue;
                 initialize();
                 d = new int[]{count, c};
@@ -173,7 +88,7 @@ public class NearAlgoEveryDot implements MethodAction {
                     M = doM0(M, d[0], d[1]);
                     randomNumX = beforeP[1];
                 }
-                computeLastElement();                     // Нахождение двух последних элементов пути
+                computeLastElement(p, mi, mj, originalSize); // Нахождение двух последних элементов пути
                 sumArr[countSum] = getSumLoop(M0);
                 pArr[countSum] = cloneMatrix(p);
                 countSum++;
@@ -189,7 +104,7 @@ public class NearAlgoEveryDot implements MethodAction {
         C.p("\nPath: " + na.getPath() + "\nSum = " + sum + ",  Time: " + na.getTime());
     }*/
 
-    static double[][] cloneMatrix(double[][] a) { // Метод для копирования матриц
+    private static double[][] cloneMatrix(double[][] a) { // Метод для копирования матриц
         double[][] clone = a.clone();
         for (int i = 0; i < a.length; i++) {
             clone[i] = a[i].clone();
@@ -197,7 +112,7 @@ public class NearAlgoEveryDot implements MethodAction {
         return clone;
     }
 
-    public int[][] cloneMatrix(int[][] a) {
+    private int[][] cloneMatrix(int[][] a) {
         int[][] clone = a.clone();
 
         for (int i = 0; i < a.length; i++) {
@@ -207,9 +122,9 @@ public class NearAlgoEveryDot implements MethodAction {
     }
 
     public String getPath() {
-        StringBuffer str = new StringBuffer("");
+        StringBuilder str = new StringBuilder("");
         p = cloneMatrix(pArr[idMax]);
-        for (int i = 0; i < originalsize; i++) {
+        for (int i = 0; i < originalSize; i++) {
             str.append("(").append(p[i][0] + 1).append("-").append(p[i][1] + 1).append(") ");
         }
         return str.toString();
@@ -217,7 +132,7 @@ public class NearAlgoEveryDot implements MethodAction {
 
     private double getSumLoop(double[][] a) {
         double Sum = 0;
-        for (int k = 0; k < originalsize; k++) {
+        for (int k = 0; k < originalSize; k++) {
             Sum += a[p[k][0]][p[k][1]];
         }
         return Sum;

@@ -4,9 +4,10 @@ import algorithm.util.MethodAction;
 import util.C;
 
 /**
- * Created by Admin on 29.03.15.
+ * @author Admin
+ * @since 29.03.15
  */
-public class FarAlgo implements MethodAction {
+public class FarAlgorithm implements MethodAction {
 
     /*private double[][] M0 = {
             {0, 0, 83, 9, 30, 6, 50},
@@ -59,7 +60,7 @@ public class FarAlgo implements MethodAction {
             {70,90, 30,  0,  8},
             {90, 28,62, 93,  0}
     };
-    private static double[][] M00 = {
+    private static final double[][] M00 = {
             { 0,77, 53,74 ,  6},
             {30, 0, 24, 46, 28},
             {78,42,  0,  0, 72},
@@ -78,7 +79,7 @@ public class FarAlgo implements MethodAction {
     private int[][] idElCol;
     private int countP;
 
-    public FarAlgo(double[][] M0) {
+    public FarAlgorithm(double[][] M0) {
         this.M0 = cloneMatrix(M0);
         originalsize = M0.length;
     }
@@ -167,6 +168,7 @@ public class FarAlgo implements MethodAction {
         }
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     @Override
     public void main() throws NullPointerException{
         sysTime = System.currentTimeMillis();
@@ -250,6 +252,7 @@ public class FarAlgo implements MethodAction {
         }
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     private int checkMaxRow(int x, int y, int limit, double[][] M) {
         double INF = Double.POSITIVE_INFINITY;
         if (countElRow[x] >= limit && maxRow[x] != -1){
@@ -304,16 +307,17 @@ public class FarAlgo implements MethodAction {
         return Integer.MIN_VALUE;
     }
 
-    private boolean checkP(int k, int x, int limit) {
+    private boolean checkP(int k, int x, int limit) { // TODO check method on correctness
         if (countP < limit + 1) {
             int w = k;
-            for (int i = 0; i < p.length; i++) {
-                for (int j = 0; j < p.length; j++) {
-                    if (p[j][0] == w) {
-                        if (p[j][1] == x) {
+            //noinspection ForLoopReplaceableByForEach
+            for (int i = 0, pLength = p.length; i < pLength; i++) { // To not create extra array in foreach loop
+                for (int[] aP : p) {
+                    if (aP[0] == w) {
+                        if (aP[1] == x) {
                             return true;
                         }
-                        w = p[j][1];
+                        w = aP[1];
                         break;
                     }
                 }
@@ -346,6 +350,7 @@ public class FarAlgo implements MethodAction {
         return y;
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     private int checkMaxCol(int x, int y, int limit, double[][] M) {
         double INF = Double.POSITIVE_INFINITY;
         if (countElCol[y] >= limit && maxCol[y] != -1) {
@@ -402,7 +407,7 @@ public class FarAlgo implements MethodAction {
     }
 
     public static void main(String[] args) {
-        FarAlgo fa = new FarAlgo(M00);
+        FarAlgorithm fa = new FarAlgorithm(M00);
         fa.main();
         C.p("\nPath: " + fa.getPath() + "\nSum = " + fa.getSum(M00) + ",  Time: " + fa.getTime());
     }
@@ -418,7 +423,7 @@ public class FarAlgo implements MethodAction {
         return p;
     }
 
-    static double[][] cloneMatrix(double[][] a) { // Метод для копирования матриц
+    private static double[][] cloneMatrix(double[][] a) { // Метод для копирования матриц
         double[][] clone = a.clone();
         for (int i = 0; i < a.length; i++) {
             clone[i] = a[i].clone();
@@ -436,7 +441,7 @@ public class FarAlgo implements MethodAction {
     }
 
     public String getPath() {
-        StringBuffer str = new StringBuffer("");
+        StringBuilder str = new StringBuilder("");
         for (int i = 0; i < originalsize; i++) {
             str.append("(").append(p[i][0] + 1).append("-").append(p[i][1] + 1).append(") ");
         }

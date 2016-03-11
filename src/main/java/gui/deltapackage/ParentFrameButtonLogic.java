@@ -4,17 +4,16 @@ import algorithm.bab.classic.branch.ChoseBranchClassic;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElement;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElementSum;
 import algorithm.bab.classic.BaBClassicAlgorithm;
-import algorithm.bruteforce.BruteforceAlgo;
+import algorithm.bruteforce.BruteForceAlgorithm;
 import algorithm.bastrikov.Work1Main;
-import algorithm.bab.classic_old.ClassicAlgo;
-import algorithm.bab.classic_old.ClassicAlgoWithBacktrack;
-import algorithm.far.FarAlgo;
-import algorithm.near.NearAlgoEveryDot;
+import algorithm.far.FarAlgorithm;
+import algorithm.near.NearAlgorithmEveryDot;
 
 import java.util.Arrays;
 
 /**
- * Created by Admin on 21.07.15.
+ * @author Admin
+ * @since 21.07.15
  */
 //@SuppressWarnings({"all"})
 public class ParentFrameButtonLogic {
@@ -44,18 +43,16 @@ public class ParentFrameButtonLogic {
         double[][] a;
         StringBuilder blder = new StringBuilder();
         //blder.append("\n\n");
-        BruteforceAlgo bf;
+        BruteForceAlgorithm bf;
         //ClassicAlgoAnother caa;
-        ClassicAlgo sm;
-        ClassicAlgoWithBacktrack clwb;
-        NearAlgoEveryDot na;
-        FarAlgo fa;
+        NearAlgorithmEveryDot na;
+        FarAlgorithm fa;
         BaBClassicAlgorithm baBClassicAlgorithm;
         // change this
         ChoseBranchClassic choseBranchBefore = new ChoseBranchClassicForEachElement();
         ChoseBranchClassic choseBranchAfter = new ChoseBranchClassicForEachElementSum();
-        Work1Main w = new Work1Main(1);
-        Work1Main w2 = new Work1Main(2);
+        Work1Main w;
+        Work1Main w2;
         int[] m = new int[countMethod];
         double sum;
         long[] time = new long[countMethod];
@@ -64,14 +61,14 @@ public class ParentFrameButtonLogic {
         double[] s = new double[countMethod];
         int kfa = 0;
         int kcl = 0;
-        int[] countRigthMethod = new int[countMethod];
+        int[] countRightMethod = new int[countMethod];
         boolean[] countFlag = new boolean[countMethod];
         boolean countFlagg = false;
-        int countRigth = 0;
+        int countRight = 0;
         //int currentMethod = 0;
         int tempValue = 0;
         for (int i = 0; i < countMethod; i++) {
-            countRigthMethod[i] = 0;
+            countRightMethod[i] = 0;
             time[i] = 0;
             countFlag[i] = false;
         }
@@ -80,54 +77,16 @@ public class ParentFrameButtonLogic {
         for (int i = 0; i < n; i++) {
             parentFrame.fillValues();
             a = parentFrame.getValuesFromTable();
-            bf = new BruteforceAlgo();
+            bf = new BruteForceAlgorithm();
             //bf.setM0(a);
             bf.main(a);
-            pp = bf.getSum(a);
+            pp = bf.getSum();
             switch (method) {
                 case "Все":
-                    if (methodsOrder[2] != -1) {
-                        try {
-                            clwb = new ClassicAlgoWithBacktrack(a);
-                            //clwb.setA(a);
-                            //clwb.setArray(a);
-                            clwb.main();
-                            s[methodsOrder[2]] = clwb.getSum(a);
-                            time[methodsOrder[2]] += clwb.getTime();
-                            if (pp == clwb.getSum(a)) {
-                                m[methodsOrder[2]]++;
-                                countFlagg = true;
-                                for (int j = methodsOrder[2]; j < countMethod; j++) {
-                                    countFlag[j] = true;
-                                }
-                            /*for (int j = 0; j < countMethod; j++) {
-                                countFlag[i] = true;
-                            }*/
-                            }
-                        } catch (Exception e) {
-                            kcl++;
-                            //e.printStackTrace();
-                        }
-                    }
 
-                    if (methodsOrder[1] != -1) {
-                        sm = new ClassicAlgo(a);
-                        //sm.setArray(a);
-                        sm.main();
-                        s[methodsOrder[1]] = sm.getSum(a);
-                        time[methodsOrder[1]] += sm.getTime();
-                        if (pp == sm.getSum(a)) {
-                            m[methodsOrder[1]]++;
-                            countFlagg = true;
-                            for (int j = methodsOrder[1]; j < countMethod; j++) {
-                                countFlag[j] = true;
-                            }
-                        }
-                    }
 
                     if (methodsOrder[3] != -1) {
-                        w = new Work1Main(1);
-                    w.setM0(a);
+                        w = new Work1Main(a, 1);
                     w.main();
                     s[methodsOrder[3]] = w.getSum(a);
                     time[methodsOrder[3]] += w.getTime();
@@ -141,8 +100,7 @@ public class ParentFrameButtonLogic {
                     }
 
                     if (methodsOrder[4] != -1) {
-                        w2 = new Work1Main(2);
-                        w2.setM0(a);
+                        w2 = new Work1Main(a, 2);
                         w2.main();
                         s[methodsOrder[4]] = w2.getSum(a);
                         time[methodsOrder[4]] += w2.getTime();
@@ -156,7 +114,7 @@ public class ParentFrameButtonLogic {
                     }
 
                     if (methodsOrder[5] != -1) {
-                        na = new NearAlgoEveryDot(a);
+                        na = new NearAlgorithmEveryDot(a);
                         //na.setM0(a);
                         na.main();
                         s[methodsOrder[5]] = na.getSum(a);
@@ -172,7 +130,7 @@ public class ParentFrameButtonLogic {
 
                     if (methodsOrder[6] != -1) {
                         try {
-                            fa = new FarAlgo(a);
+                            fa = new FarAlgorithm(a);
                             //fa.setM0(a);
                             fa.main();
                             s[methodsOrder[6]] = fa.getSum(a);
@@ -231,12 +189,12 @@ public class ParentFrameButtonLogic {
 
                     for (int j = 0; j < countMethod; j++) {
                         if (countFlag[j]) {
-                            countRigthMethod[j]++;
+                            countRightMethod[j]++;
                         }
                         countFlag[j] = false;
                     }
                     /*if (countFlagg) {
-                        countRigth++;
+                        countRight++;
                     }
                     countFlagg = false;*/
                     //C.p(pp);
@@ -266,9 +224,9 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[0]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[0]]);
+            blder.append(countRightMethod[methodsOrder[0]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[0] == 0 ? countRigthMethod[methodsOrder[0]] : countRigthMethod[methodsOrder[0]] - countRigthMethod[methodsOrder[0] - 1]);
+            blder.append(methodsOrder[0] == 0 ? countRightMethod[methodsOrder[0]] : countRightMethod[methodsOrder[0]] - countRightMethod[methodsOrder[0] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[0]]);
         }
@@ -279,9 +237,9 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[1]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[1]]);
+            blder.append(countRightMethod[methodsOrder[1]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[1] == 0 ? countRigthMethod[methodsOrder[1]] : countRigthMethod[methodsOrder[1]] - countRigthMethod[methodsOrder[1] - 1]);
+            blder.append(methodsOrder[1] == 0 ? countRightMethod[methodsOrder[1]] : countRightMethod[methodsOrder[1]] - countRightMethod[methodsOrder[1] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[1]]);
         }
@@ -291,9 +249,9 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[2]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[2]]);
+            blder.append(countRightMethod[methodsOrder[2]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[2] == 0 ? countRigthMethod[methodsOrder[2]] : countRigthMethod[methodsOrder[2]] - countRigthMethod[methodsOrder[2] - 1]);
+            blder.append(methodsOrder[2] == 0 ? countRightMethod[methodsOrder[2]] : countRightMethod[methodsOrder[2]] - countRightMethod[methodsOrder[2] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[2]]);
         }
@@ -303,9 +261,9 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[3]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[3]]);
+            blder.append(countRightMethod[methodsOrder[3]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[3] == 0 ? countRigthMethod[methodsOrder[3]] : countRigthMethod[methodsOrder[3]] - countRigthMethod[methodsOrder[3] - 1]);
+            blder.append(methodsOrder[3] == 0 ? countRightMethod[methodsOrder[3]] : countRightMethod[methodsOrder[3]] - countRightMethod[methodsOrder[3] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[3]]);
         }
@@ -315,9 +273,9 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[4]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[4]]);
+            blder.append(countRightMethod[methodsOrder[4]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[4] == 0 ? countRigthMethod[methodsOrder[4]] : countRigthMethod[methodsOrder[4]] - countRigthMethod[methodsOrder[4] - 1]);
+            blder.append(methodsOrder[4] == 0 ? countRightMethod[methodsOrder[4]] : countRightMethod[methodsOrder[4]] - countRightMethod[methodsOrder[4] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[4]]);
         }
@@ -327,9 +285,9 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[5]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[5]]);
+            blder.append(countRightMethod[methodsOrder[5]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[5] == 0 ? countRigthMethod[methodsOrder[5]] : countRigthMethod[methodsOrder[5]] - countRigthMethod[methodsOrder[5] - 1]);
+            blder.append(methodsOrder[5] == 0 ? countRightMethod[methodsOrder[5]] : countRightMethod[methodsOrder[5]] - countRightMethod[methodsOrder[5] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[5]]);
         }
@@ -340,9 +298,9 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[6]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[6]]);
+            blder.append(countRightMethod[methodsOrder[6]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[6] == 0 ? countRigthMethod[methodsOrder[6]] : countRigthMethod[methodsOrder[6]] - countRigthMethod[methodsOrder[6] - 1]);
+            blder.append(methodsOrder[6] == 0 ? countRightMethod[methodsOrder[6]] : countRightMethod[methodsOrder[6]] - countRightMethod[methodsOrder[6] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[6]]);//*n/(n-kfa)
         }
@@ -352,16 +310,16 @@ public class ParentFrameButtonLogic {
             blder.append(firstMessage);
             blder.append(m[methodsOrder[7]]);
             blder.append(secondMessage);
-            blder.append(countRigthMethod[methodsOrder[7]]);
+            blder.append(countRightMethod[methodsOrder[7]]);
             blder.append(thirdMessage);
-            blder.append(methodsOrder[7] == 7 ? countRigthMethod[methodsOrder[7]] : countRigthMethod[methodsOrder[7]] - countRigthMethod[methodsOrder[7] - 1]);
+            blder.append(methodsOrder[7] == 7 ? countRightMethod[methodsOrder[7]] : countRightMethod[methodsOrder[7]] - countRightMethod[methodsOrder[7] - 1]);
             blder.append(fourthMessage);
             blder.append(time[methodsOrder[7]]);
         }
 
         blder.append("\n\nОбщее количество совпадений с ПП:\n");
-        Arrays.sort(countRigthMethod);
-        blder.append(countRigthMethod[0]);
+        Arrays.sort(countRightMethod);
+        blder.append(countRightMethod[0]);
 
         return blder.toString();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -372,27 +330,24 @@ public class ParentFrameButtonLogic {
 
         StringBuilder blder = new StringBuilder();
         //blder.append("\n\n");
-        BruteforceAlgo bf = new BruteforceAlgo();
-        ClassicAlgo sm = new ClassicAlgo(a);
-        ClassicAlgoWithBacktrack clwb = new ClassicAlgoWithBacktrack(a);
-        NearAlgoEveryDot na = new NearAlgoEveryDot(a);
+        BruteForceAlgorithm bf = new BruteForceAlgorithm();
+        NearAlgorithmEveryDot na = new NearAlgorithmEveryDot(a);
         BaBClassicAlgorithm cam = new BaBClassicAlgorithm(a);
-        FarAlgo fa = new FarAlgo(a);
-        Work1Main w = new Work1Main(1);
-        Work1Main w2 = new Work1Main(2);
+        FarAlgorithm fa = new FarAlgorithm(a);
+        Work1Main w = new Work1Main(a, 1);
+        Work1Main w2 = new Work1Main(a, 2);
         double sum;
 
         switch (method) {
             case "Все":
                 if (n < 13) {
-                    bf.setM0(a);
                     bf.main(a);
                     blder.append("Полный перебор");
                     blder.append(":");
                     blder.append("\nPath: ");
                     blder.append(bf.getPath());
                     blder.append("\nSum = ");
-                    blder.append(bf.getSum(a));
+                    blder.append(bf.getSum());
                     blder.append(",  Time: ");
                     blder.append(bf.getTime());
                 }
@@ -420,29 +375,8 @@ public class ParentFrameButtonLogic {
                 blder.append(",  Time: ");
                 blder.append(cam.getTime());
 
-                clwb.main();
-                blder.append("\n\nМВиГ классический");
-                blder.append(":");
-                blder.append("\nPath: ");
-                blder.append(clwb.getPath());
-                blder.append("\nSum = ");
-                blder.append(clwb.getSum(a));
-                blder.append(",  Time: ");
-                blder.append(clwb.getTime());
-
-                sm.main();
-                blder.append("\n\nМВиГ классический(без возвратов)");
-                blder.append(":");
-                blder.append("\nPath: ");
-                blder.append(sm.getPath());
-                blder.append("\nSum = ");
-                blder.append(sm.getSum(a));
-                blder.append(",  Time: ");
-                blder.append(sm.getTime());
-
                 //if (clwb.getSum(a) > sm.getSum(a))  setTablesSize(555);
 
-                w.setM0(a);
                 w.main();
                 blder.append("\n\nМВиГ улучшенный(без разрывов)");
                 blder.append(":");
@@ -455,7 +389,6 @@ public class ParentFrameButtonLogic {
                 //parseAndHighlightPath(w.getPath());
                 //w.mainNewMethod();
 
-                w2.setM0(a);
                 w2.main();
                 blder.append("\n\nМВиГ улучшенный(с разрывами)");
                 blder.append(":");
@@ -492,29 +425,17 @@ public class ParentFrameButtonLogic {
                 }
                 break;
             case "Полный перебор":
-                bf.setM0(a);
                 bf.main(a);
                 blder.append(method);
                 blder.append(":");
                 blder.append("\nPath: ");
                 blder.append(bf.getPath());
                 blder.append("\nSum = ");
-                blder.append(bf.getSum(a));
+                blder.append(bf.getSum());
                 blder.append(",  Time: ");
                 blder.append(bf.getTime());
                 //parseAndHighlightPath(bf.getPath());
                 //w.mainNewMethod();
-                break;
-            case "МВиГ классический":
-                clwb.main();
-                blder.append(method);
-                blder.append(":");
-                blder.append("\nPath: ");
-                blder.append(clwb.getPath());
-                blder.append("\nSum = ");
-                blder.append(clwb.getSum(a));
-                blder.append(",  Time: ");
-                blder.append(clwb.getTime());
                 break;
             /*case "МВиГ классический (переделанный)":
                 caa.main();
@@ -527,19 +448,7 @@ public class ParentFrameButtonLogic {
                 blder.append(",  Time: ");
                 blder.append(caa.getTime());
                 break;*/
-            case "МВиГ классический(без возвратов)":
-                sm.main();
-                blder.append(method);
-                blder.append(":");
-                blder.append("\nPath: ");
-                blder.append(sm.getPath());
-                blder.append("\nSum = ");
-                blder.append(sm.getSum(a));
-                blder.append(",  Time: ");
-                blder.append(sm.getTime());
-                break;
             case "МВиГ улучшенный(без разрывов)":
-                w.setM0(a);
                 w.main();
                 blder.append(method);
                 blder.append(":");
@@ -553,7 +462,6 @@ public class ParentFrameButtonLogic {
                 //w.mainNewMethod();
                 break;
             case "МВиГ улучшенный(с разрывами)":
-                w2.setM0(a);
                 w2.main();
                 blder.append(method);
                 blder.append(":");
@@ -635,8 +543,8 @@ public class ParentFrameButtonLogic {
         blder.append(firstMessage);
         blder.append(m[methodsOrder[7]]);
         blder.append(secondMessage);
-        blder.append(countRigthMethod[methodsOrder[7]]);
+        blder.append(countRightMethod[methodsOrder[7]]);
         blder.append(thirdMessage);
-        blder.append(methodsOrder[7] == 0 ? countRigthMethod[methodsOrder[7]] : countRigthMethod[methodsOrder[7]] - countRigthMethod[methodsOrder[7] - 1]);
+        blder.append(methodsOrder[7] == 0 ? countRightMethod[methodsOrder[7]] : countRightMethod[methodsOrder[7]] - countRightMethod[methodsOrder[7] - 1]);
         blder.append(fourthMessage);
         blder.append(time[methodsOrder[7]]);*/

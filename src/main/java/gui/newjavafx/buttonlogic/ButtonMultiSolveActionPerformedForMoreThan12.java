@@ -3,13 +3,11 @@ package gui.newjavafx.buttonlogic;
 import algorithm.bab.classic.BaBClassicAlgorithm;
 import algorithm.bab.classic.BaBClassicAlgorithmWithFirstLeftBounds;
 import algorithm.bab.classic.branch.*;
-import algorithm.bab.classic_old.ClassicAlgo;
-import algorithm.bab.classic_old.ClassicAlgoWithBacktrack;
 import algorithm.bab.parallel.BaBParallel;
 import algorithm.bab.parallel_with_back.BaBParallelWithBack;
 import algorithm.bastrikov.Work1Main;
-import algorithm.far.FarAlgo;
-import algorithm.near.NearAlgoEveryDot;
+import algorithm.far.FarAlgorithm;
+import algorithm.near.NearAlgorithmEveryDot;
 import algorithm.util.MethodAction;
 import gui.newjavafx.ControllerMain;
 import gui.newjavafx.FileController;
@@ -23,34 +21,27 @@ import java.util.List;
  * @since 29.02.2016
  * lastModify on 29.02.16
  */
-@SuppressWarnings({"unused"})
 public class ButtonMultiSolveActionPerformedForMoreThan12{
 
-    private ButtonLogic buttonLogic;
-    protected double[][] a;
-    protected StringBuilder blder;
-//    protected ClassicAlgo sm;
-//    protected ClassicAlgoWithBacktrack clwb;
-    protected NearAlgoEveryDot na;
-    protected FarAlgo fa;
-    protected BaBClassicAlgorithm baBClassicAlgorithm;
-    protected BaBClassicAlgorithmWithFirstLeftBounds baBClassicAlgorithmWithFirstLeftBounds2;
+    // TODO Delete unused fields
+    private final ButtonLogic buttonLogic;
+    double[][] a;
+    private StringBuilder blder;
+    BaBClassicAlgorithmWithFirstLeftBounds baBClassicAlgorithmWithFirstLeftBounds2;
     protected BaBParallel parallel;
-    protected BaBParallelWithBack parallelWithBack;
-    protected ChoseBranchClassic choseBranchBefore;
-    protected ChoseBranchClassic choseBranchAfter;
+    ChoseBranchClassic choseBranchBefore;
+    private ChoseBranchClassic choseBranchAfter;
     protected Work1Main w;
     protected Work1Main w2;
-    protected FileController fileController;
-    protected int iteratorForMethods;
-    protected int countMethod;
-    protected long[] time;
-    protected double[] s;
-    protected int[] mins;
-    protected int[] countRigthMethod;
-    protected boolean[] countFlag;
-    protected int kfa;
-    protected int kcl;
+    FileController fileController;
+    int iteratorForMethods;
+    private int countMethod;
+    private long[] time;
+    double[] s;
+    private int[] mins;
+    private int[] countRightMethod;
+    private boolean[] countFlag;
+    int kfa;
 
     public ButtonMultiSolveActionPerformedForMoreThan12(ButtonLogic buttonLogic) {
         this.buttonLogic = buttonLogic;
@@ -96,7 +87,7 @@ public class ButtonMultiSolveActionPerformedForMoreThan12{
 
             for (int j = 0; j < countMethod; j++) {
                 if (countFlag[j]) {
-                    countRigthMethod[j]++;
+                    countRightMethod[j]++;
                 }
                 countFlag[j] = false;
             }
@@ -110,14 +101,14 @@ public class ButtonMultiSolveActionPerformedForMoreThan12{
 
             /*
             blder.append("\n\nОбщее количество совпадений с ПП:\n");
-            Arrays.sort(countRigthMethod);
-            blder.append(countRigthMethod[countRigthMethod.length - 1]);*/
+            Arrays.sort(countRightMethod);
+            blder.append(countRightMethod[countRightMethod.length - 1]);*/
 
         return blder.toString();
     }
 
-    protected void initialize(ArrayList<String> methodsOrder,
-                              ControllerMain controllerMain) {
+    private void initialize(ArrayList<String> methodsOrder,
+                            ControllerMain controllerMain) {
         countMethod = methodsOrder.size();
         choseBranchBefore = new ChoseBranchClassicForEachElement();
         choseBranchAfter = new ChoseBranchClassicForEachElementSum();
@@ -128,12 +119,11 @@ public class ButtonMultiSolveActionPerformedForMoreThan12{
         time = new long[countMethod];
         s = new double[countMethod];
         mins = new int[countMethod];
-        countRigthMethod = new int[countMethod];
+        countRightMethod = new int[countMethod];
         countFlag = new boolean[countMethod];
         kfa = 0;
-        kcl = 0;
         for (int i = 0; i < countMethod; i++) {
-            countRigthMethod[i] = 0;
+            countRightMethod[i] = 0;
             countFlag[i] = false;
             mins[i] = 0;
             time[i] = 0;
@@ -142,24 +132,11 @@ public class ButtonMultiSolveActionPerformedForMoreThan12{
         iteratorForMethods = 0;
     }
 
-    protected void doSwitch(String method,
-                            List<String> methodsOrderParallel,
-                            int index,
-                            int multiSolveCountInt) {
+    void doSwitch(String method,
+                  List<String> methodsOrderParallel,
+                  int index,
+                  int multiSolveCountInt) {
         switch (method) {
-            case "МВиГ классический":
-                try {
-                    doMethodAction(new ClassicAlgoWithBacktrack(a));
-                } catch (Exception e) {
-                    kcl++;
-//                            System.out.println("Classic smaller than Module!"); //   uncomment
-//                            fileController.setAddToSaveFile(" Classic smaller than Module"); //   uncomment
-//                            fileController.autoSaveInformationFromFormToTextFile(a); //   uncomment
-                    e.printStackTrace();
-//                            break;
-                }
-                iteratorForMethods++;
-                break;
             case "МВиГ классический (начиная по левым ветвям)":
                 try {
                     doMethodAction(new BaBClassicAlgorithmWithFirstLeftBounds(a));
@@ -214,14 +191,6 @@ public class ButtonMultiSolveActionPerformedForMoreThan12{
                 }
                 iteratorForMethods++;
                 break;
-            case "МВиГ классический (без возвратов)":
-                doMethodAction(new ClassicAlgo(a));
-                        /*if (s[iteratorForMethods] < s[iteratorForMethods - 1]) {
-                        todo вернуть проверку на without > ...
-                            fileController.autoSaveInformationFromFormToTextFile(a);
-                        }*/
-                iteratorForMethods++;
-                break;
             case "МВиГ улучшенный (без разрывов)":
                 doMethodAction(new Work1Main(a, 1));
                 iteratorForMethods++;
@@ -231,13 +200,13 @@ public class ButtonMultiSolveActionPerformedForMoreThan12{
                 iteratorForMethods++;
                 break;
             case "Ближнего соседа":
-                doMethodAction(new NearAlgoEveryDot(a));
+                doMethodAction(new NearAlgorithmEveryDot(a));
                 //na.setM0(a);
                 iteratorForMethods++;
                 break;
             case "Дальнего соседа":
                 try {
-                    doMethodAction(new FarAlgo(a));
+                    doMethodAction(new FarAlgorithm(a));
                     //fa.setM0(a);
 
 //                    if (s[iteratorForMethods] < s[iteratorForMethods - 1]) {
@@ -306,108 +275,108 @@ public class ButtonMultiSolveActionPerformedForMoreThan12{
         }
     }
 
-    protected void doMethodAction(MethodAction methodAction) {
+    void doMethodAction(MethodAction methodAction) {
         methodAction.main();
         s[iteratorForMethods] = methodAction.getSum(a);
         time[iteratorForMethods] += methodAction.getTime();
     }
 
-    protected void doLastForLoop(ArrayList<String> methodsOrder) {
+    private void doLastForLoop(ArrayList<String> methodsOrder) {
         for (String method : methodsOrder) {
             switch (method) {
                 case "МВиГ классический":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     //blder.append(kcl);
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (с учетом потерянных ветвей)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (начиная по левым ветвям)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ параллельный":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ параллельный (с возвратом)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (без возвратов)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ улучшенный (без разрывов)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ улучшенный (с разрывами)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "Ближнего соседа":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "Дальнего соседа":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (с суммой)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу с суммой)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу со смежными)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу со смежными с суммой)":
                     blder.append(getMessageForMoreThan12(
-                            method, mins, iteratorForMethods, countRigthMethod, time));
+                            method, mins, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
             }
         }
     }
 
-    protected StringBuilder getMessageForMoreThan12(String method,
-                                                    int[] mins,
-                                                    int iteratorForMethods,
-                                                    int[] countRightMethod,
-                                                    long[] time) {
+    StringBuilder getMessageForMoreThan12(String method,
+                                          int[] mins,
+                                          int iteratorForMethods,
+                                          int[] countRightMethod,
+                                          long[] time) {
         String firstMessage = "\nМинимальный результат = ";
         String firstEndMessage = " раз";
 //        String secondMessage = ", Absolute sum = ";
         String thirdMessage = ", Дельта = ";
         String fourthMessage = ", Время = ";
-        String delimeter = "\n\n";
+        String delimiter = "\n\n";
         StringBuilder blder = new StringBuilder();
-        blder.append(delimeter);
+        blder.append(delimiter);
         blder.append(method);
         blder.append(firstMessage);
         blder.append(mins[iteratorForMethods]);

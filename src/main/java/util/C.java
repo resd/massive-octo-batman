@@ -1,10 +1,14 @@
 package util;
 
+import java.util.ArrayList;
+
 /**
- * Created by Admin on 23.06.14.
+ * @author Admin
+ * @since 23.06.14
  */
 public class C {
 
+    @SuppressWarnings("unused") // Can need for some test
     public static void f(String s, Object... o) {
         System.out.format(s, o);
     }
@@ -32,16 +36,17 @@ public class C {
         System.out.println("");
     }
 
+    @SuppressWarnings("unused") // Can need for some test
     private static void out(int[][] XXX) {
         if (XXX == null) {
             return;
         }
-        for (int i = 0; i < XXX.length; i++) {
+        for (int[] aXXX : XXX) {
             for (int j = 0; j < 2; j++) {
                 if (j == 0)
-                    System.out.print("(" + (XXX[i][j] + 1) + " ");
+                    System.out.print("(" + (aXXX[j] + 1) + " ");
                 else {
-                    System.out.println("" + (XXX[i][j] + 1) + ")");
+                    System.out.println("" + (aXXX[j] + 1) + ")");
                 }
             }
         }
@@ -73,16 +78,32 @@ public class C {
     }
 
 
-    //������� �������� ������� �� �����
+    //������� �������� ������� �� �����
+    //выводит значения массива на экран
+    // TODO ask if can know encoding by compare this two strings
+    @SuppressWarnings("unused") // Can need for some test
     private static void displayAnother(double[][] array1) {
-        for (int i = 0; i < array1.length; i++) {
-            for (int j = 0; j < array1[i].length; j++) {
-                if (array1[i][j] == Double.POSITIVE_INFINITY) {
+        for (double[] anArray1 : array1) {
+            for (double anAnArray1 : anArray1) {
+                if (anAnArray1 == Double.POSITIVE_INFINITY) {
                     System.out.print("M\t\t\t");
                 } else
-                    System.out.print(array1[i][j] + "\t\t\t");
+                    System.out.print(anAnArray1 + "\t\t\t");
             }
             System.out.println("");
         }
+    }
+
+    //выводит значения массива списка в консоль
+    @SuppressWarnings("unused") // Can need for some test
+    private void display(ArrayList<Double> collection, String name) {
+
+        System.out.println(name);
+
+        for (Double element : collection) {
+            System.out.print(element + " \t");
+        }
+        System.out.println("");
+
     }
 }

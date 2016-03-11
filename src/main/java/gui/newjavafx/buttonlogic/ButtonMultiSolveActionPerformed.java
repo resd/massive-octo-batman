@@ -3,14 +3,12 @@ package gui.newjavafx.buttonlogic;
 import algorithm.bab.classic.BaBClassicAlgorithm;
 import algorithm.bab.classic.BaBClassicAlgorithmWithFirstLeftBounds;
 import algorithm.bab.classic.branch.*;
-import algorithm.bab.classic_old.ClassicAlgo;
-import algorithm.bab.classic_old.ClassicAlgoWithBacktrack;
 import algorithm.bab.parallel.BaBParallel;
 import algorithm.bab.parallel_with_back.BaBParallelWithBack;
 import algorithm.bastrikov.Work1Main;
-import algorithm.bruteforce.BruteforceAlgo;
-import algorithm.far.FarAlgo;
-import algorithm.near.NearAlgoEveryDot;
+import algorithm.bruteforce.BruteForceAlgorithm;
+import algorithm.far.FarAlgorithm;
+import algorithm.near.NearAlgorithmEveryDot;
 import gui.newjavafx.ControllerMain;
 import gui.newjavafx.FileController;
 
@@ -22,19 +20,22 @@ import java.util.List;
  * @since 29.02.2016
  * lastModify on 29.02.16
  */
-//@SuppressWarnings({"all"})
+@SuppressWarnings({"UnusedAssignment", "unused"}) // TODO Deal with warnings
 public class ButtonMultiSolveActionPerformed {
 
-    ButtonLogic buttonLogic;
+    private final ButtonLogic buttonLogic;
+
 
     public ButtonMultiSolveActionPerformed(ButtonLogic buttonLogic) {
         this.buttonLogic = buttonLogic;
     }
 
+
     /*
         * Циклично вычисляет путь всеми заданными методами заданное количество раз
         * Для матриц размером до 12
         * */
+    // TODO Split method on several small methods
     public String btnMultiSolveActionPerformed(int multiSolveCountInt,
                                                List<String> methodsOrder,
                                                List<String> methodsOrderParallel,
@@ -42,14 +43,11 @@ public class ButtonMultiSolveActionPerformed {
 
         int countMethod = methodsOrder.size();
         double[][] a;
-        StringBuilder blder = new StringBuilder();
-        //blder.append("\n\n");
-        BruteforceAlgo bf;
-        //ClassicAlgoAnother caa;
-        ClassicAlgo sm;
-        ClassicAlgoWithBacktrack clwb;
-        NearAlgoEveryDot na;
-        FarAlgo fa;
+        StringBuilder builder = new StringBuilder();
+        //builder.append("\n\n");
+        BruteForceAlgorithm bf;
+        NearAlgorithmEveryDot na;
+        FarAlgorithm fa;
         BaBClassicAlgorithm baBClassicAlgorithm;
         BaBClassicAlgorithmWithFirstLeftBounds baBClassicAlgorithmWithFirstLeftBounds;
         BaBParallel parallel;
@@ -57,23 +55,21 @@ public class ButtonMultiSolveActionPerformed {
         // change this
         ChoseBranchClassic choseBranchBefore = new ChoseBranchClassicForEachElement();
         ChoseBranchClassic choseBranchAfter = new ChoseBranchClassicForEachElementSum();
-        Work1Main w = new Work1Main(1);
-        Work1Main w2 = new Work1Main(2);
+        Work1Main w;
+        Work1Main w2;
 
         FileController fileController = controllerMain.getFileController();
 
         int[] m = new int[countMethod];
-        double sum;
         long[] time = new long[countMethod];
         double pp;
         double[] s = new double[countMethod];
         int kfa = 0;
-        int kcl = 0;
-        int[] countRigthMethod = new int[countMethod];
+        int[] countRightMethod = new int[countMethod];
         boolean[] countFlag = new boolean[countMethod];
         boolean countFlagg = false;
         for (int i = 0; i < countMethod; i++) {
-            countRigthMethod[i] = 0;
+            countRightMethod[i] = 0;
             time[i] = 0;
             countFlag[i] = false;
         }
@@ -83,36 +79,11 @@ public class ButtonMultiSolveActionPerformed {
         for (int i = 0; i < multiSolveCountInt; i++) {
             a = null;
             a = buttonLogic.getMatrix(controllerMain, i);
-            bf = new BruteforceAlgo();
+            bf = new BruteForceAlgorithm();
             bf.main(a);
-            pp = bf.getSum(a);
+            pp = bf.getSum();
             for (String method : methodsOrder) {
                 switch (method) {
-                    case "МВиГ классический":
-                        try {
-                            clwb = new ClassicAlgoWithBacktrack(a);
-                            clwb.main();
-                            s[iteratorForMethods] = clwb.getSum(a);
-                            time[iteratorForMethods] += clwb.getTime();
-                            if (pp == clwb.getSum(a)) {
-                                m[iteratorForMethods]++;
-                                countFlagg = true;
-                                for (int j = iteratorForMethods; j < countMethod; j++) {
-                                    countFlag[j] = true;
-                                }
-//                                if (s[iteratorForMethods] < s[iteratorForMethods-1]) //   uncomment
-//                                    throw new Exception("Classic smaller than Module!"); //   uncomment
-                            }
-                        } catch (Exception e) {
-                            kcl++;
-//                            System.out.println("Classic smaller than Module!"); //   uncomment
-//                            fileController.setAddToSaveFile(" Classic smaller than Module"); //   uncomment
-//                            fileController.autoSaveInformationFromFormToTextFile(a); //   uncomment
-                            e.printStackTrace();
-//                            break;
-                        }
-                        iteratorForMethods++;
-                        break;
                     case "МВиГ классический (начиная по левым ветвям)":
                         try {
                             baBClassicAlgorithmWithFirstLeftBounds = new BaBClassicAlgorithmWithFirstLeftBounds(a);
@@ -235,27 +206,8 @@ public class ButtonMultiSolveActionPerformed {
                         }
                         iteratorForMethods++;
                         break;
-                    case "МВиГ классический (без возвратов)":
-                        sm = new ClassicAlgo(a);
-                        //sm.setArray(a);
-                        sm.main();
-                        s[iteratorForMethods] = sm.getSum(a);
-                        /*if (s[iteratorForMethods] < s[iteratorForMethods - 1]) {todo вернуть проверку на without > ...
-                            fileController.autoSaveInformationFromFormToTextFile(a);
-                        }*/
-                        time[iteratorForMethods] += sm.getTime();
-                        if (pp == sm.getSum(a)) {
-                            m[iteratorForMethods]++;
-                            countFlagg = true;
-                            for (int j = iteratorForMethods; j < countMethod; j++) {
-                                countFlag[j] = true;
-                            }
-                        }
-                        iteratorForMethods++;
-                        break;
                     case "МВиГ улучшенный (без разрывов)":
-                        w = new Work1Main(1);
-                        w.setM0(a);
+                        w = new Work1Main(a, 1);
                         w.main();
                         s[iteratorForMethods] = w.getSum(a);
                         time[iteratorForMethods] += w.getTime();
@@ -269,8 +221,7 @@ public class ButtonMultiSolveActionPerformed {
                         iteratorForMethods++;
                         break;
                     case "МВиГ улучшенный (с разрывами)":
-                        w2 = new Work1Main(2);
-                        w2.setM0(a);
+                        w2 = new Work1Main(a, 2);
                         w2.main();
                         s[iteratorForMethods] = w2.getSum(a);
                         time[iteratorForMethods] += w2.getTime();
@@ -284,7 +235,7 @@ public class ButtonMultiSolveActionPerformed {
                         iteratorForMethods++;
                         break;
                     case "Ближнего соседа":
-                        na = new NearAlgoEveryDot(a);
+                        na = new NearAlgorithmEveryDot(a);
                         //na.setM0(a);
                         na.main();
                         s[iteratorForMethods] = na.getSum(a);
@@ -300,7 +251,7 @@ public class ButtonMultiSolveActionPerformed {
                         break;
                     case "Дальнего соседа":
                         try {
-                            fa = new FarAlgo(a);
+                            fa = new FarAlgorithm(a);
                             //fa.setM0(a);
                             fa.main();
                             s[iteratorForMethods] = fa.getSum(a);
@@ -398,7 +349,7 @@ public class ButtonMultiSolveActionPerformed {
             }
             for (int j = 0; j < countMethod; j++) {
                 if (countFlag[j]) {
-                    countRigthMethod[j]++;
+                    countRightMethod[j]++;
                 }
                 countFlag[j] = false;
             }
@@ -413,94 +364,94 @@ public class ButtonMultiSolveActionPerformed {
         for (String method : methodsOrder) {
             switch (method) {
                 case "МВиГ классический":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
-                    //blder.append(kcl);
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
+                    //builder.append(kcl);
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (с учетом потерянных ветвей)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (начиная по левым ветвям)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ параллельный":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ параллельный (с возвратом)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (без возвратов)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ улучшенный (без разрывов)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ улучшенный (с разрывами)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "Ближнего соседа":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "Дальнего соседа":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (с суммой)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу с суммой)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу со смежными)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
                 case "МВиГ классический (по каждому элементу со смежными с суммой)":
-                    blder.append(getMessage(method, m, iteratorForMethods, countRigthMethod, time));
+                    builder.append(getMessage(method, m, iteratorForMethods, countRightMethod, time));
                     iteratorForMethods++;
                     break;
             }
         }
-        blder.append("\n\nОбщее количество совпадений с ПП:\n");
-        Arrays.sort(countRigthMethod);
-        blder.append(countRigthMethod[countRigthMethod.length - 1]);
+        builder.append("\n\nОбщее количество совпадений с ПП:\n");
+        Arrays.sort(countRightMethod);
+        builder.append(countRightMethod[countRightMethod.length - 1]);
 
-        return blder.toString();
+        return builder.toString();
     }
 
 
-    protected StringBuilder getMessage(String method, int[] m, int iteratorForMethods, int[] countRigthMethod, long[] time) {
+    private StringBuilder getMessage(String method, int[] m, int iteratorForMethods, int[] countRightMethod, long[] time) {
         String firstMessage = "\nSum = ";
         String secondMessage = ", Absolute sum = ";
         String thirdMessage = ", Delta = ";
         String fourthMessage = ", Время = ";
-        String delimeter = "\n\n";
-        StringBuilder blder = new StringBuilder();
-        blder.append(delimeter);
-        blder.append(method);
-        blder.append(firstMessage);
-        blder.append(m[iteratorForMethods]);
-        blder.append(secondMessage);
-        blder.append(countRigthMethod[iteratorForMethods]);
-        blder.append(thirdMessage);
-        blder.append(iteratorForMethods == 0 ? countRigthMethod[iteratorForMethods] : countRigthMethod[iteratorForMethods] - countRigthMethod[iteratorForMethods - 1]);
-        blder.append(fourthMessage);
-        blder.append(time[iteratorForMethods]);
-        return blder;
+        String delimiter = "\n\n";
+        StringBuilder builder = new StringBuilder();
+        builder.append(delimiter);
+        builder.append(method);
+        builder.append(firstMessage);
+        builder.append(m[iteratorForMethods]);
+        builder.append(secondMessage);
+        builder.append(countRightMethod[iteratorForMethods]);
+        builder.append(thirdMessage);
+        builder.append(iteratorForMethods == 0 ? countRightMethod[iteratorForMethods] : countRightMethod[iteratorForMethods] - countRightMethod[iteratorForMethods - 1]);
+        builder.append(fourthMessage);
+        builder.append(time[iteratorForMethods]);
+        return builder;
     }
     
     public ButtonLogic getButtonLogic() {

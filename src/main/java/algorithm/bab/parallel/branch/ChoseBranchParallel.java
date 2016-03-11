@@ -51,21 +51,22 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
             var.setH(var.getH() + HWithout);
             var.setMin(var.getH());
             HWith = Double.POSITIVE_INFINITY;
-            generalStruct = new GeneralStruct(var.getH(), HWithout, HWith, true, Other.INSTANCE.cloneMatrix(path.getP()));
+            generalStruct = new GeneralStruct(var.getH(), HWithout, HWith, true, Other.cloneMatrix(path.getP()));
             var.setMinLowerBound(var.getH());
-            /*structHW = new StructHW(var.getH(), HWith, null, Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount(),
+            /*structHW = new StructHW(var.getH(), HWith, null, Other.cloneMatrix(path.getP()), path.getPathCount(),
                     path.getMi().clone(), path.getMj().clone());*/
             sa = new Struct(generalStruct);
 //            sa.setActivatehw(true);
         }
 //        if (sa.getM1() == null) {
-//            sa.setAdditional(Other.INSTANCE.cloneMatrix(path.getP()), Other.INSTANCE.cloneMatrix(var.getM1()), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
+//            sa.setAdditional(Other.cloneMatrix(path.getP()), Other.cloneMatrix(var.getM1()), path.getMi().clone(), path.getMj().clone(), path.getPathCount());
 //        }
         return sa;
     }
 
     // ��������� ������ Struct � �������� � ��� ������� �� HWith � HWithout
-    protected Struct chooseHone(int[] edge, double HWith, Path path, Var var, Var varRef) {
+    @SuppressWarnings("UnusedParameters") // TODO Safe delete parameter
+    private Struct chooseHone(int[] edge, double HWith, Path path, Var var, Var varRef) {
         double[][] arrayC;
         Struct sa;
         GeneralStruct generalStruct;
@@ -74,15 +75,15 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
 
         double HWithout;
 
-        arrayC = Other.INSTANCE.cloneMatrix(var.getArray());
+        arrayC = Other.cloneMatrix(var.getArray());
         var.getArray()[edge[1]][edge[0]] = Double.POSITIVE_INFINITY;
         var.setM1(getHWithout(edge, var.getArray()));
         HWithout = getSumOfDelta();
 
         arrayC[edge[0]][edge[1]] = Double.POSITIVE_INFINITY;
         Normalize.INSTANCE.normalize(arrayC);
-//        sa.setArray(Other.INSTANCE.cloneMatrix(arrayC));// ���� ������� ������ �� 2 �������, �� ���-��� �������� �� ����� �������.
-//        sa.newStruct(edge.clone(), HWith, HWithout, var.getH(), Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount());
+//        sa.setArray(Other.cloneMatrix(arrayC));// ���� ������� ������ �� 2 �������, �� ���-��� �������� �� ����� �������.
+//        sa.newStruct(edge.clone(), HWith, HWithout, var.getH(), Other.cloneMatrix(path.getP()), path.getPathCount());
 //        sa.addMiMj(path.getMi().clone(), path.getMj().clone());
 
         //todo System.out.println((H + HWithout) + ",  " + (H + HWith) + "     (" + (mi[edge[0]] + 1) + ", " + (mj[edge[1]] + 1) + ")");
@@ -92,29 +93,29 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
             if (HWithout < var.getMinParallel()) {
                 generalStruct = new GeneralStruct(edge, var.getH(), HWithout, HWith);
                 if (HWith < var.getMinLeftBound()) {
-                    structHW = new StructHW(var.getH(), HWith, Other.INSTANCE.cloneMatrix(arrayC), Other.INSTANCE.cloneMatrix(path.getP()),
+                    structHW = new StructHW(var.getH(), HWith, Other.cloneMatrix(arrayC), Other.cloneMatrix(path.getP()),
                             path.getPathCount(), path.getMi().clone(), path.getMj().clone());
                 }
 
                 path.getPath(edge);
 
-                structHWout = new StructHWout(var.getH(), HWithout, Other.INSTANCE.cloneMatrix(var.getM1()),
-                        Other.INSTANCE.cloneMatrix(path.getP()), path.getPathCount(), path.getMi().clone(), path.getMj().clone());
+                structHWout = new StructHWout(var.getH(), HWithout, Other.cloneMatrix(var.getM1()),
+                        Other.cloneMatrix(path.getP()), path.getPathCount(), path.getMi().clone(), path.getMj().clone());
                 sa = new Struct(generalStruct, structHWout, structHW);
                 var.setH(var.getH() + HWithout);
-                var.setArray(Other.INSTANCE.cloneMatrix(var.getM1()));
+                var.setArray(Other.cloneMatrix(var.getM1()));
                 var.setMin(var.getH());
                 var.setMinParallel(HWithout);
             } else return null;
         } else {
             if (HWith < var.getMinParallel()) {
                 generalStruct = new GeneralStruct(edge, var.getH(), HWithout, HWith);
-                structHW = new StructHW(var.getH(), HWith, Other.INSTANCE.cloneMatrix(arrayC), Other.INSTANCE.cloneMatrix(path.getP()),
+                structHW = new StructHW(var.getH(), HWith, Other.cloneMatrix(arrayC), Other.cloneMatrix(path.getP()),
                         path.getPathCount(), path.getMi().clone(), path.getMj().clone());
 
                 int x = edge[0];
                 int y = edge[1];
-                int[][] pC = Other.INSTANCE.cloneMatrix(path.getP());
+                int[][] pC = Other.cloneMatrix(path.getP());
                 int[] miC = path.getMi().clone();
                 int[] mjC = path.getMj().clone();
                 pC[path.getPathCount()][0] = miC[x];
@@ -123,14 +124,14 @@ public class ChoseBranchParallel extends ChoseBranchClassic {
                 miC = path.remove(miC, y);
                 mjC = path.remove(mjC, y);
                 if (HWithout < var.getMinLeftBound()) {
-                    structHWout = new StructHWout(var.getH(), HWithout, Other.INSTANCE.cloneMatrix(var.getM1()), Other.INSTANCE.cloneMatrix(pC),
+                    structHWout = new StructHWout(var.getH(), HWithout, Other.cloneMatrix(var.getM1()), Other.cloneMatrix(pC),
                             path.getPathCount() + 1, miC.clone(), mjC.clone());
                 }
 
                 var.setH(var.getH() + HWith);
                 var.setMin(var.getH());
                 var.setArray(arrayC);
-//            sa.setAdditional(Other.INSTANCE.cloneMatrix(pC), Other.INSTANCE.cloneMatrix(var.getM1()), miC.clone(), mjC.clone(), path.getPathCount() + 1);
+//            sa.setAdditional(Other.cloneMatrix(pC), Other.cloneMatrix(var.getM1()), miC.clone(), mjC.clone(), path.getPathCount() + 1);
                 sa = new Struct(generalStruct, structHWout, structHW);
                 var.setMinParallel(HWithout);
             } else return null;

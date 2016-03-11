@@ -30,7 +30,7 @@ public class ChoseBranchClassicSum extends ChoseBranchClassic {
         return map;
     }
 
-    double[] getSumOfEachRow(double[][] M) {
+   /* double[] getSumOfEachRow(double[][] M) {
         double[] sumOfEachRow = new double[M.length];
         for (int i = 0; i < M.length; i++) {
             sumOfEachRow[i] = Double.MAX_VALUE;
@@ -58,5 +58,5 @@ public class ChoseBranchClassicSum extends ChoseBranchClassic {
             }
         }
         return sumOfEachCol;
-    }
+    }*/
 }

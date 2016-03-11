@@ -1,6 +1,5 @@
 package algorithm.bab.classic;
 
-import algorithm.bab.classic.branch.ChoseBranchClassic;
 import algorithm.util.MethodAction;
 
 /**
@@ -9,16 +8,17 @@ import algorithm.util.MethodAction;
  */
 public class BaBClassicAlgorithmWithFirstLeftBounds extends BaBClassicAlgorithm implements MethodAction {
 
-    // Конструктор
+    // Constructor
 
     public BaBClassicAlgorithmWithFirstLeftBounds(double[][] array) {
         super(array);
         needChooseLeftFirst = true;
     }
 
-    public BaBClassicAlgorithmWithFirstLeftBounds(double[][] array, ChoseBranchClassic cb) {
+    // May be need
+    /*public BaBClassicAlgorithmWithFirstLeftBounds(double[][] array, ChoseBranchClassic cb) {
         super(array, cb);
         needChooseLeftFirst = true;
-    }
+    }*/
 
 }

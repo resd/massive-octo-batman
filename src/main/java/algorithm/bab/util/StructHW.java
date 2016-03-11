@@ -10,13 +10,13 @@ public class StructHW {
     // Fields
 
     //private double H;
-    private double HWithSum;
+    private final double HWithSum;
     private double[][] array;
     private double HWith;
     private int[][] p;
-    private int pathCount;
-    private int[] miOld;
-    private int[] mjOld;
+    private final int pathCount;
+    private final int[] miOld;
+    private final int[] mjOld;
 
     // Methods
 
@@ -33,7 +33,8 @@ public class StructHW {
         this.mjOld = mjOld;
     }
 
-    public void newStructa(int[] edge, double HWith, double HWithout, double H,
+    // TODO Deal with this methods
+    /*public void newStructa(int[] edge, double HWith, double HWithout, double H,
                           int[][] p, int pathCount) {
 //        Struct struct = new Struct();
 //        this.edge = edge;
@@ -52,7 +53,7 @@ public class StructHW {
     public void addMiMj(int[] miOld, int[] mjOld) {
         this.miOld = miOld;
         this.mjOld = mjOld;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -64,10 +65,6 @@ public class StructHW {
 
     public double getHWithSum() {
         return HWithSum;
-    }
-
-    public void setHWithSum(double HWithSum) {
-        this.HWithSum = HWithSum;
     }
 
     public double[][] getArray() {
@@ -98,23 +95,12 @@ public class StructHW {
         return pathCount;
     }
 
-    public void setPathCount(int pathCount) {
-        this.pathCount = pathCount;
-    }
-
     public int[] getMiOld() {
         return miOld;
-    }
-
-    public void setMiOld(int[] miOld) {
-        this.miOld = miOld;
     }
 
     public int[] getMjOld() {
         return mjOld;
     }
 
-    public void setMjOld(int[] mjOld) {
-        this.mjOld = mjOld;
-    }
 }

@@ -17,14 +17,14 @@ public class Var {
 
 
 
-    public Var(double[][] array, double h, double[][] m1) {
+    private Var(double[][] array, double h, double[][] m1) {
         this.array = array;
         H = h;
         M1 = m1;
 //        this.a = a;
 //        originalSize = array.length;
         double M = Double.POSITIVE_INFINITY;
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0, tempIndexLimit = array.length; i < tempIndexLimit; i++) {
             array[i][i] = M;
         }
         minLowerBound = Double.MAX_VALUE;
@@ -34,10 +34,10 @@ public class Var {
     }
 
     public Var(Var var) {
-        array = Other.INSTANCE.cloneMatrix(var.array);
+        array = Other.cloneMatrix(var.array);
         H = var.H;
-        M1 = Other.INSTANCE.cloneMatrix(var.M1);
-//        a = Other.INSTANCE.cloneMatrix(var.a);
+        M1 = Other.cloneMatrix(var.M1);
+//        a = Other.cloneMatrix(var.a);
 //        originalSize = var.originalSize;
         min = var.min;
         minLowerBound = var.minLowerBound;

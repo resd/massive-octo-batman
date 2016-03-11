@@ -27,8 +27,7 @@ public class DA {
     }
 
     public boolean add(Struct struct) {
-        da.add(struct);
-        return true;
+        return da.add(struct);
     }
 
     public int getSize() {
@@ -74,7 +73,8 @@ public class DA {
             } else {
                 index++;
             }
-            temp = null;
+            //noinspection UnusedAssignment
+            temp = null; // probably need to avoid memory leak
         }
     }
 
@@ -108,7 +108,7 @@ public class DA {
                 path.setMi(structHWout.getMi().clone());
                 path.setMj(structHWout.getMj().clone());
                 path.setPathCount(structHWout.getPathCountNew());
-                var.setArray(Other.INSTANCE.cloneMatrix(structHWout.getM1()));
+                var.setArray(Other.cloneMatrix(structHWout.getM1()));
                 stopHWO = true;
                 break;
             } else if (temp.hasStructHW() && temp.getStructHW().getHWithSum() < var.getMin()) {
@@ -118,7 +118,7 @@ public class DA {
                 path.setMi(structHW.getMiOld().clone());
                 path.setMj(structHW.getMjOld().clone());
                 path.setPathCount(structHW.getPathCount());
-                var.setArray(Other.INSTANCE.cloneMatrix(structHW.getArray()));
+                var.setArray(Other.cloneMatrix(structHW.getArray()));
                 Normalize.INSTANCE.normalize(var.getArray());
                 stopHW = true;
                 break;
@@ -139,16 +139,14 @@ public class DA {
     }
 
     public void searchForLowestBound(Path path, Var var) {
-        for (int i = 0; i < da.size(); i++) {
-            if (da.get(i).hasGeneralStruct()) {
-                GeneralStruct temp = da.get(i).getGeneralStruct();
-                if (temp.isLowerBound() && temp.getH() <= var.getMinLeftBound()) {
-                    var.setMinLeftBound(temp.getH());
-                    path.setP(temp.getMinP());
-                }
-            }
-
-        }
+        da.stream().filter(Struct::hasGeneralStruct).
+                forEach(aDa -> {
+                    GeneralStruct temp = aDa.getGeneralStruct();
+                    if (temp.isLowerBound() && temp.getH() <= var.getMinLeftBound()) {
+                        var.setMinLeftBound(temp.getH());
+                        path.setP(temp.getMinP());
+                    }
+                });
     }
 
     public void clearRestOfGeneralStructWithBiggerLowerBound(Var var) {

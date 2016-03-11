@@ -6,13 +6,11 @@ import algorithm.bab.classic.branch.ChoseBranchClassicForEachElementSum;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElementWithRelated;
 import algorithm.bab.classic.branch.ChoseBranchClassicForEachElementWithRelatedSum;
 import algorithm.bab.classic.branch.ChoseBranchClassicSum;
-import algorithm.bab.classic_old.ClassicAlgo;
-import algorithm.bab.classic_old.ClassicAlgoWithBacktrack;
 import algorithm.bab.parallel.BaBParallel;
 import algorithm.bab.parallel_with_back.BaBParallelWithBack;
 import algorithm.bastrikov.Work1Main;
-import algorithm.far.FarAlgo;
-import algorithm.near.NearAlgoEveryDot;
+import algorithm.far.FarAlgorithm;
+import algorithm.near.NearAlgorithmEveryDot;
 import algorithm.util.MethodAction;
 import gui.newjavafx.ControllerMain;
 
@@ -23,8 +21,8 @@ import java.util.List;
  * @author Admin
  * @since 29.02.2016
  */
-//@SuppressWarnings({"all"})
-public class ButtonMultiSolveActionPerformedForMoreThan12InProcent extends ButtonMultiSolveActionPerformedForMoreThan12 {
+
+public class ButtonMultiSolveActionPerformedForMoreThan12InPercent extends ButtonMultiSolveActionPerformedForMoreThan12 {
 
     private double[][] proc;
     private double classicSum;
@@ -32,7 +30,7 @@ public class ButtonMultiSolveActionPerformedForMoreThan12InProcent extends Butto
     private int index;
     private int multiSolveCountInt;
 
-    public ButtonMultiSolveActionPerformedForMoreThan12InProcent(ButtonLogic buttonLogic) {
+    public ButtonMultiSolveActionPerformedForMoreThan12InPercent(ButtonLogic buttonLogic) {
         super(buttonLogic);
     }
 
@@ -60,19 +58,6 @@ public class ButtonMultiSolveActionPerformedForMoreThan12InProcent extends Butto
         baBClassicAlgorithmWithFirstLeftBounds2.main();
         classicSum = baBClassicAlgorithmWithFirstLeftBounds2.getSum(a);
         switch (method) {
-            case "МВиГ классический":
-                try {
-                    doMethodAction(new ClassicAlgoWithBacktrack(a));
-                } catch (Exception e) {
-                    kcl++;
-//                            System.out.println("Classic smaller than Module!"); //   uncomment
-//                            fileController.setAddToSaveFile(" Classic smaller than Module"); //   uncomment
-//                            fileController.autoSaveInformationFromFormToTextFile(a); //   uncomment
-                    e.printStackTrace();
-//                            break;
-                }
-                iteratorForMethods++;
-                break;
             case "МВиГ классический (начиная по левым ветвям)":
                 try {
                     doMethodAction(new BaBClassicAlgorithmWithFirstLeftBounds(a));
@@ -117,14 +102,6 @@ public class ButtonMultiSolveActionPerformedForMoreThan12InProcent extends Butto
                 }
                 iteratorForMethods++;
                 break;
-            case "МВиГ классический (без возвратов)":
-                doMethodAction(new ClassicAlgo(a));
-                        /*if (s[iteratorForMethods] < s[iteratorForMethods - 1]) {
-                        todo вернуть проверку на without > ...
-                            fileController.autoSaveInformationFromFormToTextFile(a);
-                        }*/
-                iteratorForMethods++;
-                break;
             case "МВиГ улучшенный (без разрывов)":
                 doMethodAction(new Work1Main(a, 1));
                 iteratorForMethods++;
@@ -134,13 +111,13 @@ public class ButtonMultiSolveActionPerformedForMoreThan12InProcent extends Butto
                 iteratorForMethods++;
                 break;
             case "Ближнего соседа":
-                doMethodAction(new NearAlgoEveryDot(a));
+                doMethodAction(new NearAlgorithmEveryDot(a));
                 //na.setM0(a);
                 iteratorForMethods++;
                 break;
             case "Дальнего соседа":
                 try {
-                    doMethodAction(new FarAlgo(a));
+                    doMethodAction(new FarAlgorithm(a));
                     //fa.setM0(a);
 
 //                    if (s[iteratorForMethods] < s[iteratorForMethods - 1]) {
@@ -237,15 +214,15 @@ public class ButtonMultiSolveActionPerformedForMoreThan12InProcent extends Butto
 //        String thirdMessage = ", Дельта = ";
 //        String fourthMessage = ", Время = ";
         String fifthMessage = "\nЛучше класссического = ";
-        String delimeter = "\n\n";
+        String delimiter = "\n\n";
         StringBuilder blder = new StringBuilder();
-        blder.append(delimeter);
+        blder.append(delimiter);
         blder.append(method);
 //        blder.append(firstMessage);
 //        blder.append(mins[iteratorForMethods]);
 //        blder.append(firstEndMessage);
 ////        blder.append(secondMessage);
-////        blder.append(countRigthMethod[iteratorForMethods]);
+////        blder.append(countRightMethod[iteratorForMethods]);
         blder.append(secondMessage);
         blder.append(String.format("%.1f", getSum(iteratorForMethods)));
         if (methodsBetterThanClassic[iteratorForMethods] != 0) {
@@ -254,8 +231,8 @@ public class ButtonMultiSolveActionPerformedForMoreThan12InProcent extends Butto
             blder.append(firstEndMessage);
         }
 //        blder.append(thirdMessage);
-//        blder.append(iteratorForMethods == 0 ? countRigthMethod[iteratorForMethods] :
-// countRigthMethod[iteratorForMethods] - countRigthMethod[iteratorForMethods - 1]);
+//        blder.append(iteratorForMethods == 0 ? countRightMethod[iteratorForMethods] :
+// countRightMethod[iteratorForMethods] - countRightMethod[iteratorForMethods - 1]);
 //        blder.append(fourthMessage);
 //        blder.append(time[iteratorForMethods]);
         return blder;
